@@ -25,12 +25,6 @@
   softlayer_vol_provision_timeout = "30m"
   softlayer_api_retry_interval = "5s"
 
-[genesis]
-  genesis_provider_enabled = false
-  genesis_user_name = ""
-  genesis_api_key = ""
-  genesis_url = ""
-
 [vpc]
   vpc_enabled = true
   provider_type = "gc"
@@ -50,5 +44,5 @@
   vpc_api_timeout = "120s"
 
 [IKS]
-  iks_enabled = true
+  iks_enabled = false
   iks_block_provider_name = "iks-vpc-classic"

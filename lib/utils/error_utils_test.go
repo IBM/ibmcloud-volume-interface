@@ -192,17 +192,17 @@ func TestSetResponseFault(t *testing.T) {
 			name:             "not_struct_ptr",
 			response:         struct{}{},
 			expectedResponse: struct{}{},
-			expectedError:    "Value must be a pointer to a struct",
+			expectedError:    "value must be a pointer to a struct",
 		}, {
 			name:             "no_fault_field",
 			response:         &struct{}{},
 			expectedResponse: &struct{}{},
-			expectedError:    "Value struct must have Fault provider.Fault field",
+			expectedError:    "value struct must have Fault provider.Fault field",
 		}, {
 			name:             "string_fault_field",
 			response:         &struct{ Fault string }{},
 			expectedResponse: &struct{ Fault string }{},
-			expectedError:    "Value struct must have Fault provider.Fault field",
+			expectedError:    "value struct must have Fault provider.Fault field",
 		}, {
 			name:             "nil_fault",
 			response:         &provider.FaultResponse{},

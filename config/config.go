@@ -44,7 +44,6 @@ type Config struct {
 	Server    *ServerConfig  `required:"true"`
 	Bluemix   *BluemixConfig //`required:"true"`
 	Softlayer *SoftlayerConfig
-	Gen2      *Gen2Config
 	VPC       *VPCProviderConfig
 	IKS       *IKSConfig
 }
@@ -142,14 +141,6 @@ type SoftlayerConfig struct {
 
 	SoftlayerIMSEndpointURL string `toml:"softlayer_iam_endpoint_url"`
 	SoftlayerAPIDebug       bool
-}
-
-// Gen2Config ...
-type Gen2Config struct {
-	Gen2ProviderEnabled bool   `toml:"genesis_provider_enabled"`
-	Gen2Username        string `toml:"genesis_user_name"`
-	Gen2APIKey          string `toml:"genesis_api_key"`
-	Gen2URL             string `toml:"genesis_url"`
 }
 
 // VPCProviderConfig configures a specific instance of a VPC provider (e.g. GT/GC/Z)
