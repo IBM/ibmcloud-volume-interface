@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package util ...
 package util
 
 // SafeStringValue returns the referenced string value, treating nil as equivalent to "".

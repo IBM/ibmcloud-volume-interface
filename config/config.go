@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+// Package config ...
 package config
 
 import (
-	"github.com/BurntSushi/toml"
-	"github.com/kelseyhightower/envconfig"
-	"go.uber.org/zap"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/BurntSushi/toml"
+	"github.com/kelseyhightower/envconfig"
+	"go.uber.org/zap"
 )
 
 func getEnv(key string) string {

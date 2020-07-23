@@ -1,8 +1,8 @@
 
 GOPACKAGES=$(shell go list ./... | grep -v /vendor/ | grep -v /samples)
 GOFILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
-GOLINTPACKAGES=$(shell go list ./... | grep -v /vendor/)
 ARCH = $(shell uname -m)
+LINT_VERSION="1.27.0"
 
 .PHONY: all
 all: deps dofmt vet test
@@ -10,20 +10,21 @@ all: deps dofmt vet test
 .PHONY: deps
 deps:
 	go get github.com/pierrre/gotestcover
-	go get golang.org/x/lint/golint
+	@if ! which golangci-lint >/dev/null || [[ "$$(golangci-lint --version)" != *${LINT_VERSION}* ]]; then \
+		curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin v${LINT_VERSION}; \
+	fi
 
 .PHONY: fmt
-fmt: lint
-	gofmt -l ${GOFILES}
-	@if [ -n "$$(gofmt -l ${GOFILES})" ]; then echo 'Above Files needs gofmt fixes. Please run gofmt -l -w on your code.' && exit 1; fi
+fmt:
+	golangci-lint run --disable-all --enable=gofmt
 
 .PHONY: dofmt
 dofmt:
-	go fmt ./...
+	golangci-lint run --disable-all --enable=gofmt --fix
 
 .PHONY: lint
 lint:
-	$(GOPATH)/bin/golint --set_exit_status ${GOLINTPACKAGES}
+	golangci-lint run
 
 .PHONY: makefmt
 makefmt:

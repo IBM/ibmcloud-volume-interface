@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
+// Package config ...
 package config
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGeneralCAHttpClient(t *testing.T) {

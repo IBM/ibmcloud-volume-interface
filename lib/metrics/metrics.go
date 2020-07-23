@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+// Package metrics ...
 package metrics
 
 import (
-	"go.uber.org/zap"
 	"time"
+
+	"go.uber.org/zap"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -67,8 +69,8 @@ func RegisterAll() {
 // UpdateDurationFromStart records the duration of the step identified by the
 // label using start time
 func UpdateDurationFromStart(logger *zap.Logger, label string, start time.Time) {
-	duration := time.Now().Sub(start)
-	logger.Info("Time to complete", zap.Float64(string(label), duration.Seconds()))
+	duration := time.Since(start)
+	logger.Info("Time to complete", zap.Float64(label, duration.Seconds()))
 	UpdateDuration(label, duration)
 }
 
@@ -87,5 +89,5 @@ func RegisterError(errType string, err error) {
 
 // RegisterFunction records number of operation.
 func RegisterFunction(label string) {
-	functionCount.WithLabelValues(string(label)).Add(1.0)
+	functionCount.WithLabelValues(label).Add(1.0)
 }

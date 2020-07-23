@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+// Package util ...
 package util
 
 import (
 	"errors"
 	"fmt"
+	"testing"
+
 	"github.com/IBM/ibmcloud-volume-interface/lib/provider"
 	"github.com/IBM/ibmcloud-volume-interface/lib/utils/reasoncode"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestNewError(t *testing.T) {
@@ -125,11 +127,11 @@ func TestNewErrorUnwrapString(t *testing.T) {
 	assert.Equal(t, []string{},
 		ErrorDeepUnwrapString(NewError("MyCode", "My message", nil)))
 
-	wrapped1 := errors.New("Wrapped 1")
+	wrapped1 := errors.New("wrapped 1")
 	assert.Equal(t, []string{wrapped1.Error()},
 		ErrorDeepUnwrapString(NewError("MyCode", "My message", wrapped1)))
 
-	wrapped2 := errors.New("Wrapped 2")
+	wrapped2 := errors.New("wrapped 2")
 	assert.Equal(t, []string{wrapped1.Error(), wrapped2.Error()},
 		ErrorDeepUnwrapString(NewError("MyCode", "My message", wrapped1, wrapped2)))
 
@@ -139,7 +141,7 @@ func TestNewErrorUnwrapString(t *testing.T) {
 }
 
 func TestErrorReasonCode(t *testing.T) {
-	assert.Equal(t, reasoncode.ErrorUnclassified, ErrorReasonCode(errors.New("Test")))
+	assert.Equal(t, reasoncode.ErrorUnclassified, ErrorReasonCode(errors.New("test")))
 	assert.Equal(t, reasoncode.ErrorUnclassified, ErrorReasonCode(provider.Error{}))
 }
 
@@ -210,7 +212,6 @@ func TestSetResponseFault(t *testing.T) {
 
 	for _, testcase := range testcases {
 		t.Run(testcase.name, func(t *testing.T) {
-
 			err := SetFaultResponse(testcase.err, testcase.response)
 
 			assert.Equal(t, testcase.expectedResponse, testcase.response)
@@ -226,6 +227,6 @@ func TestSetResponseFault(t *testing.T) {
 
 func TestZapError(t *testing.T) {
 	assert.NotNil(t, ZapError(nil))
-	assert.NotNil(t, ZapError(errors.New("Test")))
+	assert.NotNil(t, ZapError(errors.New("test")))
 	assert.NotNil(t, ZapError(NewError("TEST", "Test")))
 }

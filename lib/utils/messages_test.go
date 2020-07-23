@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+// Package util ...
 package util
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMessageError(t *testing.T) {

@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
+// Package util ...
 package util
 
 import (
 	"errors"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetErrorType(t *testing.T) {
-	err := errors.New("Infrastructure account is temporarily locked")
-	newErr := NewError("ErrorProviderAccountTemporarilyLocked", "Infrastructure account is temporarily locked", err)
+	err := errors.New("infrastructure account is temporarily locked")
+	newErr := NewError("ErrorProviderAccountTemporarilyLocked", "infrastructure account is temporarily locked", err)
 	assert.NotNil(t, GetErrorType(newErr))
-	newErr = NewError("ProvisioningFailed", "ProvisioningFailed", errors.New("ProvisioningFailed"))
+	newErr = NewError("ProvisioningFailed", "ProvisioningFailed", errors.New("provisioningFailed"))
 	assert.NotNil(t, GetErrorType(newErr))
-	newErr = NewErrorWithProperties("ProvisioningFailed", "", map[string]string{"properties": "properties"}, errors.New("ProvisioningFailed"))
+	newErr = NewErrorWithProperties("ProvisioningFailed", "", map[string]string{"properties": "properties"}, errors.New("provisioningFailed"))
 	assert.NotNil(t, GetErrorType(newErr))
 }

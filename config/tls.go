@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package config ...
 package config
 
 import (
@@ -24,7 +25,6 @@ import (
 
 // GeneralCAHttpClient returns an http.Client configured for general use
 func GeneralCAHttpClient() (*http.Client, error) {
-
 	httpClient := &http.Client{
 
 		Transport: &http.Transport{
@@ -44,7 +44,6 @@ func GeneralCAHttpClient() (*http.Client, error) {
 
 // GeneralCAHttpClientWithTimeout returns an http.Client configured for general use
 func GeneralCAHttpClientWithTimeout(timeout time.Duration) (*http.Client, error) {
-
 	httpClient := &http.Client{
 
 		Transport: &http.Transport{

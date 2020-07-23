@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
+// Package util ...
 package util
 
 import (
 	"errors"
+	"reflect"
+	"time"
+
 	"github.com/IBM/ibmcloud-volume-interface/lib/provider"
 	"github.com/IBM/ibmcloud-volume-interface/lib/utils/reasoncode"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"reflect"
-	"time"
 )
 
 // NewError returns an error that is implemented by provider.Error.
@@ -46,9 +48,7 @@ func NewErrorWithProperties(code reasoncode.ReasonCode, msg string, properties m
 		if w != nil {
 			werrs = append(werrs, w.Error())
 			if p, isPerr := w.(provider.Error); isPerr {
-				for _, u := range p.Wrapped() {
-					werrs = append(werrs, u)
-				}
+				werrs = append(werrs, p.Wrapped()...)
 			}
 		}
 	}
@@ -109,11 +109,11 @@ func FaultToError(fault *provider.Fault) error {
 func SetFaultResponse(fault error, response interface{}) error {
 	value := reflect.ValueOf(response)
 	if value.Kind() != reflect.Ptr || value.Elem().Kind() != reflect.Struct {
-		return errors.New("Value must be a pointer to a struct")
+		return errors.New("value must be a pointer to a struct")
 	}
 	field := value.Elem().FieldByName("Fault")
 	if field.Kind() != reflect.Ptr {
-		return errors.New("Value struct must have Fault provider.Fault field")
+		return errors.New("value struct must have Fault provider.Fault field")
 	}
 	field.Set(reflect.ValueOf(ErrorToFault(fault)))
 	return nil
@@ -132,7 +132,7 @@ func ZapError(err error) zapcore.Field {
 	return zap.Error(err)
 }
 
-//ErrorRetrier retry the fucntion
+//ErrorRetrier retry the function
 type ErrorRetrier struct {
 	MaxAttempts   int
 	RetryInterval time.Duration

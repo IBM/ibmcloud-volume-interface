@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
+// Package config ...
 package config
 
 import (
+	"os"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"os"
-	"testing"
 )
 
 type testConfig struct {
@@ -91,7 +93,8 @@ func TestParseConfig(t *testing.T) {
 	var testParseConf testConfig
 
 	configPath := "test.toml"
-	ParseConfig(configPath, &testParseConf, testLogger)
+	err := ParseConfig(configPath, &testParseConf, testLogger)
+	assert.Nil(t, err)
 
 	expected := testConf
 	assert.Exactly(t, expected, testParseConf)
@@ -102,7 +105,8 @@ func TestParseConfigNoMatch(t *testing.T) {
 	var testParseConf testConfig
 
 	configPath := "test.toml"
-	ParseConfig(configPath, &testParseConf, testLogger)
+	err := ParseConfig(configPath, &testParseConf, testLogger)
+	assert.Nil(t, err)
 
 	expected := testConfig{
 		Header: sectionTestConfig{
@@ -114,7 +118,6 @@ func TestParseConfigNoMatch(t *testing.T) {
 		}}
 
 	assert.NotEqual(t, expected, testParseConf)
-
 }
 
 func TestParseConfigNoMatchTwo(t *testing.T) {
@@ -122,7 +125,8 @@ func TestParseConfigNoMatchTwo(t *testing.T) {
 	var testParseConf testConfig
 
 	configPath := "test1.toml"
-	ParseConfig(configPath, &testParseConf, testLogger)
+	err := ParseConfig(configPath, &testParseConf, testLogger)
+	assert.Nil(t, err)
 
 	expected := testConfig{
 		Header: sectionTestConfig{
@@ -134,13 +138,13 @@ func TestParseConfigNoMatchTwo(t *testing.T) {
 		}}
 
 	assert.NotEqual(t, expected, testParseConf)
-
 }
 
 func TestGetGoPath(t *testing.T) {
 	t.Log("Testing getting GOPATH")
 	goPath := "/tmp"
-	os.Setenv("GOPATH", goPath)
+	err := os.Setenv("GOPATH", goPath)
+	assert.Nil(t, err)
 
 	path := GetGoPath()
 
@@ -150,7 +154,8 @@ func TestGetGoPath(t *testing.T) {
 func TestGetEnv(t *testing.T) {
 	t.Log("Testing getting ENV")
 	goPath := "/tmp"
-	os.Setenv("ENVTEST", goPath)
+	err := os.Setenv("ENVTEST", goPath)
+	assert.Nil(t, err)
 
 	path := getEnv("ENVTEST")
 
@@ -160,7 +165,8 @@ func TestGetEnv(t *testing.T) {
 func TestGetGoPathNullPath(t *testing.T) {
 	t.Log("Testing getting GOPATH NULL Path")
 	goPath := ""
-	os.Setenv("GOPATH", goPath)
+	err := os.Setenv("GOPATH", goPath)
+	assert.Nil(t, err)
 
 	path := GetGoPath()
 
@@ -187,7 +193,9 @@ func TestGetConfPath(t *testing.T) {
 
 func TestGetConfPathWithEnv(t *testing.T) {
 	t.Log("Testing GetEtcPath")
-	os.Setenv("SECRET_CONFIG_PATH", "src/github.com/IBM/ibmcloud-volume-interface/etc")
+	err := os.Setenv("SECRET_CONFIG_PATH", "src/github.com/IBM/ibmcloud-volume-interface/etc")
+	assert.Nil(t, err)
+
 	expectedEtcPath := "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml"
 
 	defaultEtcPath := GetConfPath()
@@ -206,13 +214,19 @@ func TestGetDefaultConfPath(t *testing.T) {
 
 func TestGetConfPathDir(t *testing.T) {
 	t.Log("Testing GetConfPathDir")
-	os.Setenv("SECRET_CONFIG_PATH", "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml")
+	err := os.Setenv("SECRET_CONFIG_PATH", "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml")
+	assert.Nil(t, err)
+
 	expectedEtcPath := "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml"
 	confPath := GetConfPathDir()
 	assert.Equal(t, confPath, expectedEtcPath)
 
-	os.Unsetenv("SECRET_CONFIG_PATH")
-	os.Unsetenv("GOPATH")
+	err = os.Unsetenv("SECRET_CONFIG_PATH")
+	assert.Nil(t, err)
+
+	err = os.Unsetenv("GOPATH")
+	assert.Nil(t, err)
+
 	confPath = GetConfPathDir()
 	expectedEtcPath = "src/github.com/IBM/ibmcloud-volume-interface/etc"
 	assert.Equal(t, confPath, expectedEtcPath)
