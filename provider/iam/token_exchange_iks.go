@@ -114,7 +114,6 @@ func (r *tokenExchangeIKSRequest) sendTokenExchangeRequest() (*tokenExchangeIKSR
 		APIKey: r.tes.bluemixConf.IamAPIKey,
 	}
 	r.request = r.request.Body(&apikey)
-	fmt.Println("------request-----", r.request)
 
 	var successV tokenExchangeIKSResponse
 	var errorV = struct {
