@@ -125,7 +125,7 @@ func (r *tokenExchangeRequest) exchangeForAccessToken() (*AccessToken, error) {
 	var err error
 	err = r.errorRetrier.ErrorRetry(func() (error, bool) {
 		iamResp, err = r.sendTokenExchangeRequest()
-		return err, !isConnectionError(err) // Skip rettry if its not connection error
+		return err, !IsConnectionError(err) // Skip rettry if its not connection error
 	})
 	if err != nil {
 		return nil, err
@@ -139,7 +139,7 @@ func (r *tokenExchangeRequest) exchangeForIMSToken() (*IMSToken, error) {
 	var err error
 	err = r.errorRetrier.ErrorRetry(func() (error, bool) {
 		iamResp, err = r.sendTokenExchangeRequest()
-		return err, !isConnectionError(err)
+		return err, !IsConnectionError(err)
 	})
 
 	if err != nil {
@@ -234,7 +234,8 @@ func (r *tokenExchangeRequest) sendTokenExchangeRequest() (*tokenExchangeRespons
 			"Unexpected IAM token exchange response")
 }
 
-func isConnectionError(err error) bool {
+// IsConnectionError ...
+func IsConnectionError(err error) bool {
 	if err != nil {
 		wrappedErrors := util.ErrorDeepUnwrapString(err)
 		// wrapped error contains actual backend error

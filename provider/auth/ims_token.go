@@ -37,14 +37,14 @@ const (
 
 // ForRefreshToken ...
 func (ccf *ContextCredentialsFactory) ForRefreshToken(refreshToken string, logger *zap.Logger) (provider.ContextCredentials, error) {
-	accessToken, err := ccf.tokenExchangeService.ExchangeRefreshTokenForAccessToken(refreshToken, logger)
+	accessToken, err := ccf.TokenExchangeService.ExchangeRefreshTokenForAccessToken(refreshToken, logger)
 	if err != nil {
 		// Must preserve provider error code in the ErrorProviderAccountTemporarilyLocked case
 		logger.Error("Unable to retrieve access token from refresh token", local.ZapError(err))
 		return provider.ContextCredentials{}, err
 	}
 
-	imsToken, err := ccf.tokenExchangeService.ExchangeAccessTokenForIMSToken(*accessToken, logger)
+	imsToken, err := ccf.TokenExchangeService.ExchangeAccessTokenForIMSToken(*accessToken, logger)
 	if err != nil {
 		// Must preserve provider error code in the ErrorProviderAccountTemporarilyLocked case
 		logger.Error("Unable to retrieve IAM token from access token", local.ZapError(err))
@@ -56,7 +56,7 @@ func (ccf *ContextCredentialsFactory) ForRefreshToken(refreshToken string, logge
 
 // ForIAMAPIKey ...
 func (ccf *ContextCredentialsFactory) ForIAMAPIKey(iamAccountID, apiKey string, logger *zap.Logger) (provider.ContextCredentials, error) {
-	imsToken, err := ccf.tokenExchangeService.ExchangeIAMAPIKeyForIMSToken(apiKey, logger)
+	imsToken, err := ccf.TokenExchangeService.ExchangeIAMAPIKeyForIMSToken(apiKey, logger)
 	if err != nil {
 		// Must preserve provider error code in the ErrorProviderAccountTemporarilyLocked case
 		logger.Error("Unable to retrieve IMS credentials from IAM API key", local.ZapError(err))
@@ -68,12 +68,12 @@ func (ccf *ContextCredentialsFactory) ForIAMAPIKey(iamAccountID, apiKey string, 
 
 // ForIAMAccessToken ...
 func (ccf *ContextCredentialsFactory) ForIAMAccessToken(apiKey string, logger *zap.Logger) (provider.ContextCredentials, error) {
-	iamAccessToken, err := ccf.tokenExchangeService.ExchangeIAMAPIKeyForAccessToken(apiKey, logger)
+	iamAccessToken, err := ccf.TokenExchangeService.ExchangeIAMAPIKeyForAccessToken(apiKey, logger)
 	if err != nil {
 		logger.Error("Unable to retrieve IAM access token from IAM API key", local.ZapError(err))
 		return provider.ContextCredentials{}, err
 	}
-	iamAccountID, err := ccf.tokenExchangeService.GetIAMAccountIDFromAccessToken(iam.AccessToken{Token: iamAccessToken.Token}, logger)
+	iamAccountID, err := ccf.TokenExchangeService.GetIAMAccountIDFromAccessToken(iam.AccessToken{Token: iamAccessToken.Token}, logger)
 	if err != nil {
 		logger.Error("Unable to retrieve IAM access token from IAM API key", local.ZapError(err))
 		return provider.ContextCredentials{}, err

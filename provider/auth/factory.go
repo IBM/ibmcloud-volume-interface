@@ -25,9 +25,9 @@ import (
 
 // ContextCredentialsFactory ...
 type ContextCredentialsFactory struct {
-	softlayerConfig      *config.SoftlayerConfig
-	vpcConfig            *config.VPCProviderConfig
-	tokenExchangeService iam.TokenExchangeService
+	SoftlayerConfig      *config.SoftlayerConfig
+	VpcConfig            *config.VPCProviderConfig
+	TokenExchangeService iam.TokenExchangeService
 }
 
 var _ local.ContextCredentialsFactory = &ContextCredentialsFactory{}
@@ -35,19 +35,14 @@ var _ local.ContextCredentialsFactory = &ContextCredentialsFactory{}
 // NewContextCredentialsFactory ...
 func NewContextCredentialsFactory(bluemixConfig *config.BluemixConfig, softlayerConfig *config.SoftlayerConfig, vpcConfig *config.VPCProviderConfig) (*ContextCredentialsFactory, error) {
 	var tokenExchangeService iam.TokenExchangeService
-	var err error
-	if bluemixConfig.PrivateAPIRoute != "" {
-		tokenExchangeService, err = iam.NewTokenExchangeIKSService(bluemixConfig)
-	} else {
-		tokenExchangeService, err = iam.NewTokenExchangeService(bluemixConfig)
-	}
+
+	tokenExchangeService, err := iam.NewTokenExchangeService(bluemixConfig)
 	if err != nil {
 		return nil, err
 	}
-
 	return &ContextCredentialsFactory{
-		softlayerConfig:      softlayerConfig,
-		vpcConfig:            vpcConfig,
-		tokenExchangeService: tokenExchangeService,
+		SoftlayerConfig:      softlayerConfig,
+		VpcConfig:            vpcConfig,
+		TokenExchangeService: tokenExchangeService,
 	}, nil
 }
