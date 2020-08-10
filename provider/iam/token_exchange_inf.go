@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-// Package auth ...
-package auth
+// Package iam ...
+package iam
 
 import (
 	"go.uber.org/zap"
