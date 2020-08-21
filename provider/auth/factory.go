@@ -33,10 +33,10 @@ type ContextCredentialsFactory struct {
 var _ local.ContextCredentialsFactory = &ContextCredentialsFactory{}
 
 // NewContextCredentialsFactory ...
-func NewContextCredentialsFactory(bluemixConfig *config.BluemixConfig, softlayerConfig *config.SoftlayerConfig, vpcConfig *config.VPCProviderConfig) (*ContextCredentialsFactory, error) {
+func NewContextCredentialsFactory(authConfig *iam.AuthConfiguration, softlayerConfig *config.SoftlayerConfig, vpcConfig *config.VPCProviderConfig) (*ContextCredentialsFactory, error) {
 	var tokenExchangeService iam.TokenExchangeService
 
-	tokenExchangeService, err := iam.NewTokenExchangeService(bluemixConfig)
+	tokenExchangeService, err := iam.NewTokenExchangeService(authConfig)
 	if err != nil {
 		return nil, err
 	}

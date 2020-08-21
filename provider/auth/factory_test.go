@@ -21,6 +21,7 @@ import (
 	"testing"
 
 	"github.com/IBM/ibmcloud-volume-interface/config"
+	"github.com/IBM/ibmcloud-volume-interface/provider/iam"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 )
@@ -30,11 +31,6 @@ func init() {
 }
 
 func TestNewContextCredentialsFactory(t *testing.T) {
-	bluemixConfig := &config.BluemixConfig{
-		IamURL:    "http://myEndpointUrl",
-		IamAPIKey: "test",
-	}
-
 	softlayerConfig := &config.SoftlayerConfig{
 		SoftlayerAPIKey: "test",
 	}
@@ -43,7 +39,12 @@ func TestNewContextCredentialsFactory(t *testing.T) {
 		EndpointURL: "http://myEndpointUrl",
 	}
 
-	contextCredentials, err := NewContextCredentialsFactory(bluemixConfig, softlayerConfig, vpcProviderConfig)
+	authConfig := &iam.AuthConfiguration{
+		IamClientID:     "test-client-id",
+		IamClientSecret: "test-client-secret",
+	}
+
+	contextCredentials, err := NewContextCredentialsFactory(authConfig, softlayerConfig, vpcProviderConfig)
 	assert.NoError(t, err)
 	assert.NotNil(t, contextCredentials)
 }

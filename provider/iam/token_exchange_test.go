@@ -29,7 +29,6 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/IBM/ibmcloud-volume-interface/config"
 	util "github.com/IBM/ibmcloud-volume-interface/lib/utils"
 	"github.com/IBM/ibmcloud-volume-interface/lib/utils/reasoncode"
 )
@@ -74,13 +73,13 @@ func Test_ExchangeRefreshTokenForAccessToken_Success(t *testing.T) {
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("testrefreshtoken", logger)
@@ -109,13 +108,13 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedDuringRequest(t *testing.T) {
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
@@ -141,13 +140,13 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedDuringRequest_no_message(t *t
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
@@ -173,13 +172,13 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedNoIamUrl(t *testing.T) {
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          "",
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("testrefreshtoken", logger)
@@ -188,7 +187,7 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedNoIamUrl(t *testing.T) {
 	if assert.NotNil(t, err) {
 		assert.Equal(t, "IAM token exchange request failed", err.Error())
 		assert.Equal(t, reasoncode.ReasonCode("ErrorUnclassified"), util.ErrorReasonCode(err))
-		assert.Equal(t, []string{"Post /oidc/token: unsupported protocol scheme \"\""},
+		assert.Equal(t, []string{"Post \"/oidc/token\": unsupported protocol scheme \"\""},
 			util.ErrorDeepUnwrapString(err))
 	}
 }
@@ -207,13 +206,13 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedRequesting_empty_body(t *test
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
@@ -228,7 +227,7 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedRequesting_empty_body(t *test
 }
 
 func TestNewTokenExchangeServiceWithClient(t *testing.T) {
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
@@ -237,7 +236,7 @@ func TestNewTokenExchangeServiceWithClient(t *testing.T) {
 	newClient := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	tes, err := NewTokenExchangeServiceWithClient(&bluemixConf, newClient)
+	tes, err := NewTokenExchangeServiceWithClient(authConfig, newClient)
 	assert.NoError(t, err)
 	assert.NotNil(t, tes)
 }
@@ -256,13 +255,13 @@ func TestExchangeIAMAPIKeyForIMSToken(t *testing.T) {
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	ims, err := tes.ExchangeIAMAPIKeyForIMSToken("badrefreshtoken", logger)
@@ -285,13 +284,13 @@ func Test_ExchangeAccessTokenForIMSToken_Success(t *testing.T) {
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "testaccesstoken"}, logger)
@@ -321,13 +320,13 @@ func Test_ExchangeAccessTokenForIMSToken_FailedDuringRequest(t *testing.T) {
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badaccesstoken"}, logger)
@@ -360,13 +359,13 @@ func Test_ExchangeAccessTokenForIMSToken_FailedAccountLocked(t *testing.T) {
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badaccesstoken"}, logger)
@@ -393,13 +392,13 @@ func Test_ExchangeAccessTokenForIMSToken_FailedDuringRequest_no_message(t *testi
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badrefreshtoken"}, logger)
@@ -424,13 +423,13 @@ func Test_ExchangeAccessTokenForIMSToken_FailedRequesting_empty_body(t *testing.
 		},
 	)
 
-	bluemixConf := config.BluemixConfig{
+	authConfig := &AuthConfiguration{
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	tes, err := NewTokenExchangeService(&bluemixConf)
+	tes, err := NewTokenExchangeService(authConfig)
 	assert.NoError(t, err)
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badrefreshtoken"}, logger)
@@ -505,11 +504,11 @@ func Test_ExchangeIAMAPIKeyForAccessToken(t *testing.T) {
 			// ResourceController endpoint
 			mux.HandleFunc("/oidc/token", testCase.apiHandler)
 
-			bluemixConf := config.BluemixConfig{
+			authConfig := &AuthConfiguration{
 				IamURL: server.URL,
 			}
 
-			tes, err := NewTokenExchangeService(&bluemixConf)
+			tes, err := NewTokenExchangeService(authConfig)
 			assert.NoError(t, err)
 
 			r, actualError := tes.ExchangeIAMAPIKeyForAccessToken("apikey1", logger)

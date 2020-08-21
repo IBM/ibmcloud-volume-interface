@@ -46,6 +46,7 @@ type Config struct {
 	Softlayer *SoftlayerConfig
 	VPC       *VPCProviderConfig
 	IKS       *IKSConfig
+	API       *APIConfig
 }
 
 //ReadConfig loads the config from file
@@ -184,6 +185,11 @@ type VPCProviderConfig struct {
 type IKSConfig struct {
 	Enabled              bool   `toml:"iks_enabled" envconfig:"IKS_ENABLED"`
 	IKSBlockProviderName string `toml:"iks_block_provider_name" envconfig:"IKS_BLOCK_PROVIDER_NAME"`
+}
+
+// APIConfig config
+type APIConfig struct {
+	PassthroughSecret string `toml:"PassthroughSecret" json:"-"`
 }
 
 // GetEtcPath returns the path to the etc directory
