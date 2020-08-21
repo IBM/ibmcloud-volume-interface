@@ -22,8 +22,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/IBM/ibmcloud-volume-interface/config"
-
 	"github.com/IBM/ibmcloud-volume-interface/lib/provider"
 	"go.uber.org/zap"
 )
@@ -40,13 +38,8 @@ func TestForIaaSAPIKey(t *testing.T) {
 	account := "account1"
 	username := "user1"
 	apiKey := "abcdefg"
-	endpointURL := "http://myEndpointUrl"
 
-	ccf := &ContextCredentialsFactory{
-		SoftlayerConfig: &config.SoftlayerConfig{
-			SoftlayerEndpointURL: endpointURL,
-		},
-	}
+	ccf := &ContextCredentialsFactory{}
 
 	contextCredentials, err := ccf.ForIaaSAPIKey(account, username, apiKey, logger)
 
