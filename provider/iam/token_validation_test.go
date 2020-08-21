@@ -22,7 +22,6 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 
-	"github.com/IBM/ibmcloud-volume-interface/config"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 )
@@ -49,13 +48,13 @@ func Test_GetIAMAccountIDFromAccessToken(t *testing.T) {
 		t.Run(testcase.name, func(t *testing.T) {
 			httpSetup()
 
-			config := config.BluemixConfig{
+			authConfig := &AuthConfiguration{
 				IamURL:          server.URL,
 				IamClientID:     "test",
 				IamClientSecret: "secret",
 			}
 
-			tes, err := NewTokenExchangeService(&config)
+			tes, err := NewTokenExchangeService(authConfig)
 			assert.NoError(t, err)
 
 			accountID, err := tes.GetIAMAccountIDFromAccessToken(AccessToken{Token: testcase.token}, logger)

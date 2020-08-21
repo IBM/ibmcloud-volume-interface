@@ -18,31 +18,26 @@
 package auth
 
 import (
-	"github.com/IBM/ibmcloud-volume-interface/config"
 	"github.com/IBM/ibmcloud-volume-interface/provider/iam"
 	"github.com/IBM/ibmcloud-volume-interface/provider/local"
 )
 
 // ContextCredentialsFactory ...
 type ContextCredentialsFactory struct {
-	SoftlayerConfig      *config.SoftlayerConfig
-	VpcConfig            *config.VPCProviderConfig
 	TokenExchangeService iam.TokenExchangeService
 }
 
 var _ local.ContextCredentialsFactory = &ContextCredentialsFactory{}
 
 // NewContextCredentialsFactory ...
-func NewContextCredentialsFactory(bluemixConfig *config.BluemixConfig, softlayerConfig *config.SoftlayerConfig, vpcConfig *config.VPCProviderConfig) (*ContextCredentialsFactory, error) {
+func NewContextCredentialsFactory(authConfig *iam.AuthConfiguration) (*ContextCredentialsFactory, error) {
 	var tokenExchangeService iam.TokenExchangeService
 
-	tokenExchangeService, err := iam.NewTokenExchangeService(bluemixConfig)
+	tokenExchangeService, err := iam.NewTokenExchangeService(authConfig)
 	if err != nil {
 		return nil, err
 	}
 	return &ContextCredentialsFactory{
-		SoftlayerConfig:      softlayerConfig,
-		VpcConfig:            vpcConfig,
 		TokenExchangeService: tokenExchangeService,
 	}, nil
 }

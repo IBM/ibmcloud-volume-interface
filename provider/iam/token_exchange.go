@@ -34,30 +34,37 @@ import (
 
 // tokenExchangeService ...
 type tokenExchangeService struct {
-	bluemixConf *config.BluemixConfig
-	httpClient  *http.Client
+	authConfig *AuthConfiguration
+	httpClient *http.Client
+}
+
+// AuthConfiguration ...
+type AuthConfiguration struct {
+	IamURL          string
+	IamClientID     string
+	IamClientSecret string
 }
 
 // TokenExchangeService ...
 var _ TokenExchangeService = &tokenExchangeService{}
 
 // NewTokenExchangeServiceWithClient ...
-func NewTokenExchangeServiceWithClient(bluemixConf *config.BluemixConfig, httpClient *http.Client) (TokenExchangeService, error) {
+func NewTokenExchangeServiceWithClient(authConfig *AuthConfiguration, httpClient *http.Client) (TokenExchangeService, error) {
 	return &tokenExchangeService{
-		bluemixConf: bluemixConf,
-		httpClient:  httpClient,
+		authConfig: authConfig,
+		httpClient: httpClient,
 	}, nil
 }
 
 // NewTokenExchangeService ...
-func NewTokenExchangeService(bluemixConf *config.BluemixConfig) (TokenExchangeService, error) {
+func NewTokenExchangeService(authConfig *AuthConfiguration) (TokenExchangeService, error) {
 	httpClient, err := config.GeneralCAHttpClient()
 	if err != nil {
 		return nil, err
 	}
 	return &tokenExchangeService{
-		bluemixConf: bluemixConf,
-		httpClient:  httpClient,
+		authConfig: authConfig,
+		httpClient: httpClient,
 	}, nil
 }
 
@@ -158,7 +165,7 @@ func (tes *tokenExchangeService) newTokenExchangeRequest(logger *zap.Logger) *to
 	retyrInterval, _ := time.ParseDuration("3s")
 	return &tokenExchangeRequest{
 		tes:          tes,
-		request:      rest.PostRequest(fmt.Sprintf("%s/oidc/token", tes.bluemixConf.IamURL)),
+		request:      rest.PostRequest(fmt.Sprintf("%s/oidc/token", tes.authConfig.IamURL)),
 		client:       client,
 		logger:       logger,
 		errorRetrier: util.NewErrorRetrier(40, retyrInterval, logger),
@@ -168,7 +175,7 @@ func (tes *tokenExchangeService) newTokenExchangeRequest(logger *zap.Logger) *to
 // sendTokenExchangeRequest ...
 func (r *tokenExchangeRequest) sendTokenExchangeRequest() (*tokenExchangeResponse, error) {
 	// Set headers
-	basicAuth := fmt.Sprintf("%s:%s", r.tes.bluemixConf.IamClientID, r.tes.bluemixConf.IamClientSecret)
+	basicAuth := fmt.Sprintf("%s:%s", r.tes.authConfig.IamClientID, r.tes.authConfig.IamClientSecret)
 	r.request.Set("Authorization", fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(basicAuth))))
 	r.request.Set("Accept", "application/json")
 
