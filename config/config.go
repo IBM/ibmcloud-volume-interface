@@ -148,6 +148,9 @@ type SoftlayerConfig struct {
 type VPCProviderConfig struct {
 	Enabled bool `toml:"vpc_enabled" envconfig:"VPC_ENABLED"`
 
+	IamClientID     string `toml:"iam_client_id"`
+	IamClientSecret string `toml:"iam_client_secret" json:"-"`
+
 	//valid values (gc|g2), if unspecified, GC will take precedence(if both are specified)
 	//during e2e test, user can specify its own preferred type during execution
 	VPCTypeEnabled       string `toml:"vpc_type_enabled" envconfig:"VPC_TYPE_ENABLED"`
