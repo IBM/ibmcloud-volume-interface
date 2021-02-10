@@ -84,7 +84,7 @@ type Volume struct {
 	FileNetworkMountAddress *string `json:"fileNetworkMountAddress,omitempty"`
 
 	// VolumeNotes notes field as a map for all note fileds
-	// will keep   {"plugin":"ibm-file-plugin-56f7bd4db6-wx4pd","region":"us-south","cluster":"3a3fd80459014aca84f8a7e58e7a3ded","type":"Endurance","pvc":"one30","pv":"pvc-c7b4d6bd-63c5-11e8-811c-3a16fc403383","storgeclass":"ibmc-file-billing","reclaim":"Delete"}
+	// will keep   {"plugin":"{plugin_name}","region":"{region}","cluster":"{cluster_id}","type":"Endurance","pvc":"{pvc_name}","pv":"{pv_name}","storgeclass":"{storage_class}","reclaim":"Delete/retain"}
 	VolumeNotes map[string]string `json:"volumeNotes,omitempty"`
 
 	// LunID the lun of volume, Only for Softlayer block
