@@ -146,6 +146,5 @@ type ExpandVolumeRequest struct {
 	Name *string `json:"name,omitempty"`
 
 	// The new Capacity of the volume, in GiB
-	//Capacity *int `json:"capacity"`
 	Capacity int64 `json:"capacity"`
 }
