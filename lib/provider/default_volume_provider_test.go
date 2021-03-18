@@ -32,163 +32,163 @@ func init() {
 	logger, _ = zap.NewDevelopment()
 }
 
-func TestForGetProviderType(t *testing.T) {
+func TestGetProviderType(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 	assert.Empty(t, ccf.Type())
 }
 
-func TestForGetProviderName(t *testing.T) {
+func TestGetProviderName(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	assert.Empty(t, ccf.ProviderName())
 }
 
-func TestForGetProviderDisplayName(t *testing.T) {
+func TestGetProviderDisplayName(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	assert.Empty(t, ccf.GetProviderDisplayName())
 }
 
-func TestForCreateVolume(t *testing.T) {
+func TestCreateVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	volume, _ := ccf.CreateVolume(Volume{})
 	assert.Nil(t, volume)
 }
 
-func TestForDetachVolume(t *testing.T) {
+func TestDetachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	volume, _ := ccf.DetachVolume(VolumeAttachmentRequest{})
 	assert.Nil(t, volume)
 }
 
-func TestForWaitForAttachVolume(t *testing.T) {
+func TestWaitForAttachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	volume, _ := ccf.WaitForAttachVolume(VolumeAttachmentRequest{})
 	assert.Nil(t, volume)
 }
-func TestForAttachVolume(t *testing.T) {
+func TestAttachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	volume, _ := ccf.AttachVolume(VolumeAttachmentRequest{})
 	assert.Nil(t, volume)
 }
 
-func TestForWaitForDetachVolume(t *testing.T) {
+func TestWaitForDetachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	assert.Nil(t, ccf.WaitForDetachVolume(VolumeAttachmentRequest{}))
 }
 
-func TestForGetVolumeAttachment(t *testing.T) {
+func TestGetVolumeAttachment(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	volAttachment, _ := ccf.GetVolumeAttachment(VolumeAttachmentRequest{})
 	assert.Nil(t, volAttachment)
 }
-func TestForExpandVolume(t *testing.T) {
+func TestExpandVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	res, _ := ccf.ExpandVolume(ExpandVolumeRequest{})
 	assert.Equal(t, int64(0), res)
 }
 
-func TestForCreateVolumeFromSnapshot(t *testing.T) {
+func TestCreateVolumeFromSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	volume, _ := ccf.CreateVolumeFromSnapshot(Snapshot{}, nil)
 	assert.Nil(t, volume)
 }
 
-func TestForOrderSnapshot(t *testing.T) {
+func TestOrderSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	assert.Nil(t, ccf.OrderSnapshot(Volume{}))
 }
 
-func TestForCreateSnapshot(t *testing.T) {
+func TestCreateSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	volume, _ := ccf.CreateSnapshot(&Volume{}, nil)
 	assert.Nil(t, volume)
 }
 
-func TestForDeleteSnapshot(t *testing.T) {
+func TestDeleteSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	assert.Nil(t, ccf.DeleteSnapshot(&Snapshot{}))
 }
 
-func TestForGetSnapshot(t *testing.T) {
+func TestGetSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	getSnap, _ := ccf.GetSnapshot("snap-id")
 	assert.Nil(t, getSnap)
 }
 
-func TestForGetSnapshotWithVolumeID(t *testing.T) {
+func TestGetSnapshotWithVolumeID(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	getSnapWithID, _ := ccf.GetSnapshotWithVolumeID("VolumeID", "SnapshotID")
 	assert.Nil(t, getSnapWithID)
 }
 
-func TestForListSnapshots(t *testing.T) {
+func TestListSnapshots(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	listSnapWithID, _ := ccf.ListSnapshots()
 	assert.Nil(t, listSnapWithID)
 }
 
-func TestForListAllSnapshots(t *testing.T) {
+func TestListAllSnapshots(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	listAllSnapWithID, _ := ccf.ListAllSnapshots("VolumeID")
 	assert.Nil(t, listAllSnapWithID)
 }
 
-func TestForUpdateVolume(t *testing.T) {
+func TestUpdateVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	assert.Nil(t, ccf.UpdateVolume(Volume{}))
 }
 
-func TestForDeleteVolume(t *testing.T) {
+func TestDeleteVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	assert.Nil(t, ccf.DeleteVolume(&Volume{}))
 }
 
-func TestForGetVolume(t *testing.T) {
+func TestGetVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	getVolume, _ := ccf.GetVolume("VolumeID")
 	assert.Nil(t, getVolume)
 }
 
-func TestForGetVolumeByName(t *testing.T) {
+func TestGetVolumeByName(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	getVolume, _ := ccf.GetVolumeByName("VolumeName")
 	assert.Nil(t, getVolume)
 }
-func TestForGetVolumeByRequestID(t *testing.T) {
+func TestGetVolumeByRequestID(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	getVolume, _ := ccf.GetVolumeByRequestID("abc1234")
 	assert.Nil(t, getVolume)
 }
 
-func TestForListVolumes(t *testing.T) {
+func TestListVolumes(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	getVolumeByRequestIDList, _ := ccf.ListVolumes(50, "1", nil)
 	assert.Nil(t, getVolumeByRequestIDList)
 }
 
-func TestForAuthorizeVolume(t *testing.T) {
+func TestAuthorizeVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	assert.Nil(t, ccf.AuthorizeVolume(VolumeAuthorization{}))
