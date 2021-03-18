@@ -28,7 +28,7 @@
 [vpc]
   vpc_enabled = true
   provider_type = "gc"
-  vpc_block_provider_name = "vpc-classic"
+  vpc_provider_type = "vpc-block"
   gc_token_exchange_endpoint_url = "https://iam.bluemix.net"
   gc_riaas_endpoint_url = "https://eu-gb.iaas.cloud.ibm.com"
   gc_riaas_endpoint_private_url = "https://eu-gb.iaas.cloud.ibm.com"
