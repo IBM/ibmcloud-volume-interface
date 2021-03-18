@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 IBM Corp.
+ * Copyright 2021 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,135 +32,157 @@ func init() {
 	logger, _ = zap.NewDevelopment()
 }
 
-func TestForDefaultVolumeProviderTypeAndName(t *testing.T) {
+func TestForGetProviderType(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+	assert.Empty(t, ccf.Type())
+}
+
+func TestForGetProviderName(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	volumeProvider := ccf.ProviderName()
+	assert.Empty(t, ccf.ProviderName())
+}
 
-	volumeType := ccf.Type()
+func TestForGetProviderDisplayName(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
 
-	volumeProviderName := ccf.GetProviderDisplayName()
-
-	assert.Empty(t, volumeProviderName)
-	assert.Empty(t, volumeProvider)
-	assert.Empty(t, volumeType)
+	assert.Empty(t, ccf.GetProviderDisplayName())
 }
 
 func TestForCreateVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	providerVolume :=
-		Volume{
-			VolumeID: "16f293bf-test-4bff-816f-e199c0c65db5",
-			Name:     String("test volume name"),
-			Capacity: nil,
-		}
-	volume, _ := ccf.CreateVolume(providerVolume)
+	volume, _ := ccf.CreateVolume(Volume{})
 	assert.Nil(t, volume)
 }
 
-func TestForAttachDetachVolume(t *testing.T) {
+func TestForDetachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	attachRequest :=
-		VolumeAttachmentRequest{
-			VolumeID: "16f293bf-test-4bff-816f-e199c0c65db5",
-		}
-
-	volume, _ := ccf.AttachVolume(attachRequest)
+	volume, _ := ccf.DetachVolume(VolumeAttachmentRequest{})
 	assert.Nil(t, volume)
-
-	httpResponse, _ := ccf.DetachVolume(attachRequest)
-	assert.Nil(t, httpResponse)
-
-	volAttResponse, _ := ccf.WaitForAttachVolume(attachRequest)
-	assert.Nil(t, volAttResponse)
-
-	error := ccf.WaitForDetachVolume(attachRequest)
-	assert.Nil(t, error)
-
-	volAttachment, _ := ccf.GetVolumeAttachment(attachRequest)
-	assert.Nil(t, volAttachment)
 }
 
+func TestForWaitForAttachVolume(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	volume, _ := ccf.WaitForAttachVolume(VolumeAttachmentRequest{})
+	assert.Nil(t, volume)
+}
+func TestForAttachVolume(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	volume, _ := ccf.AttachVolume(VolumeAttachmentRequest{})
+	assert.Nil(t, volume)
+}
+
+func TestForWaitForDetachVolume(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	assert.Nil(t, ccf.WaitForDetachVolume(VolumeAttachmentRequest{}))
+}
+
+func TestForGetVolumeAttachment(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	volAttachment, _ := ccf.GetVolumeAttachment(VolumeAttachmentRequest{})
+	assert.Nil(t, volAttachment)
+}
 func TestForExpandVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	expandRequest :=
-		ExpandVolumeRequest{
-			VolumeID: "16f293bf-test-4bff-816f-e199c0c65db5",
-			Name:     new(string),
-			Capacity: 0,
-		}
-
-	res, _ := ccf.ExpandVolume(expandRequest)
+	res, _ := ccf.ExpandVolume(ExpandVolumeRequest{})
 	assert.Equal(t, int64(0), res)
 }
-func TestForSnapshots(t *testing.T) {
+
+func TestForCreateVolumeFromSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	snapshot :=
-		Snapshot{
-			Volume:       Volume{},
-			SnapshotID:   "",
-			SnapshotTags: map[string]string{},
-		}
-
-	providerVolume :=
-		Volume{
-			VolumeID: "16f293bf-test-4bff-816f-e199c0c65db5",
-			Name:     String("test volume name"),
-			Capacity: nil,
-		}
-	volume, _ := ccf.CreateVolumeFromSnapshot(snapshot, nil)
+	volume, _ := ccf.CreateVolumeFromSnapshot(Snapshot{}, nil)
 	assert.Nil(t, volume)
+}
 
-	error := ccf.OrderSnapshot(providerVolume)
-	assert.Nil(t, error)
+func TestForOrderSnapshot(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
 
-	snap, _ := ccf.CreateSnapshot(&providerVolume, nil)
-	assert.Nil(t, snap)
+	assert.Nil(t, ccf.OrderSnapshot(Volume{}))
+}
 
-	errorDel := ccf.DeleteSnapshot(&snapshot)
-	assert.Nil(t, errorDel)
+func TestForCreateSnapshot(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
 
-	getSnap, _ := ccf.GetSnapshot(snapshot.SnapshotID)
+	volume, _ := ccf.CreateSnapshot(&Volume{}, nil)
+	assert.Nil(t, volume)
+}
+
+func TestForDeleteSnapshot(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	assert.Nil(t, ccf.DeleteSnapshot(&Snapshot{}))
+}
+
+func TestForGetSnapshot(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	getSnap, _ := ccf.GetSnapshot("snap-id")
 	assert.Nil(t, getSnap)
+}
 
-	getSnapWithID, _ := ccf.GetSnapshotWithVolumeID(providerVolume.VolumeID, snapshot.SnapshotID)
+func TestForGetSnapshotWithVolumeID(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	getSnapWithID, _ := ccf.GetSnapshotWithVolumeID("VolumeID", "SnapshotID")
 	assert.Nil(t, getSnapWithID)
+}
+
+func TestForListSnapshots(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
 
 	listSnapWithID, _ := ccf.ListSnapshots()
 	assert.Nil(t, listSnapWithID)
+}
 
-	listAllSnapWithID, _ := ccf.ListAllSnapshots(providerVolume.VolumeID)
+func TestForListAllSnapshots(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	listAllSnapWithID, _ := ccf.ListAllSnapshots("VolumeID")
 	assert.Nil(t, listAllSnapWithID)
 }
 
-func TestForUpdateDeleteGetVolume(t *testing.T) {
+func TestForUpdateVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	providerVolume :=
-		Volume{
-			VolumeID: "16f293bf-test-4bff-816f-e199c0c65db5",
-			Name:     String("test volume name"),
-			Capacity: nil,
-		}
+	assert.Nil(t, ccf.UpdateVolume(Volume{}))
+}
 
-	volume := ccf.UpdateVolume(providerVolume)
-	assert.Nil(t, volume)
+func TestForDeleteVolume(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
 
-	delVolume := ccf.DeleteVolume(&providerVolume)
-	assert.Nil(t, delVolume)
+	assert.Nil(t, ccf.DeleteVolume(&Volume{}))
+}
 
-	getVolume, _ := ccf.GetVolume(providerVolume.VolumeID)
+func TestForGetVolume(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	getVolume, _ := ccf.GetVolume("VolumeID")
 	assert.Nil(t, getVolume)
+}
 
-	getVolumeByName, _ := ccf.GetVolumeByName(*providerVolume.Name)
-	assert.Nil(t, getVolumeByName)
+func TestForGetVolumeByName(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
 
-	getVolumeByRequestID, _ := ccf.GetVolumeByRequestID("abc1234")
-	assert.Nil(t, getVolumeByRequestID)
+	getVolume, _ := ccf.GetVolumeByName("VolumeName")
+	assert.Nil(t, getVolume)
+}
+func TestForGetVolumeByRequestID(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	getVolume, _ := ccf.GetVolumeByRequestID("abc1234")
+	assert.Nil(t, getVolume)
+}
+
+func TestForListVolumes(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
 
 	getVolumeByRequestIDList, _ := ccf.ListVolumes(50, "1", nil)
 	assert.Nil(t, getVolumeByRequestIDList)
@@ -169,17 +191,5 @@ func TestForUpdateDeleteGetVolume(t *testing.T) {
 func TestForAuthorizeVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	volumeAuthorization :=
-		VolumeAuthorization{
-			Volume:  Volume{},
-			Subnets: []string{},
-			HostIPs: []string{},
-		}
-	error := ccf.AuthorizeVolume(volumeAuthorization)
-	assert.Nil(t, error)
-}
-
-// String returns a pointer to the string value provided
-func String(v string) *string {
-	return &v
+	assert.Nil(t, ccf.AuthorizeVolume(VolumeAuthorization{}))
 }
