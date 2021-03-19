@@ -154,8 +154,9 @@ type VPCProviderConfig struct {
 	//valid values (gc|g2), if unspecified, GC will take precedence(if both are specified)
 	//during e2e test, user can specify its own preferred type during execution
 	VPCTypeEnabled       string `toml:"vpc_type_enabled" envconfig:"VPC_TYPE_ENABLED"`
+	VPCBlockProviderName string `toml:"vpc_block_provider_name" envconfig:"VPC_BLOCK_PROVIDER_NAME"`
 	VPCBlockProviderType string `toml:"provider_type"`
-	VPCProviderType      string `toml:"vpc_provider_type"`
+	VPCVolumeType        string `toml:"vpc_volume_type"`
 
 	EndpointURL        string `toml:"gc_riaas_endpoint_url"`
 	PrivateEndpointURL string `toml:"gc_riaas_endpoint_private_url"`
