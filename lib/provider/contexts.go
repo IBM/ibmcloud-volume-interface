@@ -23,6 +23,7 @@ type Context interface {
 	VolumeManager
 	VolumeAttachManager
 	SnapshotManager
+	VolumeMountManager
 }
 
 // Session is an Context that is notified when it is no longer required

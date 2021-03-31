@@ -160,3 +160,28 @@ func (volprov *DefaultVolumeProvider) GetProviderDisplayName() VolumeProvider {
 //Close is called when the Session is nolonger required
 func (volprov *DefaultVolumeProvider) Close() {
 }
+
+//CreateVolumeMount method mount a volume/fileset to a server
+func (volprov *DefaultVolumeProvider) CreateVolumeMount(mountRequest VolumeMountRequest) (*VolumeMountResponse, error) {
+	return nil, nil
+}
+
+//DeleteVolumeMount method delete a volume/fileset target
+func (volprov *DefaultVolumeProvider) DeleteVolumeMount(deleteMountRequest VolumeMountRequest) (*http.Response, error) {
+	return nil, nil
+}
+
+//WaitForCreateMountVolume waits for the volume mount to be created
+func (volprov *DefaultVolumeProvider) WaitForCreateVolumeMount(mountRequest VolumeMountRequest) (*VolumeMountResponse, error) {
+	return nil, nil
+}
+
+//WaitForDeleteMountVolume waits for the volume mount to be deleted
+func (volprov *DefaultVolumeProvider) WaitForDeleteVolumeMount(deleteMountRequest VolumeMountRequest) error {
+	return nil
+}
+
+//GetVolumeMount retirves the current status of given volume mount request
+func (volprov *DefaultVolumeProvider) GetVolumeMount(mountRequest VolumeMountRequest) (*VolumeMountResponse, error) {
+	return nil, nil
+}

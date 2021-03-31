@@ -17,15 +17,63 @@
 // Package provider ...
 package provider
 
+import "time"
+
 // VPCVolume specific	parameters
 type VPCVolume struct {
 	Href                string               `json:"href,omitempty"`
 	ResourceGroup       *ResourceGroup       `json:"resource_group,omitempty"`
 	VolumeEncryptionKey *VolumeEncryptionKey `json:"encryption_key,omitempty"`
 	Profile             *Profile             `json:"profile,omitempty"`
-	Tags                []string             `json:"volume_tags,omitempty"`
-	VolumeAttachments   *[]VolumeAttachment  `json:"volume_attachments,omitempty"`
 	CRN                 string               `json:"crn,omitempty"`
+	VPCBlockVolume
+	VPCFileVolume
+}
+
+// VPCBlockVolume specific parameters
+type VPCBlockVolume struct {
+	Tags              []string            `json:"volume_tags,omitempty"`
+	VolumeAttachments *[]VolumeAttachment `json:"volume_attachments,omitempty"`
+}
+
+// VPCFileVolume specific parameters
+type VPCFileVolume struct {
+	VolumeTargets *[]VolumeTarget `json:"targets,omitempty"`
+	InitialOwner  *InitialOwner   `json:"initial_owner,omitempty"`
+}
+
+// VPC ...
+type VPC struct {
+	ID   string `json:"id"`
+	CRN  string `json:"crn,omitempty"`
+	Href string `json:"href,omitempty"`
+	Name string `json:"name,omitempty"`
+}
+
+// VolumeTarget....
+type VolumeTarget struct {
+	ID   string `json:"id,omitempty"`
+	Href string `json:"href,omitempty"`
+	Name string `json:"name,omitempty"`
+	// Status of volume target named - deleted, deleting, failed, pending, stable, updating, waiting, suspended
+	Status    string     `json:"status,omitempty"`
+	MountPath *string    `json:"mount_path,omitempty"`
+	VPCID     *string    `json:"vpc_id"`
+	VPC       *VPC       `json:"vpc,omitempty"`
+	Zone      *Zone      `json:"zone,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+}
+
+// Zone ...
+type Zone struct {
+	Name string `json:"name,omitempty"`
+	Href string `json:"href,omitempty"`
+}
+
+// InitialOwner ...
+type InitialOwner struct {
+	GroupID int64 `json:"gid,omitempty"`
+	UserID  int64 `json:"uid,omitempty"`
 }
 
 // GenerationType ...

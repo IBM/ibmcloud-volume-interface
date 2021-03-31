@@ -193,3 +193,38 @@ func TestAuthorizeVolume(t *testing.T) {
 
 	assert.Nil(t, ccf.AuthorizeVolume(VolumeAuthorization{}))
 }
+
+func TestCreateVolumeMount(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	mountResponse, _ := ccf.CreateVolumeMount(VolumeMountRequest{})
+	assert.Nil(t, mountResponse)
+}
+
+func TestDeleteVolumeMount(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	mountResponse, _ := ccf.DeleteVolumeMount(VolumeMountRequest{})
+	assert.Nil(t, mountResponse)
+}
+
+func TestWaitForCreateVolumeMount(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	mountResponse, _ := ccf.WaitForCreateVolumeMount(VolumeMountRequest{})
+	assert.Nil(t, mountResponse)
+}
+
+func TestWaitForDeleteVolumeMount(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	err := ccf.WaitForDeleteVolumeMount(VolumeMountRequest{})
+	assert.Nil(t, err)
+}
+
+func TestGetVolumeMount(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	mountResponse, _ := ccf.GetVolumeMount(VolumeMountRequest{})
+	assert.Nil(t, mountResponse)
+}
