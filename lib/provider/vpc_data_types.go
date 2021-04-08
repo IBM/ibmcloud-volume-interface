@@ -38,8 +38,8 @@ type VPCBlockVolume struct {
 
 // VPCFileVolume specific parameters
 type VPCFileVolume struct {
-	VolumeTargets *[]VolumeTarget `json:"targets,omitempty"`
-	InitialOwner  *InitialOwner   `json:"initial_owner,omitempty"`
+	VolumeAccessPoints *[]VolumeAccessPoint `json:"volume_access_points,omitempty"`
+	InitialOwner       *InitialOwner        `json:"initial_owner,omitempty"`
 }
 
 // VPC ...
@@ -50,8 +50,8 @@ type VPC struct {
 	Name string `json:"name,omitempty"`
 }
 
-// VolumeTarget ...
-type VolumeTarget struct {
+// VolumeAccessPoint ...
+type VolumeAccessPoint struct {
 	ID   string `json:"id,omitempty"`
 	Href string `json:"href,omitempty"`
 	Name string `json:"name,omitempty"`
