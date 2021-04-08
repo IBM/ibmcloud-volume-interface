@@ -50,7 +50,7 @@ type VPC struct {
 	Name string `json:"name,omitempty"`
 }
 
-// VolumeTarget....
+// VolumeTarget ...
 type VolumeTarget struct {
 	ID   string `json:"id,omitempty"`
 	Href string `json:"href,omitempty"`

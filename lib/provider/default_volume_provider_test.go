@@ -194,37 +194,37 @@ func TestAuthorizeVolume(t *testing.T) {
 	assert.Nil(t, ccf.AuthorizeVolume(VolumeAuthorization{}))
 }
 
-func TestCreateVolumeMount(t *testing.T) {
+func TestCreateVolumeAccessPoint(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	mountResponse, _ := ccf.CreateVolumeMount(VolumeMountRequest{})
-	assert.Nil(t, mountResponse)
+	accessPointResponse, _ := ccf.CreateVolumeAccessPoint(VolumeAccessPointRequest{})
+	assert.Nil(t, accessPointResponse)
 }
 
-func TestDeleteVolumeMount(t *testing.T) {
+func TestDeleteVolumeAccessPoint(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	mountResponse, _ := ccf.DeleteVolumeMount(VolumeMountRequest{})
-	assert.Nil(t, mountResponse)
+	accessPointResponse, _ := ccf.DeleteVolumeAccessPoint(VolumeAccessPointRequest{})
+	assert.Nil(t, accessPointResponse)
 }
 
-func TestWaitForCreateVolumeMount(t *testing.T) {
+func TestWaitForCreateVolumeAccessPoint(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	mountResponse, _ := ccf.WaitForCreateVolumeMount(VolumeMountRequest{})
-	assert.Nil(t, mountResponse)
+	accessPointResponse, _ := ccf.WaitForCreateVolumeAccessPoint(VolumeAccessPointRequest{})
+	assert.Nil(t, accessPointResponse)
 }
 
-func TestWaitForDeleteVolumeMount(t *testing.T) {
+func TestWaitForDeleteVolumeAccessPoint(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	err := ccf.WaitForDeleteVolumeMount(VolumeMountRequest{})
+	err := ccf.WaitForDeleteVolumeAccessPoint(VolumeAccessPointRequest{})
 	assert.Nil(t, err)
 }
 
-func TestGetVolumeMount(t *testing.T) {
+func TestGetVolumeAccessPoint(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	mountResponse, _ := ccf.GetVolumeMount(VolumeMountRequest{})
-	assert.Nil(t, mountResponse)
+	accessPointResponse, _ := ccf.GetVolumeAccessPoint(VolumeAccessPointRequest{})
+	assert.Nil(t, accessPointResponse)
 }

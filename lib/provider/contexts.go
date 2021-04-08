@@ -23,11 +23,11 @@ type Context interface {
 	VolumeManager
 	VolumeAttachManager
 	SnapshotManager
-	VolumeMountManager
+	VolumeAccessPointManager
 }
 
 // Session is an Context that is notified when it is no longer required
-//go:generate counterfeiter -o fakes/session.go --fake-name Session . Session
+//go:generate counterfeiter -o fake/fake_session.go --fake-name FakeSession . Session
 type Session interface {
 	Context
 

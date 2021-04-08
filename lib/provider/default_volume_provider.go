@@ -161,27 +161,29 @@ func (volprov *DefaultVolumeProvider) GetProviderDisplayName() VolumeProvider {
 func (volprov *DefaultVolumeProvider) Close() {
 }
 
-//CreateVolumeMount method mount a volume/fileset to a server
-func (volprov *DefaultVolumeProvider) CreateVolumeMount(mountRequest VolumeMountRequest) (*VolumeMountResponse, error) {
+//CreateVolumeAccessPoint to create access point
+func (volprov *DefaultVolumeProvider) CreateVolumeAccessPoint(accessPointRequest VolumeAccessPointRequest) (*VolumeAccessPointResponse, error) {
 	return nil, nil
 }
 
-//DeleteVolumeMount method delete a volume/fileset target
-func (volprov *DefaultVolumeProvider) DeleteVolumeMount(deleteMountRequest VolumeMountRequest) (*http.Response, error) {
+//DeleteVolumeAccessPoint method delete a access point
+func (volprov *DefaultVolumeProvider) DeleteVolumeAccessPoint(deleteAccessPointRequest VolumeAccessPointRequest) (*http.Response, error) {
 	return nil, nil
 }
 
-//WaitForCreateMountVolume waits for the volume mount to be created
-func (volprov *DefaultVolumeProvider) WaitForCreateVolumeMount(mountRequest VolumeMountRequest) (*VolumeMountResponse, error) {
+//WaitForCreateVolumeAccessPoint waits for the volume access point to be created
+//Return error if wait is timed out OR there is other error
+func (volprov *DefaultVolumeProvider) WaitForCreateVolumeAccessPoint(accessPointRequest VolumeAccessPointRequest) (*VolumeAccessPointResponse, error) {
 	return nil, nil
 }
 
-//WaitForDeleteMountVolume waits for the volume mount to be deleted
-func (volprov *DefaultVolumeProvider) WaitForDeleteVolumeMount(deleteMountRequest VolumeMountRequest) error {
+//WaitForDeleteVolumeAccessPoint waits for the volume access point to be deleted
+//Return error if wait is timed out OR there is other error
+func (volprov *DefaultVolumeProvider) WaitForDeleteVolumeAccessPoint(deleteAccessPointRequest VolumeAccessPointRequest) error {
 	return nil
 }
 
-//GetVolumeMount retirves the current status of given volume mount request
-func (volprov *DefaultVolumeProvider) GetVolumeMount(mountRequest VolumeMountRequest) (*VolumeMountResponse, error) {
+//GetVolumeAccessPoint retrieves the current status of given volume AccessPoint request
+func (volprov *DefaultVolumeProvider) GetVolumeAccessPoint(accessPointRequest VolumeAccessPointRequest) (*VolumeAccessPointResponse, error) {
 	return nil, nil
 }
