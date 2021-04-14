@@ -55,10 +55,9 @@ type VolumeAccessPoint struct {
 	ID   string `json:"id,omitempty"`
 	Href string `json:"href,omitempty"`
 	Name string `json:"name,omitempty"`
-	// Status of volume target named - deleted, deleting, failed, pending, stable, updating, waiting, suspended
+	// Status of volume target named - deleted, deleting, failed, pending_deletion, stable, updating, waiting, suspended
 	Status    string     `json:"status,omitempty"`
 	MountPath *string    `json:"mount_path,omitempty"`
-	VPCID     *string    `json:"vpc_id"`
 	VPC       *VPC       `json:"vpc,omitempty"`
 	Zone      *Zone      `json:"zone,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`

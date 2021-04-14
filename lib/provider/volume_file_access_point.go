@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 IBM Corp.
+ * Copyright 2021 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import (
 	"time"
 )
 
-//VolumeAccessPointManager ...
-type VolumeAccessPointManager interface {
-	//AccessPoint to create access point
+//VolumeFileAccessPointManager ...
+type VolumeFileAccessPointManager interface {
+	//CreateVolumeAccessPoint to create a access point
 	CreateVolumeAccessPoint(accessPointRequest VolumeAccessPointRequest) (*VolumeAccessPointResponse, error)
 
 	//DeleteVolumeAccessPoint method delete a access point
@@ -45,16 +45,13 @@ type VolumeAccessPointManager interface {
 //VolumeAccessPointRequest used for both create and delete access point
 type VolumeAccessPointRequest struct {
 
-	//Volume provider type i.e  Endurance or Performance or any other name
-	ProviderType VolumeProviderType `json:"providerType,omitempty"`
-
-	//AccessPoint name
+	//AccessPoint name is optional.
 	AccessPointName string `json:"name,omitempty"`
 
 	//Volume to create the AccessPoint for
 	VolumeID string `json:"volumeID"`
 
-	//AccessPointID to search
+	//AccessPointID to search or delete access point
 	AccessPointID string `json:"accessPointID,omitempty"`
 
 	//Subnet to create AccessPoint for
@@ -69,7 +66,6 @@ type VolumeAccessPointResponse struct {
 	VolumeID      string     `json:"volumeID"`
 	AccessPointID string     `json:"AccessPointID"`
 	Status        string     `json:"status"`
-	Server        string     `json:"server"`
 	MountPath     string     `json:"mount_path"`
 	CreatedAt     *time.Time `json:"created_at,omitempty"`
 }
