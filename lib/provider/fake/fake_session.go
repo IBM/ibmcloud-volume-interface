@@ -64,6 +64,19 @@ type FakeSession struct {
 		result1 *provider.Volume
 		result2 error
 	}
+	CreateVolumeAccessPointStub        func(provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error)
+	createVolumeAccessPointMutex       sync.RWMutex
+	createVolumeAccessPointArgsForCall []struct {
+		arg1 provider.VolumeAccessPointRequest
+	}
+	createVolumeAccessPointReturns struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}
+	createVolumeAccessPointReturnsOnCall map[int]struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}
 	CreateVolumeFromSnapshotStub        func(provider.Snapshot, map[string]string) (*provider.Volume, error)
 	createVolumeFromSnapshotMutex       sync.RWMutex
 	createVolumeFromSnapshotArgsForCall []struct {
@@ -99,6 +112,19 @@ type FakeSession struct {
 	}
 	deleteVolumeReturnsOnCall map[int]struct {
 		result1 error
+	}
+	DeleteVolumeAccessPointStub        func(provider.VolumeAccessPointRequest) (*http.Response, error)
+	deleteVolumeAccessPointMutex       sync.RWMutex
+	deleteVolumeAccessPointArgsForCall []struct {
+		arg1 provider.VolumeAccessPointRequest
+	}
+	deleteVolumeAccessPointReturns struct {
+		result1 *http.Response
+		result2 error
+	}
+	deleteVolumeAccessPointReturnsOnCall map[int]struct {
+		result1 *http.Response
+		result2 error
 	}
 	DetachVolumeStub        func(provider.VolumeAttachmentRequest) (*http.Response, error)
 	detachVolumeMutex       sync.RWMutex
@@ -174,6 +200,19 @@ type FakeSession struct {
 	}
 	getVolumeReturnsOnCall map[int]struct {
 		result1 *provider.Volume
+		result2 error
+	}
+	GetVolumeAccessPointStub        func(provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error)
+	getVolumeAccessPointMutex       sync.RWMutex
+	getVolumeAccessPointArgsForCall []struct {
+		arg1 provider.VolumeAccessPointRequest
+	}
+	getVolumeAccessPointReturns struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}
+	getVolumeAccessPointReturnsOnCall map[int]struct {
+		result1 *provider.VolumeAccessPointResponse
 		result2 error
 	}
 	GetVolumeAttachmentStub        func(provider.VolumeAttachmentRequest) (*provider.VolumeAttachmentResponse, error)
@@ -310,6 +349,30 @@ type FakeSession struct {
 		result1 *provider.VolumeAttachmentResponse
 		result2 error
 	}
+	WaitForCreateVolumeAccessPointStub        func(provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error)
+	waitForCreateVolumeAccessPointMutex       sync.RWMutex
+	waitForCreateVolumeAccessPointArgsForCall []struct {
+		arg1 provider.VolumeAccessPointRequest
+	}
+	waitForCreateVolumeAccessPointReturns struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}
+	waitForCreateVolumeAccessPointReturnsOnCall map[int]struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}
+	WaitForDeleteVolumeAccessPointStub        func(provider.VolumeAccessPointRequest) error
+	waitForDeleteVolumeAccessPointMutex       sync.RWMutex
+	waitForDeleteVolumeAccessPointArgsForCall []struct {
+		arg1 provider.VolumeAccessPointRequest
+	}
+	waitForDeleteVolumeAccessPointReturns struct {
+		result1 error
+	}
+	waitForDeleteVolumeAccessPointReturnsOnCall map[int]struct {
+		result1 error
+	}
 	WaitForDetachVolumeStub        func(provider.VolumeAttachmentRequest) error
 	waitForDetachVolumeMutex       sync.RWMutex
 	waitForDetachVolumeArgsForCall []struct {
@@ -331,15 +394,16 @@ func (fake *FakeSession) AttachVolume(arg1 provider.VolumeAttachmentRequest) (*p
 	fake.attachVolumeArgsForCall = append(fake.attachVolumeArgsForCall, struct {
 		arg1 provider.VolumeAttachmentRequest
 	}{arg1})
+	stub := fake.AttachVolumeStub
+	fakeReturns := fake.attachVolumeReturns
 	fake.recordInvocation("AttachVolume", []interface{}{arg1})
 	fake.attachVolumeMutex.Unlock()
-	if fake.AttachVolumeStub != nil {
-		return fake.AttachVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.attachVolumeReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -394,15 +458,16 @@ func (fake *FakeSession) AuthorizeVolume(arg1 provider.VolumeAuthorization) erro
 	fake.authorizeVolumeArgsForCall = append(fake.authorizeVolumeArgsForCall, struct {
 		arg1 provider.VolumeAuthorization
 	}{arg1})
+	stub := fake.AuthorizeVolumeStub
+	fakeReturns := fake.authorizeVolumeReturns
 	fake.recordInvocation("AuthorizeVolume", []interface{}{arg1})
 	fake.authorizeVolumeMutex.Unlock()
-	if fake.AuthorizeVolumeStub != nil {
-		return fake.AuthorizeVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.authorizeVolumeReturns
 	return fakeReturns.result1
 }
 
@@ -452,9 +517,10 @@ func (fake *FakeSession) Close() {
 	fake.closeMutex.Lock()
 	fake.closeArgsForCall = append(fake.closeArgsForCall, struct {
 	}{})
+	stub := fake.CloseStub
 	fake.recordInvocation("Close", []interface{}{})
 	fake.closeMutex.Unlock()
-	if fake.CloseStub != nil {
+	if stub != nil {
 		fake.CloseStub()
 	}
 }
@@ -478,15 +544,16 @@ func (fake *FakeSession) CreateSnapshot(arg1 *provider.Volume, arg2 map[string]s
 		arg1 *provider.Volume
 		arg2 map[string]string
 	}{arg1, arg2})
+	stub := fake.CreateSnapshotStub
+	fakeReturns := fake.createSnapshotReturns
 	fake.recordInvocation("CreateSnapshot", []interface{}{arg1, arg2})
 	fake.createSnapshotMutex.Unlock()
-	if fake.CreateSnapshotStub != nil {
-		return fake.CreateSnapshotStub(arg1, arg2)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.createSnapshotReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -541,15 +608,16 @@ func (fake *FakeSession) CreateVolume(arg1 provider.Volume) (*provider.Volume, e
 	fake.createVolumeArgsForCall = append(fake.createVolumeArgsForCall, struct {
 		arg1 provider.Volume
 	}{arg1})
+	stub := fake.CreateVolumeStub
+	fakeReturns := fake.createVolumeReturns
 	fake.recordInvocation("CreateVolume", []interface{}{arg1})
 	fake.createVolumeMutex.Unlock()
-	if fake.CreateVolumeStub != nil {
-		return fake.CreateVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.createVolumeReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -598,6 +666,70 @@ func (fake *FakeSession) CreateVolumeReturnsOnCall(i int, result1 *provider.Volu
 	}{result1, result2}
 }
 
+func (fake *FakeSession) CreateVolumeAccessPoint(arg1 provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error) {
+	fake.createVolumeAccessPointMutex.Lock()
+	ret, specificReturn := fake.createVolumeAccessPointReturnsOnCall[len(fake.createVolumeAccessPointArgsForCall)]
+	fake.createVolumeAccessPointArgsForCall = append(fake.createVolumeAccessPointArgsForCall, struct {
+		arg1 provider.VolumeAccessPointRequest
+	}{arg1})
+	stub := fake.CreateVolumeAccessPointStub
+	fakeReturns := fake.createVolumeAccessPointReturns
+	fake.recordInvocation("CreateVolumeAccessPoint", []interface{}{arg1})
+	fake.createVolumeAccessPointMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeSession) CreateVolumeAccessPointCallCount() int {
+	fake.createVolumeAccessPointMutex.RLock()
+	defer fake.createVolumeAccessPointMutex.RUnlock()
+	return len(fake.createVolumeAccessPointArgsForCall)
+}
+
+func (fake *FakeSession) CreateVolumeAccessPointCalls(stub func(provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error)) {
+	fake.createVolumeAccessPointMutex.Lock()
+	defer fake.createVolumeAccessPointMutex.Unlock()
+	fake.CreateVolumeAccessPointStub = stub
+}
+
+func (fake *FakeSession) CreateVolumeAccessPointArgsForCall(i int) provider.VolumeAccessPointRequest {
+	fake.createVolumeAccessPointMutex.RLock()
+	defer fake.createVolumeAccessPointMutex.RUnlock()
+	argsForCall := fake.createVolumeAccessPointArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeSession) CreateVolumeAccessPointReturns(result1 *provider.VolumeAccessPointResponse, result2 error) {
+	fake.createVolumeAccessPointMutex.Lock()
+	defer fake.createVolumeAccessPointMutex.Unlock()
+	fake.CreateVolumeAccessPointStub = nil
+	fake.createVolumeAccessPointReturns = struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) CreateVolumeAccessPointReturnsOnCall(i int, result1 *provider.VolumeAccessPointResponse, result2 error) {
+	fake.createVolumeAccessPointMutex.Lock()
+	defer fake.createVolumeAccessPointMutex.Unlock()
+	fake.CreateVolumeAccessPointStub = nil
+	if fake.createVolumeAccessPointReturnsOnCall == nil {
+		fake.createVolumeAccessPointReturnsOnCall = make(map[int]struct {
+			result1 *provider.VolumeAccessPointResponse
+			result2 error
+		})
+	}
+	fake.createVolumeAccessPointReturnsOnCall[i] = struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeSession) CreateVolumeFromSnapshot(arg1 provider.Snapshot, arg2 map[string]string) (*provider.Volume, error) {
 	fake.createVolumeFromSnapshotMutex.Lock()
 	ret, specificReturn := fake.createVolumeFromSnapshotReturnsOnCall[len(fake.createVolumeFromSnapshotArgsForCall)]
@@ -605,15 +737,16 @@ func (fake *FakeSession) CreateVolumeFromSnapshot(arg1 provider.Snapshot, arg2 m
 		arg1 provider.Snapshot
 		arg2 map[string]string
 	}{arg1, arg2})
+	stub := fake.CreateVolumeFromSnapshotStub
+	fakeReturns := fake.createVolumeFromSnapshotReturns
 	fake.recordInvocation("CreateVolumeFromSnapshot", []interface{}{arg1, arg2})
 	fake.createVolumeFromSnapshotMutex.Unlock()
-	if fake.CreateVolumeFromSnapshotStub != nil {
-		return fake.CreateVolumeFromSnapshotStub(arg1, arg2)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.createVolumeFromSnapshotReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -668,15 +801,16 @@ func (fake *FakeSession) DeleteSnapshot(arg1 *provider.Snapshot) error {
 	fake.deleteSnapshotArgsForCall = append(fake.deleteSnapshotArgsForCall, struct {
 		arg1 *provider.Snapshot
 	}{arg1})
+	stub := fake.DeleteSnapshotStub
+	fakeReturns := fake.deleteSnapshotReturns
 	fake.recordInvocation("DeleteSnapshot", []interface{}{arg1})
 	fake.deleteSnapshotMutex.Unlock()
-	if fake.DeleteSnapshotStub != nil {
-		return fake.DeleteSnapshotStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.deleteSnapshotReturns
 	return fakeReturns.result1
 }
 
@@ -728,15 +862,16 @@ func (fake *FakeSession) DeleteVolume(arg1 *provider.Volume) error {
 	fake.deleteVolumeArgsForCall = append(fake.deleteVolumeArgsForCall, struct {
 		arg1 *provider.Volume
 	}{arg1})
+	stub := fake.DeleteVolumeStub
+	fakeReturns := fake.deleteVolumeReturns
 	fake.recordInvocation("DeleteVolume", []interface{}{arg1})
 	fake.deleteVolumeMutex.Unlock()
-	if fake.DeleteVolumeStub != nil {
-		return fake.DeleteVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.deleteVolumeReturns
 	return fakeReturns.result1
 }
 
@@ -782,21 +917,86 @@ func (fake *FakeSession) DeleteVolumeReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
+func (fake *FakeSession) DeleteVolumeAccessPoint(arg1 provider.VolumeAccessPointRequest) (*http.Response, error) {
+	fake.deleteVolumeAccessPointMutex.Lock()
+	ret, specificReturn := fake.deleteVolumeAccessPointReturnsOnCall[len(fake.deleteVolumeAccessPointArgsForCall)]
+	fake.deleteVolumeAccessPointArgsForCall = append(fake.deleteVolumeAccessPointArgsForCall, struct {
+		arg1 provider.VolumeAccessPointRequest
+	}{arg1})
+	stub := fake.DeleteVolumeAccessPointStub
+	fakeReturns := fake.deleteVolumeAccessPointReturns
+	fake.recordInvocation("DeleteVolumeAccessPoint", []interface{}{arg1})
+	fake.deleteVolumeAccessPointMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeSession) DeleteVolumeAccessPointCallCount() int {
+	fake.deleteVolumeAccessPointMutex.RLock()
+	defer fake.deleteVolumeAccessPointMutex.RUnlock()
+	return len(fake.deleteVolumeAccessPointArgsForCall)
+}
+
+func (fake *FakeSession) DeleteVolumeAccessPointCalls(stub func(provider.VolumeAccessPointRequest) (*http.Response, error)) {
+	fake.deleteVolumeAccessPointMutex.Lock()
+	defer fake.deleteVolumeAccessPointMutex.Unlock()
+	fake.DeleteVolumeAccessPointStub = stub
+}
+
+func (fake *FakeSession) DeleteVolumeAccessPointArgsForCall(i int) provider.VolumeAccessPointRequest {
+	fake.deleteVolumeAccessPointMutex.RLock()
+	defer fake.deleteVolumeAccessPointMutex.RUnlock()
+	argsForCall := fake.deleteVolumeAccessPointArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeSession) DeleteVolumeAccessPointReturns(result1 *http.Response, result2 error) {
+	fake.deleteVolumeAccessPointMutex.Lock()
+	defer fake.deleteVolumeAccessPointMutex.Unlock()
+	fake.DeleteVolumeAccessPointStub = nil
+	fake.deleteVolumeAccessPointReturns = struct {
+		result1 *http.Response
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) DeleteVolumeAccessPointReturnsOnCall(i int, result1 *http.Response, result2 error) {
+	fake.deleteVolumeAccessPointMutex.Lock()
+	defer fake.deleteVolumeAccessPointMutex.Unlock()
+	fake.DeleteVolumeAccessPointStub = nil
+	if fake.deleteVolumeAccessPointReturnsOnCall == nil {
+		fake.deleteVolumeAccessPointReturnsOnCall = make(map[int]struct {
+			result1 *http.Response
+			result2 error
+		})
+	}
+	fake.deleteVolumeAccessPointReturnsOnCall[i] = struct {
+		result1 *http.Response
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeSession) DetachVolume(arg1 provider.VolumeAttachmentRequest) (*http.Response, error) {
 	fake.detachVolumeMutex.Lock()
 	ret, specificReturn := fake.detachVolumeReturnsOnCall[len(fake.detachVolumeArgsForCall)]
 	fake.detachVolumeArgsForCall = append(fake.detachVolumeArgsForCall, struct {
 		arg1 provider.VolumeAttachmentRequest
 	}{arg1})
+	stub := fake.DetachVolumeStub
+	fakeReturns := fake.detachVolumeReturns
 	fake.recordInvocation("DetachVolume", []interface{}{arg1})
 	fake.detachVolumeMutex.Unlock()
-	if fake.DetachVolumeStub != nil {
-		return fake.DetachVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.detachVolumeReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -851,15 +1051,16 @@ func (fake *FakeSession) ExpandVolume(arg1 provider.ExpandVolumeRequest) (int64,
 	fake.expandVolumeArgsForCall = append(fake.expandVolumeArgsForCall, struct {
 		arg1 provider.ExpandVolumeRequest
 	}{arg1})
+	stub := fake.ExpandVolumeStub
+	fakeReturns := fake.expandVolumeReturns
 	fake.recordInvocation("ExpandVolume", []interface{}{arg1})
 	fake.expandVolumeMutex.Unlock()
-	if fake.ExpandVolumeStub != nil {
-		return fake.ExpandVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.expandVolumeReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -913,15 +1114,16 @@ func (fake *FakeSession) GetProviderDisplayName() provider.VolumeProvider {
 	ret, specificReturn := fake.getProviderDisplayNameReturnsOnCall[len(fake.getProviderDisplayNameArgsForCall)]
 	fake.getProviderDisplayNameArgsForCall = append(fake.getProviderDisplayNameArgsForCall, struct {
 	}{})
+	stub := fake.GetProviderDisplayNameStub
+	fakeReturns := fake.getProviderDisplayNameReturns
 	fake.recordInvocation("GetProviderDisplayName", []interface{}{})
 	fake.getProviderDisplayNameMutex.Unlock()
-	if fake.GetProviderDisplayNameStub != nil {
-		return fake.GetProviderDisplayNameStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.getProviderDisplayNameReturns
 	return fakeReturns.result1
 }
 
@@ -966,15 +1168,16 @@ func (fake *FakeSession) GetSnapshot(arg1 string) (*provider.Snapshot, error) {
 	fake.getSnapshotArgsForCall = append(fake.getSnapshotArgsForCall, struct {
 		arg1 string
 	}{arg1})
+	stub := fake.GetSnapshotStub
+	fakeReturns := fake.getSnapshotReturns
 	fake.recordInvocation("GetSnapshot", []interface{}{arg1})
 	fake.getSnapshotMutex.Unlock()
-	if fake.GetSnapshotStub != nil {
-		return fake.GetSnapshotStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.getSnapshotReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1030,15 +1233,16 @@ func (fake *FakeSession) GetSnapshotWithVolumeID(arg1 string, arg2 string) (*pro
 		arg1 string
 		arg2 string
 	}{arg1, arg2})
+	stub := fake.GetSnapshotWithVolumeIDStub
+	fakeReturns := fake.getSnapshotWithVolumeIDReturns
 	fake.recordInvocation("GetSnapshotWithVolumeID", []interface{}{arg1, arg2})
 	fake.getSnapshotWithVolumeIDMutex.Unlock()
-	if fake.GetSnapshotWithVolumeIDStub != nil {
-		return fake.GetSnapshotWithVolumeIDStub(arg1, arg2)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.getSnapshotWithVolumeIDReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1093,15 +1297,16 @@ func (fake *FakeSession) GetVolume(arg1 string) (*provider.Volume, error) {
 	fake.getVolumeArgsForCall = append(fake.getVolumeArgsForCall, struct {
 		arg1 string
 	}{arg1})
+	stub := fake.GetVolumeStub
+	fakeReturns := fake.getVolumeReturns
 	fake.recordInvocation("GetVolume", []interface{}{arg1})
 	fake.getVolumeMutex.Unlock()
-	if fake.GetVolumeStub != nil {
-		return fake.GetVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.getVolumeReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1150,21 +1355,86 @@ func (fake *FakeSession) GetVolumeReturnsOnCall(i int, result1 *provider.Volume,
 	}{result1, result2}
 }
 
+func (fake *FakeSession) GetVolumeAccessPoint(arg1 provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error) {
+	fake.getVolumeAccessPointMutex.Lock()
+	ret, specificReturn := fake.getVolumeAccessPointReturnsOnCall[len(fake.getVolumeAccessPointArgsForCall)]
+	fake.getVolumeAccessPointArgsForCall = append(fake.getVolumeAccessPointArgsForCall, struct {
+		arg1 provider.VolumeAccessPointRequest
+	}{arg1})
+	stub := fake.GetVolumeAccessPointStub
+	fakeReturns := fake.getVolumeAccessPointReturns
+	fake.recordInvocation("GetVolumeAccessPoint", []interface{}{arg1})
+	fake.getVolumeAccessPointMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeSession) GetVolumeAccessPointCallCount() int {
+	fake.getVolumeAccessPointMutex.RLock()
+	defer fake.getVolumeAccessPointMutex.RUnlock()
+	return len(fake.getVolumeAccessPointArgsForCall)
+}
+
+func (fake *FakeSession) GetVolumeAccessPointCalls(stub func(provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error)) {
+	fake.getVolumeAccessPointMutex.Lock()
+	defer fake.getVolumeAccessPointMutex.Unlock()
+	fake.GetVolumeAccessPointStub = stub
+}
+
+func (fake *FakeSession) GetVolumeAccessPointArgsForCall(i int) provider.VolumeAccessPointRequest {
+	fake.getVolumeAccessPointMutex.RLock()
+	defer fake.getVolumeAccessPointMutex.RUnlock()
+	argsForCall := fake.getVolumeAccessPointArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeSession) GetVolumeAccessPointReturns(result1 *provider.VolumeAccessPointResponse, result2 error) {
+	fake.getVolumeAccessPointMutex.Lock()
+	defer fake.getVolumeAccessPointMutex.Unlock()
+	fake.GetVolumeAccessPointStub = nil
+	fake.getVolumeAccessPointReturns = struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) GetVolumeAccessPointReturnsOnCall(i int, result1 *provider.VolumeAccessPointResponse, result2 error) {
+	fake.getVolumeAccessPointMutex.Lock()
+	defer fake.getVolumeAccessPointMutex.Unlock()
+	fake.GetVolumeAccessPointStub = nil
+	if fake.getVolumeAccessPointReturnsOnCall == nil {
+		fake.getVolumeAccessPointReturnsOnCall = make(map[int]struct {
+			result1 *provider.VolumeAccessPointResponse
+			result2 error
+		})
+	}
+	fake.getVolumeAccessPointReturnsOnCall[i] = struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeSession) GetVolumeAttachment(arg1 provider.VolumeAttachmentRequest) (*provider.VolumeAttachmentResponse, error) {
 	fake.getVolumeAttachmentMutex.Lock()
 	ret, specificReturn := fake.getVolumeAttachmentReturnsOnCall[len(fake.getVolumeAttachmentArgsForCall)]
 	fake.getVolumeAttachmentArgsForCall = append(fake.getVolumeAttachmentArgsForCall, struct {
 		arg1 provider.VolumeAttachmentRequest
 	}{arg1})
+	stub := fake.GetVolumeAttachmentStub
+	fakeReturns := fake.getVolumeAttachmentReturns
 	fake.recordInvocation("GetVolumeAttachment", []interface{}{arg1})
 	fake.getVolumeAttachmentMutex.Unlock()
-	if fake.GetVolumeAttachmentStub != nil {
-		return fake.GetVolumeAttachmentStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.getVolumeAttachmentReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1219,15 +1489,16 @@ func (fake *FakeSession) GetVolumeByName(arg1 string) (*provider.Volume, error) 
 	fake.getVolumeByNameArgsForCall = append(fake.getVolumeByNameArgsForCall, struct {
 		arg1 string
 	}{arg1})
+	stub := fake.GetVolumeByNameStub
+	fakeReturns := fake.getVolumeByNameReturns
 	fake.recordInvocation("GetVolumeByName", []interface{}{arg1})
 	fake.getVolumeByNameMutex.Unlock()
-	if fake.GetVolumeByNameStub != nil {
-		return fake.GetVolumeByNameStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.getVolumeByNameReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1282,15 +1553,16 @@ func (fake *FakeSession) GetVolumeByRequestID(arg1 string) (*provider.Volume, er
 	fake.getVolumeByRequestIDArgsForCall = append(fake.getVolumeByRequestIDArgsForCall, struct {
 		arg1 string
 	}{arg1})
+	stub := fake.GetVolumeByRequestIDStub
+	fakeReturns := fake.getVolumeByRequestIDReturns
 	fake.recordInvocation("GetVolumeByRequestID", []interface{}{arg1})
 	fake.getVolumeByRequestIDMutex.Unlock()
-	if fake.GetVolumeByRequestIDStub != nil {
-		return fake.GetVolumeByRequestIDStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.getVolumeByRequestIDReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1345,15 +1617,16 @@ func (fake *FakeSession) ListAllSnapshots(arg1 string) ([]*provider.Snapshot, er
 	fake.listAllSnapshotsArgsForCall = append(fake.listAllSnapshotsArgsForCall, struct {
 		arg1 string
 	}{arg1})
+	stub := fake.ListAllSnapshotsStub
+	fakeReturns := fake.listAllSnapshotsReturns
 	fake.recordInvocation("ListAllSnapshots", []interface{}{arg1})
 	fake.listAllSnapshotsMutex.Unlock()
-	if fake.ListAllSnapshotsStub != nil {
-		return fake.ListAllSnapshotsStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.listAllSnapshotsReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1407,15 +1680,16 @@ func (fake *FakeSession) ListSnapshots() ([]*provider.Snapshot, error) {
 	ret, specificReturn := fake.listSnapshotsReturnsOnCall[len(fake.listSnapshotsArgsForCall)]
 	fake.listSnapshotsArgsForCall = append(fake.listSnapshotsArgsForCall, struct {
 	}{})
+	stub := fake.ListSnapshotsStub
+	fakeReturns := fake.listSnapshotsReturns
 	fake.recordInvocation("ListSnapshots", []interface{}{})
 	fake.listSnapshotsMutex.Unlock()
-	if fake.ListSnapshotsStub != nil {
-		return fake.ListSnapshotsStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.listSnapshotsReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1465,15 +1739,16 @@ func (fake *FakeSession) ListVolumes(arg1 int, arg2 string, arg3 map[string]stri
 		arg2 string
 		arg3 map[string]string
 	}{arg1, arg2, arg3})
+	stub := fake.ListVolumesStub
+	fakeReturns := fake.listVolumesReturns
 	fake.recordInvocation("ListVolumes", []interface{}{arg1, arg2, arg3})
 	fake.listVolumesMutex.Unlock()
-	if fake.ListVolumesStub != nil {
-		return fake.ListVolumesStub(arg1, arg2, arg3)
+	if stub != nil {
+		return stub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.listVolumesReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1528,15 +1803,16 @@ func (fake *FakeSession) OrderSnapshot(arg1 provider.Volume) error {
 	fake.orderSnapshotArgsForCall = append(fake.orderSnapshotArgsForCall, struct {
 		arg1 provider.Volume
 	}{arg1})
+	stub := fake.OrderSnapshotStub
+	fakeReturns := fake.orderSnapshotReturns
 	fake.recordInvocation("OrderSnapshot", []interface{}{arg1})
 	fake.orderSnapshotMutex.Unlock()
-	if fake.OrderSnapshotStub != nil {
-		return fake.OrderSnapshotStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.orderSnapshotReturns
 	return fakeReturns.result1
 }
 
@@ -1587,15 +1863,16 @@ func (fake *FakeSession) ProviderName() provider.VolumeProvider {
 	ret, specificReturn := fake.providerNameReturnsOnCall[len(fake.providerNameArgsForCall)]
 	fake.providerNameArgsForCall = append(fake.providerNameArgsForCall, struct {
 	}{})
+	stub := fake.ProviderNameStub
+	fakeReturns := fake.providerNameReturns
 	fake.recordInvocation("ProviderName", []interface{}{})
 	fake.providerNameMutex.Unlock()
-	if fake.ProviderNameStub != nil {
-		return fake.ProviderNameStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.providerNameReturns
 	return fakeReturns.result1
 }
 
@@ -1639,15 +1916,16 @@ func (fake *FakeSession) Type() provider.VolumeType {
 	ret, specificReturn := fake.typeReturnsOnCall[len(fake.typeArgsForCall)]
 	fake.typeArgsForCall = append(fake.typeArgsForCall, struct {
 	}{})
+	stub := fake.TypeStub
+	fakeReturns := fake.typeReturns
 	fake.recordInvocation("Type", []interface{}{})
 	fake.typeMutex.Unlock()
-	if fake.TypeStub != nil {
-		return fake.TypeStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.typeReturns
 	return fakeReturns.result1
 }
 
@@ -1692,15 +1970,16 @@ func (fake *FakeSession) UpdateVolume(arg1 provider.Volume) error {
 	fake.updateVolumeArgsForCall = append(fake.updateVolumeArgsForCall, struct {
 		arg1 provider.Volume
 	}{arg1})
+	stub := fake.UpdateVolumeStub
+	fakeReturns := fake.updateVolumeReturns
 	fake.recordInvocation("UpdateVolume", []interface{}{arg1})
 	fake.updateVolumeMutex.Unlock()
-	if fake.UpdateVolumeStub != nil {
-		return fake.UpdateVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.updateVolumeReturns
 	return fakeReturns.result1
 }
 
@@ -1752,15 +2031,16 @@ func (fake *FakeSession) WaitForAttachVolume(arg1 provider.VolumeAttachmentReque
 	fake.waitForAttachVolumeArgsForCall = append(fake.waitForAttachVolumeArgsForCall, struct {
 		arg1 provider.VolumeAttachmentRequest
 	}{arg1})
+	stub := fake.WaitForAttachVolumeStub
+	fakeReturns := fake.waitForAttachVolumeReturns
 	fake.recordInvocation("WaitForAttachVolume", []interface{}{arg1})
 	fake.waitForAttachVolumeMutex.Unlock()
-	if fake.WaitForAttachVolumeStub != nil {
-		return fake.WaitForAttachVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.waitForAttachVolumeReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -1809,21 +2089,147 @@ func (fake *FakeSession) WaitForAttachVolumeReturnsOnCall(i int, result1 *provid
 	}{result1, result2}
 }
 
+func (fake *FakeSession) WaitForCreateVolumeAccessPoint(arg1 provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error) {
+	fake.waitForCreateVolumeAccessPointMutex.Lock()
+	ret, specificReturn := fake.waitForCreateVolumeAccessPointReturnsOnCall[len(fake.waitForCreateVolumeAccessPointArgsForCall)]
+	fake.waitForCreateVolumeAccessPointArgsForCall = append(fake.waitForCreateVolumeAccessPointArgsForCall, struct {
+		arg1 provider.VolumeAccessPointRequest
+	}{arg1})
+	stub := fake.WaitForCreateVolumeAccessPointStub
+	fakeReturns := fake.waitForCreateVolumeAccessPointReturns
+	fake.recordInvocation("WaitForCreateVolumeAccessPoint", []interface{}{arg1})
+	fake.waitForCreateVolumeAccessPointMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeSession) WaitForCreateVolumeAccessPointCallCount() int {
+	fake.waitForCreateVolumeAccessPointMutex.RLock()
+	defer fake.waitForCreateVolumeAccessPointMutex.RUnlock()
+	return len(fake.waitForCreateVolumeAccessPointArgsForCall)
+}
+
+func (fake *FakeSession) WaitForCreateVolumeAccessPointCalls(stub func(provider.VolumeAccessPointRequest) (*provider.VolumeAccessPointResponse, error)) {
+	fake.waitForCreateVolumeAccessPointMutex.Lock()
+	defer fake.waitForCreateVolumeAccessPointMutex.Unlock()
+	fake.WaitForCreateVolumeAccessPointStub = stub
+}
+
+func (fake *FakeSession) WaitForCreateVolumeAccessPointArgsForCall(i int) provider.VolumeAccessPointRequest {
+	fake.waitForCreateVolumeAccessPointMutex.RLock()
+	defer fake.waitForCreateVolumeAccessPointMutex.RUnlock()
+	argsForCall := fake.waitForCreateVolumeAccessPointArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeSession) WaitForCreateVolumeAccessPointReturns(result1 *provider.VolumeAccessPointResponse, result2 error) {
+	fake.waitForCreateVolumeAccessPointMutex.Lock()
+	defer fake.waitForCreateVolumeAccessPointMutex.Unlock()
+	fake.WaitForCreateVolumeAccessPointStub = nil
+	fake.waitForCreateVolumeAccessPointReturns = struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) WaitForCreateVolumeAccessPointReturnsOnCall(i int, result1 *provider.VolumeAccessPointResponse, result2 error) {
+	fake.waitForCreateVolumeAccessPointMutex.Lock()
+	defer fake.waitForCreateVolumeAccessPointMutex.Unlock()
+	fake.WaitForCreateVolumeAccessPointStub = nil
+	if fake.waitForCreateVolumeAccessPointReturnsOnCall == nil {
+		fake.waitForCreateVolumeAccessPointReturnsOnCall = make(map[int]struct {
+			result1 *provider.VolumeAccessPointResponse
+			result2 error
+		})
+	}
+	fake.waitForCreateVolumeAccessPointReturnsOnCall[i] = struct {
+		result1 *provider.VolumeAccessPointResponse
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) WaitForDeleteVolumeAccessPoint(arg1 provider.VolumeAccessPointRequest) error {
+	fake.waitForDeleteVolumeAccessPointMutex.Lock()
+	ret, specificReturn := fake.waitForDeleteVolumeAccessPointReturnsOnCall[len(fake.waitForDeleteVolumeAccessPointArgsForCall)]
+	fake.waitForDeleteVolumeAccessPointArgsForCall = append(fake.waitForDeleteVolumeAccessPointArgsForCall, struct {
+		arg1 provider.VolumeAccessPointRequest
+	}{arg1})
+	stub := fake.WaitForDeleteVolumeAccessPointStub
+	fakeReturns := fake.waitForDeleteVolumeAccessPointReturns
+	fake.recordInvocation("WaitForDeleteVolumeAccessPoint", []interface{}{arg1})
+	fake.waitForDeleteVolumeAccessPointMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fakeReturns.result1
+}
+
+func (fake *FakeSession) WaitForDeleteVolumeAccessPointCallCount() int {
+	fake.waitForDeleteVolumeAccessPointMutex.RLock()
+	defer fake.waitForDeleteVolumeAccessPointMutex.RUnlock()
+	return len(fake.waitForDeleteVolumeAccessPointArgsForCall)
+}
+
+func (fake *FakeSession) WaitForDeleteVolumeAccessPointCalls(stub func(provider.VolumeAccessPointRequest) error) {
+	fake.waitForDeleteVolumeAccessPointMutex.Lock()
+	defer fake.waitForDeleteVolumeAccessPointMutex.Unlock()
+	fake.WaitForDeleteVolumeAccessPointStub = stub
+}
+
+func (fake *FakeSession) WaitForDeleteVolumeAccessPointArgsForCall(i int) provider.VolumeAccessPointRequest {
+	fake.waitForDeleteVolumeAccessPointMutex.RLock()
+	defer fake.waitForDeleteVolumeAccessPointMutex.RUnlock()
+	argsForCall := fake.waitForDeleteVolumeAccessPointArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeSession) WaitForDeleteVolumeAccessPointReturns(result1 error) {
+	fake.waitForDeleteVolumeAccessPointMutex.Lock()
+	defer fake.waitForDeleteVolumeAccessPointMutex.Unlock()
+	fake.WaitForDeleteVolumeAccessPointStub = nil
+	fake.waitForDeleteVolumeAccessPointReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeSession) WaitForDeleteVolumeAccessPointReturnsOnCall(i int, result1 error) {
+	fake.waitForDeleteVolumeAccessPointMutex.Lock()
+	defer fake.waitForDeleteVolumeAccessPointMutex.Unlock()
+	fake.WaitForDeleteVolumeAccessPointStub = nil
+	if fake.waitForDeleteVolumeAccessPointReturnsOnCall == nil {
+		fake.waitForDeleteVolumeAccessPointReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.waitForDeleteVolumeAccessPointReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
 func (fake *FakeSession) WaitForDetachVolume(arg1 provider.VolumeAttachmentRequest) error {
 	fake.waitForDetachVolumeMutex.Lock()
 	ret, specificReturn := fake.waitForDetachVolumeReturnsOnCall[len(fake.waitForDetachVolumeArgsForCall)]
 	fake.waitForDetachVolumeArgsForCall = append(fake.waitForDetachVolumeArgsForCall, struct {
 		arg1 provider.VolumeAttachmentRequest
 	}{arg1})
+	stub := fake.WaitForDetachVolumeStub
+	fakeReturns := fake.waitForDetachVolumeReturns
 	fake.recordInvocation("WaitForDetachVolume", []interface{}{arg1})
 	fake.waitForDetachVolumeMutex.Unlock()
-	if fake.WaitForDetachVolumeStub != nil {
-		return fake.WaitForDetachVolumeStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.waitForDetachVolumeReturns
 	return fakeReturns.result1
 }
 
@@ -1882,12 +2288,16 @@ func (fake *FakeSession) Invocations() map[string][][]interface{} {
 	defer fake.createSnapshotMutex.RUnlock()
 	fake.createVolumeMutex.RLock()
 	defer fake.createVolumeMutex.RUnlock()
+	fake.createVolumeAccessPointMutex.RLock()
+	defer fake.createVolumeAccessPointMutex.RUnlock()
 	fake.createVolumeFromSnapshotMutex.RLock()
 	defer fake.createVolumeFromSnapshotMutex.RUnlock()
 	fake.deleteSnapshotMutex.RLock()
 	defer fake.deleteSnapshotMutex.RUnlock()
 	fake.deleteVolumeMutex.RLock()
 	defer fake.deleteVolumeMutex.RUnlock()
+	fake.deleteVolumeAccessPointMutex.RLock()
+	defer fake.deleteVolumeAccessPointMutex.RUnlock()
 	fake.detachVolumeMutex.RLock()
 	defer fake.detachVolumeMutex.RUnlock()
 	fake.expandVolumeMutex.RLock()
@@ -1900,6 +2310,8 @@ func (fake *FakeSession) Invocations() map[string][][]interface{} {
 	defer fake.getSnapshotWithVolumeIDMutex.RUnlock()
 	fake.getVolumeMutex.RLock()
 	defer fake.getVolumeMutex.RUnlock()
+	fake.getVolumeAccessPointMutex.RLock()
+	defer fake.getVolumeAccessPointMutex.RUnlock()
 	fake.getVolumeAttachmentMutex.RLock()
 	defer fake.getVolumeAttachmentMutex.RUnlock()
 	fake.getVolumeByNameMutex.RLock()
@@ -1922,6 +2334,10 @@ func (fake *FakeSession) Invocations() map[string][][]interface{} {
 	defer fake.updateVolumeMutex.RUnlock()
 	fake.waitForAttachVolumeMutex.RLock()
 	defer fake.waitForAttachVolumeMutex.RUnlock()
+	fake.waitForCreateVolumeAccessPointMutex.RLock()
+	defer fake.waitForCreateVolumeAccessPointMutex.RUnlock()
+	fake.waitForDeleteVolumeAccessPointMutex.RLock()
+	defer fake.waitForDeleteVolumeAccessPointMutex.RUnlock()
 	fake.waitForDetachVolumeMutex.RLock()
 	defer fake.waitForDetachVolumeMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
