@@ -59,25 +59,31 @@
 				
 				<option value="file1">github.com/IBM/ibmcloud-volume-interface/config/tls.go (100.0%)</option>
 				
-				<option value="file2">github.com/IBM/ibmcloud-volume-interface/lib/utils/data_utils.go (100.0%)</option>
+				<option value="file2">github.com/IBM/ibmcloud-volume-interface/lib/provider/default_volume_provider.go (100.0%)</option>
 				
-				<option value="file3">github.com/IBM/ibmcloud-volume-interface/lib/utils/error_types.go (75.0%)</option>
+				<option value="file3">github.com/IBM/ibmcloud-volume-interface/lib/provider/error.go (0.0%)</option>
 				
-				<option value="file4">github.com/IBM/ibmcloud-volume-interface/lib/utils/error_utils.go (70.6%)</option>
+				<option value="file4">github.com/IBM/ibmcloud-volume-interface/lib/provider/vpc_data_types.go (0.0%)</option>
 				
-				<option value="file5">github.com/IBM/ibmcloud-volume-interface/lib/utils/messages.go (100.0%)</option>
+				<option value="file5">github.com/IBM/ibmcloud-volume-interface/lib/utils/data_utils.go (100.0%)</option>
 				
-				<option value="file6">github.com/IBM/ibmcloud-volume-interface/lib/utils/time_tracker.go (100.0%)</option>
+				<option value="file6">github.com/IBM/ibmcloud-volume-interface/lib/utils/error_types.go (75.0%)</option>
 				
-				<option value="file7">github.com/IBM/ibmcloud-volume-interface/provider/auth/apikey.go (100.0%)</option>
+				<option value="file7">github.com/IBM/ibmcloud-volume-interface/lib/utils/error_utils.go (70.6%)</option>
 				
-				<option value="file8">github.com/IBM/ibmcloud-volume-interface/provider/auth/factory.go (80.0%)</option>
+				<option value="file8">github.com/IBM/ibmcloud-volume-interface/lib/utils/messages.go (100.0%)</option>
 				
-				<option value="file9">github.com/IBM/ibmcloud-volume-interface/provider/auth/ims_token.go (0.0%)</option>
+				<option value="file9">github.com/IBM/ibmcloud-volume-interface/lib/utils/time_tracker.go (100.0%)</option>
 				
-				<option value="file10">github.com/IBM/ibmcloud-volume-interface/provider/iam/token_exchange.go (97.3%)</option>
+				<option value="file10">github.com/IBM/ibmcloud-volume-interface/provider/auth/apikey.go (100.0%)</option>
 				
-				<option value="file11">github.com/IBM/ibmcloud-volume-interface/provider/iam/token_validation.go (75.0%)</option>
+				<option value="file11">github.com/IBM/ibmcloud-volume-interface/provider/auth/factory.go (80.0%)</option>
+				
+				<option value="file12">github.com/IBM/ibmcloud-volume-interface/provider/auth/ims_token.go (0.0%)</option>
+				
+				<option value="file13">github.com/IBM/ibmcloud-volume-interface/provider/iam/token_exchange.go (97.3%)</option>
+				
+				<option value="file14">github.com/IBM/ibmcloud-volume-interface/provider/iam/token_validation.go (75.0%)</option>
 				
 				</select>
 			</div>
@@ -258,6 +264,7 @@ type VPCProviderConfig struct {
         VPCTypeEnabled       string `toml:"vpc_type_enabled" envconfig:"VPC_TYPE_ENABLED"`
         VPCBlockProviderName string `toml:"vpc_block_provider_name" envconfig:"VPC_BLOCK_PROVIDER_NAME"`
         VPCBlockProviderType string `toml:"provider_type"`
+        VPCVolumeType        string `toml:"vpc_volume_type"`
 
         EndpointURL        string `toml:"gc_riaas_endpoint_url"`
         PrivateEndpointURL string `toml:"gc_riaas_endpoint_private_url"`
@@ -368,6 +375,398 @@ func GeneralCAHttpClientWithTimeout(timeout time.Duration) (*http.Client, error)
 </pre>
 		
 		<pre class="file" id="file2" style="display: none">/**
+ * Copyright 2021 IBM Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// Package provider ...
+package provider
+
+import "net/http"
+
+//DefaultVolumeProvider Implementation
+type DefaultVolumeProvider struct {
+        sess *Session
+}
+
+var _ Session = &amp;DefaultVolumeProvider{sess: nil}
+
+//ProviderName returns provider
+func (volprov *DefaultVolumeProvider) ProviderName() VolumeProvider <span class="cov8" title="1">{
+        return VolumeProvider("")
+}</span>
+
+//Type returns the underlying volume type
+func (volprov *DefaultVolumeProvider) Type() VolumeType <span class="cov8" title="1">{
+        return ""
+}</span>
+
+//CreateVolume creates a volume
+func (volprov *DefaultVolumeProvider) CreateVolume(VolumeRequest Volume) (*Volume, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//AttachVolume attaches a volume
+func (volprov *DefaultVolumeProvider) AttachVolume(attachRequest VolumeAttachmentRequest) (*VolumeAttachmentResponse, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//CreateVolumeFromSnapshot creates a volume from snapshot
+func (volprov *DefaultVolumeProvider) CreateVolumeFromSnapshot(snapshot Snapshot, tags map[string]string) (*Volume, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//UpdateVolume the volume
+func (volprov *DefaultVolumeProvider) UpdateVolume(Volume) error <span class="cov8" title="1">{
+        return nil
+}</span>
+
+//DeleteVolume deletes the volume
+func (volprov *DefaultVolumeProvider) DeleteVolume(*Volume) error <span class="cov8" title="1">{
+        return nil
+}</span>
+
+//GetVolume by using ID
+func (volprov *DefaultVolumeProvider) GetVolume(id string) (*Volume, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+// GetVolumeByName gets volume by name,
+// actually some of providers(like VPC) has the capability to provide volume
+// details by usig user provided volume name
+func (volprov *DefaultVolumeProvider) GetVolumeByName(name string) (*Volume, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//ListVolumes Get volume lists by using filters
+func (volprov *DefaultVolumeProvider) ListVolumes(limit int, start string, tags map[string]string) (*VolumeList, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+// GetVolumeByRequestID fetch the volume by request ID.
+// Request Id is the one that is returned when volume is provsioning request is
+// placed with Iaas provider.
+func (volprov *DefaultVolumeProvider) GetVolumeByRequestID(requestID string) (*Volume, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//AuthorizeVolume allows aceess to volume  based on given authorization
+func (volprov *DefaultVolumeProvider) AuthorizeVolume(volumeAuthorization VolumeAuthorization) error <span class="cov8" title="1">{
+        return nil
+}</span>
+
+// DetachVolume  by passing required information in the volume object
+func (volprov *DefaultVolumeProvider) DetachVolume(detachRequest VolumeAttachmentRequest) (*http.Response, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//WaitForAttachVolume waits for the volume to be attached to the host
+//Return error if wait is timed out OR there is other error
+func (volprov *DefaultVolumeProvider) WaitForAttachVolume(attachRequest VolumeAttachmentRequest) (*VolumeAttachmentResponse, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//WaitForDetachVolume waits for the volume to be detached from the host
+//Return error if wait is timed out OR there is other error
+func (volprov *DefaultVolumeProvider) WaitForDetachVolume(detachRequest VolumeAttachmentRequest) error <span class="cov8" title="1">{
+        return nil
+}</span>
+
+//GetVolumeAttachment retirves the current status of given volume attach request
+func (volprov *DefaultVolumeProvider) GetVolumeAttachment(attachRequest VolumeAttachmentRequest) (*VolumeAttachmentResponse, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//OrderSnapshot orders the snapshot
+func (volprov *DefaultVolumeProvider) OrderSnapshot(VolumeRequest Volume) error <span class="cov8" title="1">{
+        return nil
+}</span>
+
+// CreateSnapshot on the volume
+func (volprov *DefaultVolumeProvider) CreateSnapshot(volume *Volume, tags map[string]string) (*Snapshot, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//DeleteSnapshot deletes the snapshot
+func (volprov *DefaultVolumeProvider) DeleteSnapshot(*Snapshot) error <span class="cov8" title="1">{
+        return nil
+}</span>
+
+//GetSnapshot gets the snapshot
+func (volprov *DefaultVolumeProvider) GetSnapshot(snapshotID string) (*Snapshot, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//GetSnapshotWithVolumeID gets the snapshot with volumeID
+func (volprov *DefaultVolumeProvider) GetSnapshotWithVolumeID(volumeID string, snapshotID string) (*Snapshot, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//ListSnapshots list the snapshots
+func (volprov *DefaultVolumeProvider) ListSnapshots() ([]*Snapshot, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//ListAllSnapshots list all the snapshots
+func (volprov *DefaultVolumeProvider) ListAllSnapshots(volumeID string) ([]*Snapshot, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//ExpandVolume expand the volume with authorization by passing required information in the volume object
+func (volprov *DefaultVolumeProvider) ExpandVolume(expandVolumeRequest ExpandVolumeRequest) (int64, error) <span class="cov8" title="1">{
+        return 0, nil
+}</span>
+
+//GetProviderDisplayName gets provider by displayname
+func (volprov *DefaultVolumeProvider) GetProviderDisplayName() VolumeProvider <span class="cov8" title="1">{
+        return ""
+}</span>
+
+//Close is called when the Session is nolonger required
+func (volprov *DefaultVolumeProvider) Close() {<span class="cov0" title="0">
+}</span>
+
+//CreateVolumeAccessPoint to create access point
+func (volprov *DefaultVolumeProvider) CreateVolumeAccessPoint(accessPointRequest VolumeAccessPointRequest) (*VolumeAccessPointResponse, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//DeleteVolumeAccessPoint method delete a access point
+func (volprov *DefaultVolumeProvider) DeleteVolumeAccessPoint(deleteAccessPointRequest VolumeAccessPointRequest) (*http.Response, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//WaitForCreateVolumeAccessPoint waits for the volume access point to be created
+//Return error if wait is timed out OR there is other error
+func (volprov *DefaultVolumeProvider) WaitForCreateVolumeAccessPoint(accessPointRequest VolumeAccessPointRequest) (*VolumeAccessPointResponse, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+
+//WaitForDeleteVolumeAccessPoint waits for the volume access point to be deleted
+//Return error if wait is timed out OR there is other error
+func (volprov *DefaultVolumeProvider) WaitForDeleteVolumeAccessPoint(deleteAccessPointRequest VolumeAccessPointRequest) error <span class="cov8" title="1">{
+        return nil
+}</span>
+
+//GetVolumeAccessPoint retrieves the current status of given volume AccessPoint request
+func (volprov *DefaultVolumeProvider) GetVolumeAccessPoint(accessPointRequest VolumeAccessPointRequest) (*VolumeAccessPointResponse, error) <span class="cov8" title="1">{
+        return nil, nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">/**
+ * Copyright 2020 IBM Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// Package provider ...
+package provider
+
+import (
+        "github.com/IBM/ibmcloud-volume-interface/lib/utils/reasoncode"
+)
+
+// Error implements the error interface for a Fault.
+// Most easily constructed using util.NewError() or util.NewErrorWithProperties()
+type Error struct {
+        // Fault ...
+        Fault Fault
+}
+
+// Fault encodes a fault condition.
+// Does not implement the error interface so that cannot be accidentally
+// misassigned to error variables when returned in a function response.
+type Fault struct {
+        // Message is the fault message (required)
+        Message string `json:"msg"`
+
+        // ReasonCode is fault reason code (required)  //TODO: will have better reasoncode mechanism
+        ReasonCode reasoncode.ReasonCode `json:"code"`
+
+        // WrappedErrors contains wrapped error messages (if applicable)
+        Wrapped []string `json:"wrapped,omitempty"`
+
+        // Properties contains diagnostic properties (if applicable)
+        Properties map[string]string `json:"properties,omitempty"`
+}
+
+// FaultResponse is an optional Fault
+type FaultResponse struct {
+        Fault *Fault `json:"fault,omitempty"`
+}
+
+var _ error = Error{}
+
+// Error satisfies the error contract
+func (err Error) Error() string <span class="cov0" title="0">{
+        return err.Fault.Message
+}</span>
+
+// Code satisfies the legacy provider.Error interface
+func (err Error) Code() reasoncode.ReasonCode <span class="cov0" title="0">{
+        if err.Fault.ReasonCode == "" </span><span class="cov0" title="0">{
+                return reasoncode.ErrorUnclassified
+        }</span>
+        <span class="cov0" title="0">return err.Fault.ReasonCode</span>
+}
+
+// Wrapped mirrors the legacy provider.Error interface
+func (err Error) Wrapped() []string <span class="cov0" title="0">{
+        return err.Fault.Wrapped
+}</span>
+
+// Properties satisfies the legacy provider.Error interface
+func (err Error) Properties() map[string]string <span class="cov0" title="0">{
+        return err.Fault.Properties
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">/**
+ * Copyright 2020 IBM Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// Package provider ...
+package provider
+
+import "time"
+
+// VPCVolume specific        parameters
+type VPCVolume struct {
+        Href                string               `json:"href,omitempty"`
+        ResourceGroup       *ResourceGroup       `json:"resource_group,omitempty"`
+        VolumeEncryptionKey *VolumeEncryptionKey `json:"encryption_key,omitempty"`
+        Profile             *Profile             `json:"profile,omitempty"`
+        CRN                 string               `json:"crn,omitempty"`
+        VPCBlockVolume
+        VPCFileVolume
+}
+
+// VPCBlockVolume specific parameters
+type VPCBlockVolume struct {
+        Tags              []string            `json:"volume_tags,omitempty"`
+        VolumeAttachments *[]VolumeAttachment `json:"volume_attachments,omitempty"`
+}
+
+// VPCFileVolume specific parameters
+type VPCFileVolume struct {
+        VolumeAccessPoints *[]VolumeAccessPoint `json:"volume_access_points,omitempty"`
+        InitialOwner       *InitialOwner        `json:"initial_owner,omitempty"`
+}
+
+// VPC ...
+type VPC struct {
+        ID   string `json:"id"`
+        CRN  string `json:"crn,omitempty"`
+        Href string `json:"href,omitempty"`
+        Name string `json:"name,omitempty"`
+}
+
+// VolumeAccessPoint ...
+type VolumeAccessPoint struct {
+        ID   string `json:"id,omitempty"`
+        Href string `json:"href,omitempty"`
+        Name string `json:"name,omitempty"`
+        // Status of volume target named - deleted, deleting, failed, pending_deletion, stable, updating, waiting, suspended
+        Status    string     `json:"status,omitempty"`
+        MountPath *string    `json:"mount_path,omitempty"`
+        VPC       *VPC       `json:"vpc,omitempty"`
+        Zone      *Zone      `json:"zone,omitempty"`
+        CreatedAt *time.Time `json:"created_at,omitempty"`
+}
+
+// Zone ...
+type Zone struct {
+        Name string `json:"name,omitempty"`
+        Href string `json:"href,omitempty"`
+}
+
+// InitialOwner ...
+type InitialOwner struct {
+        GroupID int64 `json:"gid,omitempty"`
+        UserID  int64 `json:"uid,omitempty"`
+}
+
+// GenerationType ...
+type GenerationType string
+
+// String ...
+func (i GenerationType) String() string <span class="cov0" title="0">{ return string(i) }</span>
+
+// ResourceGroup ...
+type ResourceGroup struct {
+        Href string `json:"href,omitempty"`
+        ID   string `json:"id,omitempty"`
+        Name string `json:"name,omitempty"`
+}
+
+// Profile ...
+type Profile struct {
+        Href string `json:"href,omitempty"`
+        Name string `json:"name,omitempty"`
+        CRN  string `json:"crn,omitempty"`
+}
+
+// VolumeAttachment ...
+type VolumeAttachment struct {
+        Href string `json:"href,omitempty"`
+        // ID volume attachment identifier
+        ID string `json:"id,omitempty"`
+        // Name volume attachment named
+        Name string `json:"name,omitempty"`
+        // Type of the volume - boot,data
+        Type string `json:"type,omitempty"`
+        // If set to true, when deleting the instance the volume will also be deleted
+        DeleteVolumeOnInstanceDelete bool `json:"delete_volume_on_instance_delete,omitempty"`
+        // device path for attachment
+        DevicePath string `json:"device_path,omitempty"`
+}
+
+// VolumeEncryptionKey ...
+type VolumeEncryptionKey struct {
+        CRN string `json:"crn,omitempty"`
+}
+
+//IKSVolumeAttachment  encapulates IKS related attachment parameters
+type IKSVolumeAttachment struct {
+        ClusterID *string `json:"clusterID,omitempty"`
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -402,7 +801,7 @@ func StringHasValue(s *string) bool <span class="cov1" title="1">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file3" style="display: none">/**
+		<pre class="file" id="file6" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -457,6 +856,15 @@ const (
         // AttachFailed ...
         AttachFailed = "AttachFailed"
 
+        // VolumeAccessPointFindFailed ...
+        VolumeAccessPointFindFailed = "VolumeAccessPointFindFailed"
+
+        // CreateVolumeAccessPointFailed ...
+        CreateVolumeAccessPointFailed = "CreateVolumeAccessPointFailed"
+
+        // DeleteVolumeAccessPointFailed ...
+        DeleteVolumeAccessPointFailed = "DeleteVolumeAccessPointFailed"
+
         // InstanceNotFound ...
         NodeNotFound = "NodeNotFound"
 
@@ -477,7 +885,7 @@ func GetErrorType(err error) string <span class="cov10" title="3">{
 }
 </pre>
 		
-		<pre class="file" id="file4" style="display: none">/**
+		<pre class="file" id="file7" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -652,7 +1060,7 @@ func (er *ErrorRetrier) ErrorRetry(funcToRetry func() (error, bool)) error <span
 }
 </pre>
 		
-		<pre class="file" id="file5" style="display: none">/**
+		<pre class="file" id="file8" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -697,7 +1105,7 @@ func (msg Message) Info() string <span class="cov10" title="2">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file6" style="display: none">/**
+		<pre class="file" id="file9" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -730,7 +1138,7 @@ func TimeTracker(functionName string, start time.Time) <span class="cov8" title=
 }</span>
 </pre>
 		
-		<pre class="file" id="file7" style="display: none">/**
+		<pre class="file" id="file10" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -766,7 +1174,7 @@ func (ccf *ContextCredentialsFactory) ForIaaSAPIKey(iamAccountID, userid, apikey
 }</span>
 </pre>
 		
-		<pre class="file" id="file8" style="display: none">/**
+		<pre class="file" id="file11" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -811,7 +1219,7 @@ func NewContextCredentialsFactory(authConfig *iam.AuthConfiguration) (*ContextCr
 }
 </pre>
 		
-		<pre class="file" id="file9" style="display: none">/**
+		<pre class="file" id="file12" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -915,7 +1323,7 @@ func forIAMAccessToken(iamAccountID string, iamAccessToken *iam.AccessToken) pro
 }</span>
 </pre>
 		
-		<pre class="file" id="file10" style="display: none">/**
+		<pre class="file" id="file13" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1179,7 +1587,7 @@ func String(v string) *string <span class="cov4" title="3">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file11" style="display: none">/**
+		<pre class="file" id="file14" style="display: none">/**
  * Copyright 2020 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
