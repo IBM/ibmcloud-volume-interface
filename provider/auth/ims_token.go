@@ -82,6 +82,21 @@ func (ccf *ContextCredentialsFactory) ForIAMAccessToken(apiKey string, logger *z
 	return forIAMAccessToken(iamAccountID, iamAccessToken), nil
 }
 
+// FetchIAMAccessToken ...
+func (ccf *ContextCredentialsFactory) FetchIAMAccessToken(logger *zap.Logger) (provider.ContextCredentials, error) {
+        iamAccessToken, err := iam.FetchIAMAccessToken(logger)
+        if err != nil {
+                logger.Error("Unable to retrieve IAM access token from IAM API key", local.ZapError(err))
+                return provider.ContextCredentials{}, err
+        }
+        iamAccountID, err := ccf.TokenExchangeService.GetIAMAccountIDFromAccessToken(iam.AccessToken{Token: iamAccessToken.Token}, logger)
+        if err != nil {
+                logger.Error("Unable to retrieve IAM access token from IAM API key", local.ZapError(err))
+                return provider.ContextCredentials{}, err
+        }
+        return forIAMAccessToken(iamAccountID, iamAccessToken), nil
+}
+
 // forIMSToken ...
 func forIMSToken(iamAccountID string, imsToken *iam.IMSToken) provider.ContextCredentials {
 	return provider.ContextCredentials{

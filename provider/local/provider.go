@@ -49,4 +49,7 @@ type ContextCredentialsFactory interface {
 
 	// ForIAMAccessToken returns a config derived from an IAM API key (if applicable)
 	ForIAMAccessToken(apiKey string, logger *zap.Logger) (provider.ContextCredentials, error)
+
+	// FetchIAMAccessToken returns a config from iam which is derived from a trusted profile
+	FetchIAMAccessToken(logger *zap.Logger) (provider.ContextCredentials, error)
 }

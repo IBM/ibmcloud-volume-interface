@@ -24,12 +24,16 @@ import (
 	"net/http"
 	"strings"
 	"time"
-
+	"net"
 	"go.uber.org/zap"
-
-	"github.com/IBM-Cloud/ibm-cloud-cli-sdk/common/rest"
+	"context"
+	"github.com/IBM-Cloud/ibm-cloud-cli-sdk/common/rest
+	"github.com/IBM/ibm-csi-common/iamtokenprovider"
+	grpcutils "github.com/IBM/ibm-csi-common/pkg/utils"
+	grpcClient "github.com/IBM/ibm-csi-common/pkg/utils/grpc-client"
 	"github.com/IBM/ibmcloud-volume-interface/config"
 	util "github.com/IBM/ibmcloud-volume-interface/lib/utils"
+	"google.golang.org/grpc"
 )
 
 // tokenExchangeService ...
@@ -124,6 +128,30 @@ func (tes *tokenExchangeService) ExchangeIAMAPIKeyForAccessToken(iamAPIKey strin
 	r.request.Field("apikey", iamAPIKey)
 
 	return r.exchangeForAccessToken()
+}
+
+// FetchIAMAccessToken ...
+func FetchIAMAccessToken(logger *zap.Logger) (*AccessToken, error) {
+        grpcBackend := &grpcClient.ConnObjFactory{}
+        grpcSess := grpcBackend.NewGrpcSession()
+        cc := &grpcClient.GrpcSes{}
+        logger.Info("Dialing for connection...")
+        conn, err := grpcSess.GrpcDial(cc, *grpcutils.Endpoint, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithDialer(UnixConnect))
+        if err != nil {
+                err = fmt.Errorf("failed to establish grpc-client connection: %v", err)
+                return nil, err
+        }
+        c := iamtokenprovider.NewIAMTokenProviderClient(conn)
+        ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+        defer cancel()
+        defer cc.Close()
+
+        iamToken, err := c.GetIAMToken(ctx, &iamtokenprovider.EmptyRequest{})
+        if err != nil {
+                logger.Error("Error fetching IAM token", zap.Error(err))
+                return nil, err
+        }
+        return &AccessToken{Token: iamToken.Iamtoken}, nil
 }
 
 // exchangeForAccessToken ...
