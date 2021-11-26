@@ -48,10 +48,7 @@ func (msg Message) Info() string {
 // APIKeyNotFound ...
 func (msg Message) APIKeyNotFound() bool {
 	if reasoncode.ReasonCode(msg.Code) == reasoncode.ErrorAuthenticationFailed {
-		if strings.Contains(msg.BackendError, string(reasoncode.ErrorAPIKeyNotFound)) {
-			return true
-		}
-		return false
+		return strings.Contains(msg.BackendError, string(reasoncode.ErrorAPIKeyNotFound))
 	}
 	return false
 }
