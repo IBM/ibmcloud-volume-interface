@@ -83,6 +83,9 @@ const (
 	// ErrorInsufficientPermissions indicates an operation failed due to a confirmed problem with IaaS user permissions
 	// (Caller can retry later, but not indefinitely)
 	ErrorInsufficientPermissions = ReasonCode("ErrorInsufficientPermissions")
+
+	// ErrorAuthenticationFailed indicates authentication failure due to invalid API key, etc
+	ErrorAuthenticationFailed = ReasonCode("AuthenticationFailed")
 )
 
 // Attach / Detach problems
@@ -91,4 +94,9 @@ const (
 	ErrorVolumeAttachFailed = ReasonCode("ErrorVolumeAttachFailed")
 	//ErrorVolumeDetachFailed indicates if volume detach from instance is failed
 	ErrorVolumeDetachFailed = ReasonCode("ErrorVolumeDetachFailed")
+)
+
+const (
+	// ErrorAPIKeyNotFound indicates API key was invalid
+	ErrorAPIKeyNotFound = BackendError("API key could not be found")
 )

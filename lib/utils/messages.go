@@ -19,6 +19,9 @@ package util
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/IBM/ibmcloud-volume-interface/lib/utils/reasoncode"
 )
 
 // Message Wrapper Message/Error Class
@@ -40,4 +43,15 @@ func (msg Message) Error() string {
 // Info ...
 func (msg Message) Info() string {
 	return fmt.Sprintf("{Code:%s, Type:%s, Description:%s, BackendError:%s, RC:%d}", msg.Code, msg.Type, msg.Description, msg.BackendError, msg.RC)
+}
+
+// APIKeyNotFound ...
+func (msg Message) APIKeyNotFound() bool {
+	if reasoncode.ReasonCode(msg.Code) == reasoncode.ErrorAuthenticationFailed {
+		if strings.Contains(msg.BackendError, string(reasoncode.ErrorAPIKeyNotFound)) {
+			return true
+		}
+		return false
+	}
+	return false
 }
