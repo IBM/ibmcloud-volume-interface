@@ -21,7 +21,7 @@ import (
 	"context"
 
 	"github.com/IBM/ibmcloud-volume-interface/lib/provider"
-
+	vpcconfig "github.com/IBM/ibmcloud-volume-vpc/block/vpcconfig"
 	"go.uber.org/zap"
 )
 
@@ -38,7 +38,7 @@ type Provider interface {
 	ContextCredentialsFactory(datacenter *string) (ContextCredentialsFactory, error)
 
 	// UpdateAPIKey updates api key in the provider
-	UpdateAPIKey(interface{}, *zap.Logger) error
+	UpdateAPIKey(*vpcconfig.VPCBlockConfig, *zap.Logger) error
 }
 
 // ContextCredentialsFactory is a factory which can generate ContextCredentials instances
