@@ -98,8 +98,3 @@ const (
 	//ErrorVolumeDetachFailed indicates if volume detach from instance is failed
 	ErrorVolumeDetachFailed = ReasonCode("ErrorVolumeDetachFailed")
 )
-
-const (
-	// ErrorAPIKeyNotFound indicates API key was invalid
-	ErrorAPIKeyNotFound = BackendError("API key could not be found")
-)

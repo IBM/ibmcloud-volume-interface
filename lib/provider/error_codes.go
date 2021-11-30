@@ -14,30 +14,10 @@
  * limitations under the License.
  */
 
-// Package util ...
-package util
+// Package provider ...
+package provider
 
-import (
-	"fmt"
+const (
+	// APIKeyNotFound ...
+	APIKeyNotFound = "E06f9"
 )
-
-// Message Wrapper Message/Error Class
-type Message struct {
-	Code         string
-	Type         string
-	RequestID    string
-	Description  string
-	BackendError string
-	RC           int
-	Action       string
-}
-
-// Error Implement the Error() interface method
-func (msg Message) Error() string {
-	return msg.Info()
-}
-
-// Info ...
-func (msg Message) Info() string {
-	return fmt.Sprintf("{Code:%s, Type:%s, Description:%s, BackendError:%s, RC:%d}", msg.Code, msg.Type, msg.Description, msg.BackendError, msg.RC)
-}
