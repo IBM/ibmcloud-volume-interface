@@ -85,6 +85,7 @@ func (ccf *ContextCredentialsFactory) ForIAMAccessToken(apiKey string, logger *z
 
 // UpdateAPIKey ...
 func (ccf *ContextCredentialsFactory) UpdateAPIKey(apiKey string, logger *zap.Logger) error {
+	logger.Info("Updating api key")
 	if ccf.TokenExchangeService == nil {
 		logger.Error("Failed to update api key in context credentials")
 		return errors.New("failed to update api key")
