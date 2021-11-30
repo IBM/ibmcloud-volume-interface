@@ -20,9 +20,6 @@ package reasoncode
 // ReasonCode ...
 type ReasonCode string
 
-// BackendError ...
-type BackendError string
-
 const (
 
 	// ErrorUnclassified indicates a generic unclassified error
