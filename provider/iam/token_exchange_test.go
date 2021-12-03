@@ -269,6 +269,33 @@ func TestExchangeIAMAPIKeyForIMSToken(t *testing.T) {
 	assert.Error(t, err)
 }
 
+func TestUpdateAPIKey(t *testing.T) {
+	logger := zap.New(
+		zapcore.NewCore(zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig()), consoleDebugging, lowPriority),
+		zap.AddCaller(),
+	)
+
+	httpSetup()
+
+	mux.HandleFunc("/oidc/token",
+		func(w http.ResponseWriter, r *http.Request) {
+			// Leave response empty
+		},
+	)
+
+	authConfig := &AuthConfiguration{
+		IamURL:          server.URL,
+		IamClientID:     "test",
+		IamClientSecret: "secret",
+	}
+
+	tes, err := NewTokenExchangeService(authConfig)
+	assert.NoError(t, err)
+
+	err = tes.UpdateAPIKey("some-key", logger)
+	assert.Nil(t, err)
+}
+
 func Test_ExchangeAccessTokenForIMSToken_Success(t *testing.T) {
 	logger := zap.New(
 		zapcore.NewCore(zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig()), consoleDebugging, lowPriority),
