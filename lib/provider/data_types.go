@@ -102,7 +102,7 @@ type Volume struct {
 
 // Snapshot ...
 type Snapshot struct {
-	Volume
+	VolumeID string `json:"volumeID,omitempty"`
 
 	// a unique Snapshot ID which created by the provider
 	SnapshotID string `json:"snapshotID,omitempty"`
@@ -118,6 +118,12 @@ type Snapshot struct {
 
 	// tags for the snapshot
 	SnapshotTags SnapshotTags `json:"tags,omitempty"`
+}
+
+// SnapshotList ...
+type SnapshotList struct {
+	Next      string      `json:"next,omitempty"`
+	Snapshots []*Snapshot `json:"snapshots"`
 }
 
 // VolumeAuthorization capture details of autorization to be made
@@ -147,4 +153,16 @@ type ExpandVolumeRequest struct {
 
 	// The new Capacity of the volume, in GiB
 	Capacity int64 `json:"capacity"`
+}
+
+// SnapshotRequest ...
+type SnapshotRequest struct {
+	// VolumeID id for the volume
+	SourceVolumeID string `json:"volumeID"`
+
+	// Name of snapshot
+	Name *string `json:"name,omitempty"`
+
+	// tags for the snapshot
+	SnapshotTags SnapshotTags `json:"tags,omitempty"`
 }

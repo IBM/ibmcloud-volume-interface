@@ -19,12 +19,8 @@ package provider
 
 // SnapshotManager ...
 type SnapshotManager interface {
-	// Create snapshot space
-	OrderSnapshot(VolumeRequest Volume) error
-
-	// Snapshot operations
 	// Create the snapshot on the volume
-	CreateSnapshot(volume *Volume, tags map[string]string) (*Snapshot, error)
+	CreateSnapshot(snapshotRequest SnapshotRequest) (*Snapshot, error)
 
 	// Delete the snapshot
 	DeleteSnapshot(*Snapshot) error
@@ -36,7 +32,7 @@ type SnapshotManager interface {
 	GetSnapshotWithVolumeID(volumeID string, snapshotID string) (*Snapshot, error)
 
 	// Snapshot list by using tags
-	ListSnapshots() ([]*Snapshot, error)
+	ListSnapshots(limit int, start string, tags map[string]string) (*SnapshotList, error)
 
 	//List all the  snapshots for a given volume
 	ListAllSnapshots(volumeID string) ([]*Snapshot, error)
