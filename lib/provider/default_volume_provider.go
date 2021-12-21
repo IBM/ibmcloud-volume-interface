@@ -118,7 +118,7 @@ func (volprov *DefaultVolumeProvider) OrderSnapshot(VolumeRequest Volume) error 
 }
 
 // CreateSnapshot on the volume
-func (volprov *DefaultVolumeProvider) CreateSnapshot(volume *Volume, tags map[string]string) (*Snapshot, error) {
+func (volprov *DefaultVolumeProvider) CreateSnapshot(snapshotRequest SnapshotRequest) (*Snapshot, error) {
 	return nil, nil
 }
 
@@ -138,7 +138,7 @@ func (volprov *DefaultVolumeProvider) GetSnapshotWithVolumeID(volumeID string, s
 }
 
 //ListSnapshots list the snapshots
-func (volprov *DefaultVolumeProvider) ListSnapshots() ([]*Snapshot, error) {
+func (volprov *DefaultVolumeProvider) ListSnapshots(limit int, start string, tags map[string]string) (*SnapshotList, error) {
 	return nil, nil
 }
 

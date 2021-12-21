@@ -111,8 +111,8 @@ func TestOrderSnapshot(t *testing.T) {
 func TestCreateSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	volume, _ := ccf.CreateSnapshot(&Volume{}, nil)
-	assert.Nil(t, volume)
+	snapshot, _ := ccf.CreateSnapshot(SnapshotRequest{})
+	assert.Nil(t, snapshot)
 }
 
 func TestDeleteSnapshot(t *testing.T) {
@@ -138,7 +138,7 @@ func TestGetSnapshotWithVolumeID(t *testing.T) {
 func TestListSnapshots(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	listSnapWithID, _ := ccf.ListSnapshots()
+	listSnapWithID, _ := ccf.ListSnapshots(50, "1", nil)
 	assert.Nil(t, listSnapWithID)
 }
 
