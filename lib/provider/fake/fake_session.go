@@ -37,11 +37,10 @@ type FakeSession struct {
 	closeMutex       sync.RWMutex
 	closeArgsForCall []struct {
 	}
-	CreateSnapshotStub        func(*provider.Volume, map[string]string) (*provider.Snapshot, error)
+	CreateSnapshotStub        func(provider.SnapshotRequest) (*provider.Snapshot, error)
 	createSnapshotMutex       sync.RWMutex
 	createSnapshotArgsForCall []struct {
-		arg1 *provider.Volume
-		arg2 map[string]string
+		arg1 provider.SnapshotRequest
 	}
 	createSnapshotReturns struct {
 		result1 *provider.Snapshot
@@ -267,16 +266,19 @@ type FakeSession struct {
 		result1 []*provider.Snapshot
 		result2 error
 	}
-	ListSnapshotsStub        func() ([]*provider.Snapshot, error)
+	ListSnapshotsStub        func(int, string, map[string]string) (*provider.SnapshotList, error)
 	listSnapshotsMutex       sync.RWMutex
 	listSnapshotsArgsForCall []struct {
+		arg1 int
+		arg2 string
+		arg3 map[string]string
 	}
 	listSnapshotsReturns struct {
-		result1 []*provider.Snapshot
+		result1 *provider.SnapshotList
 		result2 error
 	}
 	listSnapshotsReturnsOnCall map[int]struct {
-		result1 []*provider.Snapshot
+		result1 *provider.SnapshotList
 		result2 error
 	}
 	ListVolumesStub        func(int, string, map[string]string) (*provider.VolumeList, error)
@@ -293,17 +295,6 @@ type FakeSession struct {
 	listVolumesReturnsOnCall map[int]struct {
 		result1 *provider.VolumeList
 		result2 error
-	}
-	OrderSnapshotStub        func(provider.Volume) error
-	orderSnapshotMutex       sync.RWMutex
-	orderSnapshotArgsForCall []struct {
-		arg1 provider.Volume
-	}
-	orderSnapshotReturns struct {
-		result1 error
-	}
-	orderSnapshotReturnsOnCall map[int]struct {
-		result1 error
 	}
 	ProviderNameStub        func() provider.VolumeProvider
 	providerNameMutex       sync.RWMutex
@@ -537,19 +528,18 @@ func (fake *FakeSession) CloseCalls(stub func()) {
 	fake.CloseStub = stub
 }
 
-func (fake *FakeSession) CreateSnapshot(arg1 *provider.Volume, arg2 map[string]string) (*provider.Snapshot, error) {
+func (fake *FakeSession) CreateSnapshot(arg1 provider.SnapshotRequest) (*provider.Snapshot, error) {
 	fake.createSnapshotMutex.Lock()
 	ret, specificReturn := fake.createSnapshotReturnsOnCall[len(fake.createSnapshotArgsForCall)]
 	fake.createSnapshotArgsForCall = append(fake.createSnapshotArgsForCall, struct {
-		arg1 *provider.Volume
-		arg2 map[string]string
-	}{arg1, arg2})
+		arg1 provider.SnapshotRequest
+	}{arg1})
 	stub := fake.CreateSnapshotStub
 	fakeReturns := fake.createSnapshotReturns
-	fake.recordInvocation("CreateSnapshot", []interface{}{arg1, arg2})
+	fake.recordInvocation("CreateSnapshot", []interface{}{arg1})
 	fake.createSnapshotMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2)
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -563,17 +553,17 @@ func (fake *FakeSession) CreateSnapshotCallCount() int {
 	return len(fake.createSnapshotArgsForCall)
 }
 
-func (fake *FakeSession) CreateSnapshotCalls(stub func(*provider.Volume, map[string]string) (*provider.Snapshot, error)) {
+func (fake *FakeSession) CreateSnapshotCalls(stub func(provider.SnapshotRequest) (*provider.Snapshot, error)) {
 	fake.createSnapshotMutex.Lock()
 	defer fake.createSnapshotMutex.Unlock()
 	fake.CreateSnapshotStub = stub
 }
 
-func (fake *FakeSession) CreateSnapshotArgsForCall(i int) (*provider.Volume, map[string]string) {
+func (fake *FakeSession) CreateSnapshotArgsForCall(i int) provider.SnapshotRequest {
 	fake.createSnapshotMutex.RLock()
 	defer fake.createSnapshotMutex.RUnlock()
 	argsForCall := fake.createSnapshotArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
+	return argsForCall.arg1
 }
 
 func (fake *FakeSession) CreateSnapshotReturns(result1 *provider.Snapshot, result2 error) {
@@ -1675,17 +1665,20 @@ func (fake *FakeSession) ListAllSnapshotsReturnsOnCall(i int, result1 []*provide
 	}{result1, result2}
 }
 
-func (fake *FakeSession) ListSnapshots() ([]*provider.Snapshot, error) {
+func (fake *FakeSession) ListSnapshots(arg1 int, arg2 string, arg3 map[string]string) (*provider.SnapshotList, error) {
 	fake.listSnapshotsMutex.Lock()
 	ret, specificReturn := fake.listSnapshotsReturnsOnCall[len(fake.listSnapshotsArgsForCall)]
 	fake.listSnapshotsArgsForCall = append(fake.listSnapshotsArgsForCall, struct {
-	}{})
+		arg1 int
+		arg2 string
+		arg3 map[string]string
+	}{arg1, arg2, arg3})
 	stub := fake.ListSnapshotsStub
 	fakeReturns := fake.listSnapshotsReturns
-	fake.recordInvocation("ListSnapshots", []interface{}{})
+	fake.recordInvocation("ListSnapshots", []interface{}{arg1, arg2, arg3})
 	fake.listSnapshotsMutex.Unlock()
 	if stub != nil {
-		return stub()
+		return stub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -1699,34 +1692,41 @@ func (fake *FakeSession) ListSnapshotsCallCount() int {
 	return len(fake.listSnapshotsArgsForCall)
 }
 
-func (fake *FakeSession) ListSnapshotsCalls(stub func() ([]*provider.Snapshot, error)) {
+func (fake *FakeSession) ListSnapshotsCalls(stub func(int, string, map[string]string) (*provider.SnapshotList, error)) {
 	fake.listSnapshotsMutex.Lock()
 	defer fake.listSnapshotsMutex.Unlock()
 	fake.ListSnapshotsStub = stub
 }
 
-func (fake *FakeSession) ListSnapshotsReturns(result1 []*provider.Snapshot, result2 error) {
+func (fake *FakeSession) ListSnapshotsArgsForCall(i int) (int, string, map[string]string) {
+	fake.listSnapshotsMutex.RLock()
+	defer fake.listSnapshotsMutex.RUnlock()
+	argsForCall := fake.listSnapshotsArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+}
+
+func (fake *FakeSession) ListSnapshotsReturns(result1 *provider.SnapshotList, result2 error) {
 	fake.listSnapshotsMutex.Lock()
 	defer fake.listSnapshotsMutex.Unlock()
 	fake.ListSnapshotsStub = nil
 	fake.listSnapshotsReturns = struct {
-		result1 []*provider.Snapshot
+		result1 *provider.SnapshotList
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeSession) ListSnapshotsReturnsOnCall(i int, result1 []*provider.Snapshot, result2 error) {
+func (fake *FakeSession) ListSnapshotsReturnsOnCall(i int, result1 *provider.SnapshotList, result2 error) {
 	fake.listSnapshotsMutex.Lock()
 	defer fake.listSnapshotsMutex.Unlock()
 	fake.ListSnapshotsStub = nil
 	if fake.listSnapshotsReturnsOnCall == nil {
 		fake.listSnapshotsReturnsOnCall = make(map[int]struct {
-			result1 []*provider.Snapshot
+			result1 *provider.SnapshotList
 			result2 error
 		})
 	}
 	fake.listSnapshotsReturnsOnCall[i] = struct {
-		result1 []*provider.Snapshot
+		result1 *provider.SnapshotList
 		result2 error
 	}{result1, result2}
 }
@@ -1795,67 +1795,6 @@ func (fake *FakeSession) ListVolumesReturnsOnCall(i int, result1 *provider.Volum
 		result1 *provider.VolumeList
 		result2 error
 	}{result1, result2}
-}
-
-func (fake *FakeSession) OrderSnapshot(arg1 provider.Volume) error {
-	fake.orderSnapshotMutex.Lock()
-	ret, specificReturn := fake.orderSnapshotReturnsOnCall[len(fake.orderSnapshotArgsForCall)]
-	fake.orderSnapshotArgsForCall = append(fake.orderSnapshotArgsForCall, struct {
-		arg1 provider.Volume
-	}{arg1})
-	stub := fake.OrderSnapshotStub
-	fakeReturns := fake.orderSnapshotReturns
-	fake.recordInvocation("OrderSnapshot", []interface{}{arg1})
-	fake.orderSnapshotMutex.Unlock()
-	if stub != nil {
-		return stub(arg1)
-	}
-	if specificReturn {
-		return ret.result1
-	}
-	return fakeReturns.result1
-}
-
-func (fake *FakeSession) OrderSnapshotCallCount() int {
-	fake.orderSnapshotMutex.RLock()
-	defer fake.orderSnapshotMutex.RUnlock()
-	return len(fake.orderSnapshotArgsForCall)
-}
-
-func (fake *FakeSession) OrderSnapshotCalls(stub func(provider.Volume) error) {
-	fake.orderSnapshotMutex.Lock()
-	defer fake.orderSnapshotMutex.Unlock()
-	fake.OrderSnapshotStub = stub
-}
-
-func (fake *FakeSession) OrderSnapshotArgsForCall(i int) provider.Volume {
-	fake.orderSnapshotMutex.RLock()
-	defer fake.orderSnapshotMutex.RUnlock()
-	argsForCall := fake.orderSnapshotArgsForCall[i]
-	return argsForCall.arg1
-}
-
-func (fake *FakeSession) OrderSnapshotReturns(result1 error) {
-	fake.orderSnapshotMutex.Lock()
-	defer fake.orderSnapshotMutex.Unlock()
-	fake.OrderSnapshotStub = nil
-	fake.orderSnapshotReturns = struct {
-		result1 error
-	}{result1}
-}
-
-func (fake *FakeSession) OrderSnapshotReturnsOnCall(i int, result1 error) {
-	fake.orderSnapshotMutex.Lock()
-	defer fake.orderSnapshotMutex.Unlock()
-	fake.OrderSnapshotStub = nil
-	if fake.orderSnapshotReturnsOnCall == nil {
-		fake.orderSnapshotReturnsOnCall = make(map[int]struct {
-			result1 error
-		})
-	}
-	fake.orderSnapshotReturnsOnCall[i] = struct {
-		result1 error
-	}{result1}
 }
 
 func (fake *FakeSession) ProviderName() provider.VolumeProvider {
@@ -2324,8 +2263,6 @@ func (fake *FakeSession) Invocations() map[string][][]interface{} {
 	defer fake.listSnapshotsMutex.RUnlock()
 	fake.listVolumesMutex.RLock()
 	defer fake.listVolumesMutex.RUnlock()
-	fake.orderSnapshotMutex.RLock()
-	defer fake.orderSnapshotMutex.RUnlock()
 	fake.providerNameMutex.RLock()
 	defer fake.providerNameMutex.RUnlock()
 	fake.typeMutex.RLock()
