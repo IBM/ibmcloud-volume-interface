@@ -98,6 +98,9 @@ type Volume struct {
 
 	// Only for VPC volume provider
 	VPCVolume
+
+	// ID of snapshot to be restored
+	SnapshotID string `json:"snapshotID,omitempty"`
 }
 
 // Snapshot ...
