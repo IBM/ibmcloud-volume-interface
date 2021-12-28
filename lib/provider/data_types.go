@@ -50,9 +50,6 @@ type Volume struct {
 	// The Capacity of the volume, in GiB
 	Capacity *int `json:"capacity"`
 
-	// The size of the snapshot space, in GiB
-	SnapshotSpace *int `json:"snapshotSpace,omitempty"`
-
 	// Volume IOPS for performance storage type only
 	Iops *string `json:"iops"`
 
