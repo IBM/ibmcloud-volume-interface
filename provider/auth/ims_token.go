@@ -18,8 +18,14 @@
 package auth
 
 import (
+	"encoding/json"
 	"errors"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"os"
 	"strconv"
+	"strings"
 
 	"go.uber.org/zap"
 
@@ -69,7 +75,8 @@ func (ccf *ContextCredentialsFactory) ForIAMAPIKey(iamAccountID, apiKey string, 
 
 // ForIAMAccessToken ...
 func (ccf *ContextCredentialsFactory) ForIAMAccessToken(apiKey string, logger *zap.Logger) (provider.ContextCredentials, error) {
-	iamAccessToken, err := ccf.TokenExchangeService.ExchangeIAMAPIKeyForAccessToken(apiKey, logger)
+	//iamAccessToken, err := ccf.TokenExchangeService.ExchangeIAMAPIKeyForAccessToken(apiKey, logger)
+	iamAccessToken, err := fetchIAMAccessToken(logger)
 	if err != nil {
 		logger.Error("Unable to retrieve IAM access token from IAM API key", local.ZapError(err))
 		return provider.ContextCredentials{}, err
@@ -81,6 +88,79 @@ func (ccf *ContextCredentialsFactory) ForIAMAccessToken(apiKey string, logger *z
 	}
 
 	return forIAMAccessToken(iamAccountID, iamAccessToken), nil
+}
+
+// fetchIAMAccessToken ...
+func fetchIAMAccessToken(logger *zap.Logger) (*iam.AccessToken, error) {
+	logger.Info("Fetching IAM token")
+	vaultToken, err := fetchVaultToken()
+	if err != nil {
+		logger.Error("Unable to read vault token", local.ZapError(err))
+		return nil, err
+	}
+	data := url.Values{}
+	endpoint := "https://iam.cloud.ibm.com/identity/token"
+	data.Set("cr_token", vaultToken)
+	// TODO - receive profile ID as input
+	data.Set("profile_id", "")
+	data.Set("grant_type", "urn:ibm:params:oauth:grant-type:cr-token")
+	client := &http.Client{}
+	r, err := http.NewRequest("POST", endpoint, strings.NewReader(data.Encode()))
+	if err != nil {
+		logger.Error("Unable to create http request", local.ZapError(err))
+	}
+
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	r.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
+
+	res, err := client.Do(r)
+	if err != nil {
+		logger.Error("Unable to send request to fetch iam token", local.ZapError(err))
+		return nil, err
+	}
+
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		logger.Error("Unable to read response received for fetch iam token request", local.ZapError(err))
+		return nil, err
+	}
+
+	var tokenResponse = struct {
+		IAMToken       string `json:"access_token"`
+		RefreshToken   string `json:"refresh_token"`
+		TokenType      string `json:"token_type"`
+		ExpiryDuration int    `json:"expires_in"`
+		Expiration     int    `json:"expiration"`
+		Scope          string `json:"scope"`
+	}{}
+
+	err = json.Unmarshal(body, &tokenResponse)
+	if err != nil {
+		logger.Error("Unable to unmarshal response body received for fetch iam token request", local.ZapError(err))
+		return nil, err
+	}
+
+	if tokenResponse.IAMToken == "" {
+		logger.Error("Empty iam token", zap.String("Response", string(body)))
+		return nil, errors.New("Failed to fetch iam token")
+	}
+
+	logger.Info("Successfully fetched iam token")
+	return &iam.AccessToken{Token: tokenResponse.IAMToken}, nil
+}
+
+// fetchVaultToken reads vault token mounted into the secrets and returns the same...
+func fetchVaultToken() (string, error) {
+	// get path from env
+	data, err := os.ReadFile("/var/run/secrets/tokens/vault-token")
+	if err != nil {
+		return "", err
+	}
+	if string(data) == "" {
+		return "", errors.New("unable to fetch vault token")
+	}
+	return string(data), nil
 }
 
 // UpdateAPIKey ...
