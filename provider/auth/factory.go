@@ -24,7 +24,8 @@ import (
 
 // ContextCredentialsFactory ...
 type ContextCredentialsFactory struct {
-	TokenExchangeService iam.TokenExchangeService
+	TokenExchangeService    iam.TokenExchangeService
+	ComputeIdentityProvider iam.TokenProvider
 }
 
 var _ local.ContextCredentialsFactory = &ContextCredentialsFactory{}
