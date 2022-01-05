@@ -26,17 +26,20 @@ import (
 type ContextCredentialsFactory struct {
 	TokenExchangeService    iam.TokenExchangeService
 	ComputeIdentityProvider iam.TokenProvider
-	AuthType                AuthType
+	AuthType                Type
 }
 
-type AuthType string
+// Type ...
+type Type string
 
 var _ local.ContextCredentialsFactory = &ContextCredentialsFactory{}
 
 const (
-	APIKEY AuthType = "APIKEY"
+	// Apikey ...
+	Apikey Type = "APIKEY"
 
-	COMPUTE_IDENTITY AuthType = "COMPUTE_IDENTITY"
+	// ComputeIdentity ...
+	ComputeIdentity Type = "COMPUTE_IDENTITY"
 )
 
 // NewContextCredentialsFactory ...

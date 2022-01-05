@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// token ...
+// Package token ...
 package token
 
 import (
@@ -56,7 +56,7 @@ func FetchTokenLifeTime(logger *zap.Logger, tokenString string, tokenExpirydiff 
 	token, err := parseToken(tokenString)
 	if err != nil {
 		logger.Error("Error parsing token", zap.Error(err))
-		return tokenLifeTime, errors.New("Error parsing the token")
+		return tokenLifeTime, errors.New("error parsing the token")
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
@@ -68,12 +68,12 @@ func FetchTokenLifeTime(logger *zap.Logger, tokenString string, tokenExpirydiff 
 		var expiryTime interface{}
 		if expiryTime, ok = claims["exp"]; !ok {
 			logger.Error("Unable to find expiry time of token")
-			return tokenLifeTime, errors.New("Unable to find expiry time of token")
+			return tokenLifeTime, errors.New("unable to find expiry time of token")
 		}
 		tokenLifeTime = uint64(expiryTime.(float64)) - uint64(currentTime)
 		if tokenLifeTime < tokenExpirydiff {
 			logger.Error("Token life time is less than expected", zap.Uint64("Expected token expiry diff", tokenExpirydiff), zap.Uint64("Token life time", tokenLifeTime))
-			return tokenLifeTime, errors.New("Token life time is less than expected")
+			return tokenLifeTime, errors.New("token life time is less than expected")
 		}
 		logger.Info("Successfully fetched token life time")
 		return tokenLifeTime, nil
@@ -85,7 +85,7 @@ func FetchTokenLifeTime(logger *zap.Logger, tokenString string, tokenExpirydiff 
 // parseToken parses token string to jwt token
 func parseToken(tokenString string) (*jwt.Token, error) {
 	if tokenString == "" {
-		return nil, errors.New("Empty token string")
+		return nil, errors.New("empty token string")
 	}
 	token, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
 	return token, err

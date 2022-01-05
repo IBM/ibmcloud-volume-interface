@@ -71,7 +71,7 @@ func (ccf *ContextCredentialsFactory) ForIAMAPIKey(iamAccountID, apiKey string, 
 func (ccf *ContextCredentialsFactory) ForIAMAccessToken(apiKey string, logger *zap.Logger) (provider.ContextCredentials, error) {
 	var iamAccessToken *iam.AccessToken
 	var err error
-	if ccf.AuthType == COMPUTE_IDENTITY {
+	if ccf.AuthType == ComputeIdentity {
 		iamToken, _, err := ccf.ComputeIdentityProvider.GetDefaultIAMToken(true)
 		if err != nil {
 			logger.Error("Unable to retrieve IAM access token from profile ID", local.ZapError(err))

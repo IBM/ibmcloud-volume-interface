@@ -31,8 +31,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/IBM/ibmcloud-volume-interface/provider/token"
 	sp "github.com/IBM/ibmcloud-volume-interface/provider/secretprovider"
+	"github.com/IBM/ibmcloud-volume-interface/provider/token"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
@@ -44,12 +44,9 @@ var (
 const (
 	// tokenExpirydiff ...
 	tokenExpirydiff = 600
-
-	// tokenExchangeEnpoint ...
-	tokenExchangeEnpoint = "https://iam.cloud.ibm.com/identity/token"
 )
 
-// ComputeIdentityProvider
+// ComputeIdentityProvider ...
 type ComputeIdentityProvider struct {
 	defaultProfileID string
 	iksEnabled       bool
@@ -73,13 +70,14 @@ func NewComputeIdentityProvider(profileID string, iksEnabled bool, logger *zap.L
 	return computeIdentityProvider, nil
 }
 
-func (cp *ComputeIdentityProvider) GetIAMToken(profileId string, freshTokenRequired bool) (string, uint64, error) {
+// GetIAMToken ...
+func (cp *ComputeIdentityProvider) GetIAMToken(profileID string, freshTokenRequired bool) (string, uint64, error) {
 	cp.logger.Info("In GetIAMToken(), fetching iam token via compute identity method")
 
 	var tokenExpiryTime uint64
 	// If IKS isn't enabled, call goes to sidecar
 	if !cp.iksEnabled {
-		conn, err := grpc.Dial(*endpoint, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithDialer(unixConnect))
+		conn, err := grpc.Dial(*endpoint, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithDialer(unixConnect)) //nolint:staticcheck
 		if err != nil {
 			cp.logger.Error("Unable to setup grpc session", zap.Error(err))
 			return "", tokenExpiryTime, err
@@ -88,7 +86,7 @@ func (cp *ComputeIdentityProvider) GetIAMToken(profileId string, freshTokenRequi
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 		defer cancel()
 		defer conn.Close()
-		resp, err := c.GetIAMToken(ctx, &sp.Request{ProfileId: profileId, IsFreshTokenRequired: freshTokenRequired})
+		resp, err := c.GetIAMToken(ctx, &sp.Request{ProfileId: profileID, IsFreshTokenRequired: freshTokenRequired})
 		if err != nil {
 			cp.logger.Error("Error fetching iam token from grpc call", zap.Error(err))
 			return "", tokenExpiryTime, err
@@ -106,7 +104,7 @@ func (cp *ComputeIdentityProvider) GetIAMToken(profileId string, freshTokenRequi
 		cp.vaultToken = vaultToken
 	}
 
-	iamToken, err := sendGetTokenRequest(cp.logger, profileId, cp.vaultToken)
+	iamToken, err := sendGetTokenRequest(cp.logger, profileID, cp.vaultToken)
 	if err != nil {
 		cp.logger.Error("Error fetching iam token", zap.Error(err))
 		return "", tokenExpiryTime, err
@@ -120,6 +118,7 @@ func (cp *ComputeIdentityProvider) GetIAMToken(profileId string, freshTokenRequi
 	return iamToken, tokenExpiryTime, nil
 }
 
+// GetDefaultIAMToken ...
 func (cp *ComputeIdentityProvider) GetDefaultIAMToken(freshTokenRequired bool) (string, uint64, error) {
 	return cp.GetIAMToken(cp.defaultProfileID, freshTokenRequired)
 }
@@ -132,7 +131,7 @@ func sendGetTokenRequest(logger *zap.Logger, profileID, vaultToken string) (stri
 	data.Set("grant_type", "urn:ibm:params:oauth:grant-type:cr-token")
 
 	client := &http.Client{}
-	r, err := http.NewRequest("POST", tokenExchangeEnpoint, strings.NewReader(data.Encode())) // URL-encoded payload
+	r, err := http.NewRequest("POST", "https://iam.cloud.ibm.com/identity/token", strings.NewReader(data.Encode())) // URL-encoded payload
 	if err != nil {
 		logger.Error("Error creating http request", zap.Error(err))
 		return "", err
@@ -171,7 +170,7 @@ func sendGetTokenRequest(logger *zap.Logger, profileID, vaultToken string) (stri
 
 	if tokenResponse.IAMToken == "" {
 		logger.Error("Empty token", zap.String("Response received", string(body)))
-		return "", errors.New("Failed to fetch token")
+		return "", errors.New("failed to fetch iam token")
 	}
 
 	logger.Info("Successfully fetched iam token")
