@@ -18,7 +18,6 @@
 package iam
 
 import (
-	"IBM/compute-identity/pkg/utils"
 	"context"
 	"encoding/json"
 	"errors"
@@ -45,6 +44,9 @@ var (
 const (
 	// tokenExpirydiff ...
 	tokenExpirydiff = 600
+
+	// tokenExchangeEnpoint ...
+	tokenExchangeEnpoint = "https://iam.cloud.ibm.com/identity/token"
 )
 
 // ComputeIdentityProvider
@@ -130,7 +132,7 @@ func sendGetTokenRequest(logger *zap.Logger, profileID, vaultToken string) (stri
 	data.Set("grant_type", "urn:ibm:params:oauth:grant-type:cr-token")
 
 	client := &http.Client{}
-	r, err := http.NewRequest("POST", utils.TokenExchangeEndpoint, strings.NewReader(data.Encode())) // URL-encoded payload
+	r, err := http.NewRequest("POST", tokenExchangeEnpoint, strings.NewReader(data.Encode())) // URL-encoded payload
 	if err != nil {
 		logger.Error("Error creating http request", zap.Error(err))
 		return "", err
