@@ -4,7 +4,7 @@
 // 	protoc        v3.17.3
 // source: fetch_iam_token.proto
 
-package provider
+package secretprovider
 
 import (
 	reflect "reflect"
