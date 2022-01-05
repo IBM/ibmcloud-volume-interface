@@ -93,7 +93,7 @@ func (cp *ComputeIdentityProvider) GetIAMToken(profileId string, freshTokenRequi
 			cp.logger.Error("Error fetching iam token from grpc call", zap.Error(err))
 			return "", tokenExpiryTime, err
 		}
-		return resp.IAMToken, resp.Tokenlifetime, nil
+		return resp.Iamtoken, resp.Tokenlifetime, nil
 	}
 
 	// checking if the vault token is valid, if invalid reading it again
