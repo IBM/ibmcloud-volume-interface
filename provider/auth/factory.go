@@ -26,9 +26,18 @@ import (
 type ContextCredentialsFactory struct {
 	TokenExchangeService    iam.TokenExchangeService
 	ComputeIdentityProvider iam.TokenProvider
+	AuthType                AuthType
 }
 
+type AuthType string
+
 var _ local.ContextCredentialsFactory = &ContextCredentialsFactory{}
+
+const (
+	APIKEY AuthType = "APIKEY"
+
+	COMPUTE_IDENTITY AuthType = "COMPUTE_IDENTITY"
+)
 
 // NewContextCredentialsFactory ...
 func NewContextCredentialsFactory(authConfig *iam.AuthConfiguration) (*ContextCredentialsFactory, error) {
