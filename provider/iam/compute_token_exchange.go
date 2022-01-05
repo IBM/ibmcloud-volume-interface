@@ -75,8 +75,8 @@ func (cp *ComputeIdentityProvider) GetIAMToken(profileID string, freshTokenRequi
 	cp.logger.Info("In GetIAMToken(), fetching iam token via compute identity method")
 
 	var tokenExpiryTime uint64
-	// If IKS isn't enabled, call goes to sidecar
-	if !cp.iksEnabled {
+	// If IKS is enabled, call goes to sidecar
+	if cp.iksEnabled {
 		conn, err := grpc.Dial(*endpoint, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithDialer(unixConnect)) //nolint:staticcheck
 		if err != nil {
 			cp.logger.Error("Unable to setup grpc session", zap.Error(err))
