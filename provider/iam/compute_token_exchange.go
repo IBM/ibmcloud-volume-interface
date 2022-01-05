@@ -32,7 +32,7 @@ import (
 	"time"
 
 	"github.com/IBM/ibmcloud-volume-interface/provider/token"
-	sp "github.com/IBM/ibmcloud-volume-interface/provider/token/secretprovider"
+	sp "github.com/IBM/ibmcloud-volume-interface/provider/secretprovider"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
