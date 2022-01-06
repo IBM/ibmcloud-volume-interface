@@ -56,7 +56,7 @@ type ComputeIdentityProvider struct {
 
 // NewComputeIdentityProvider ...
 func NewComputeIdentityProvider(profileID string, iksEnabled bool, logger *zap.Logger) (TokenProvider, error) {
-	vaultToken, err := readVaultToken()
+	vaultToken, err := ReadVaultToken()
 	if err != nil {
 		logger.Error("Error initializing compute identity provider", zap.Error(err))
 		return nil, err
@@ -96,7 +96,7 @@ func (cp *ComputeIdentityProvider) GetIAMToken(profileID string, freshTokenRequi
 
 	// checking if the vault token is valid, if invalid reading it again
 	if !token.IsTokenValid(cp.logger, cp.vaultToken) {
-		vaultToken, err := readVaultToken()
+		vaultToken, err := ReadVaultToken()
 		if err != nil {
 			cp.logger.Error("Error reading vault token", zap.Error(err))
 			return "", tokenExpiryTime, err
@@ -178,7 +178,8 @@ func SendGetTokenRequest(logger *zap.Logger, profileID, vaultToken string) (stri
 	return tokenResponse.IAMToken, nil
 }
 
-func readVaultToken() (string, error) {
+// ReadVaultToken ...
+func ReadVaultToken() (string, error) {
 	tokenPath := os.Getenv("VAULT_TOKEN_PATH")
 	if tokenPath == "" {
 		return "", errors.New("VAULT_TOKEN_PATH not set")
