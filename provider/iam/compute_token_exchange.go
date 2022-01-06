@@ -104,7 +104,7 @@ func (cp *ComputeIdentityProvider) GetIAMToken(profileID string, freshTokenRequi
 		cp.vaultToken = vaultToken
 	}
 
-	iamToken, err := sendGetTokenRequest(cp.logger, profileID, cp.vaultToken)
+	iamToken, err := SendGetTokenRequest(cp.logger, profileID, cp.vaultToken)
 	if err != nil {
 		cp.logger.Error("Error fetching iam token", zap.Error(err))
 		return "", tokenExpiryTime, err
@@ -123,7 +123,8 @@ func (cp *ComputeIdentityProvider) GetDefaultIAMToken(freshTokenRequired bool) (
 	return cp.GetIAMToken(cp.defaultProfileID, freshTokenRequired)
 }
 
-func sendGetTokenRequest(logger *zap.Logger, profileID, vaultToken string) (string, error) {
+// SendGetTokenRequest ...
+func SendGetTokenRequest(logger *zap.Logger, profileID, vaultToken string) (string, error) {
 	logger.Info("Sending get token request to iam")
 	data := url.Values{}
 	data.Set("cr_token", vaultToken)
