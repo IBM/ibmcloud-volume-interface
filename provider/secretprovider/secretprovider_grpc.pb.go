@@ -4,7 +4,6 @@ package secretprovider
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -12,6 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion6
 
 // IAMTokenProviderClient is the client API for IAMTokenProvider service.
@@ -33,7 +33,7 @@ func NewIAMTokenProviderClient(cc grpc.ClientConnInterface) IAMTokenProviderClie
 
 func (c *iAMTokenProviderClient) GetIAMToken(ctx context.Context, in *Request, opts ...grpc.CallOption) (*IAMToken, error) {
 	out := new(IAMToken)
-	err := c.cc.Invoke(ctx, "/provider.IAMTokenProvider/GetIAMToken", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/secretprovider.IAMTokenProvider/GetIAMToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c *iAMTokenProviderClient) GetIAMToken(ctx context.Context, in *Request, o
 
 func (c *iAMTokenProviderClient) GetDefaultIAMToken(ctx context.Context, in *Request, opts ...grpc.CallOption) (*IAMToken, error) {
 	out := new(IAMToken)
-	err := c.cc.Invoke(ctx, "/provider.IAMTokenProvider/GetDefaultIAMToken", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/secretprovider.IAMTokenProvider/GetDefaultIAMToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ type UnsafeIAMTokenProviderServer interface {
 }
 
 func RegisterIAMTokenProviderServer(s *grpc.Server, srv IAMTokenProviderServer) {
-	s.RegisterService(&_IAMTokenProvider_ServiceDesc, srv)
+	s.RegisterService(&IAMTokenProvider_ServiceDesc, srv)
 }
 
 func _IAMTokenProvider_GetIAMToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -92,7 +92,7 @@ func _IAMTokenProvider_GetIAMToken_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/provider.IAMTokenProvider/GetIAMToken",
+		FullMethod: "/secretprovider.IAMTokenProvider/GetIAMToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IAMTokenProviderServer).GetIAMToken(ctx, req.(*Request))
@@ -110,7 +110,7 @@ func _IAMTokenProvider_GetDefaultIAMToken_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/provider.IAMTokenProvider/GetDefaultIAMToken",
+		FullMethod: "/secretprovider.IAMTokenProvider/GetDefaultIAMToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IAMTokenProviderServer).GetDefaultIAMToken(ctx, req.(*Request))
@@ -121,8 +121,8 @@ func _IAMTokenProvider_GetDefaultIAMToken_Handler(srv interface{}, ctx context.C
 // IAMTokenProvider_ServiceDesc is the grpc.ServiceDesc for IAMTokenProvider service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var _IAMTokenProvider_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "provider.IAMTokenProvider",
+var IAMTokenProvider_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "secretprovider.IAMTokenProvider",
 	HandlerType: (*IAMTokenProviderServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -135,5 +135,5 @@ var _IAMTokenProvider_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "fetch_iam_token.proto",
+	Metadata: "secretprovider.proto",
 }
