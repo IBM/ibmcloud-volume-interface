@@ -174,6 +174,19 @@ type FakeSession struct {
 		result1 *provider.Snapshot
 		result2 error
 	}
+	GetSnapshotByNameStub        func(string) (*provider.Snapshot, error)
+	getSnapshotByNameMutex       sync.RWMutex
+	getSnapshotByNameArgsForCall []struct {
+		arg1 string
+	}
+	getSnapshotByNameReturns struct {
+		result1 *provider.Snapshot
+		result2 error
+	}
+	getSnapshotByNameReturnsOnCall map[int]struct {
+		result1 *provider.Snapshot
+		result2 error
+	}
 	GetSnapshotWithVolumeIDStub        func(string, string) (*provider.Snapshot, error)
 	getSnapshotWithVolumeIDMutex       sync.RWMutex
 	getSnapshotWithVolumeIDArgsForCall []struct {
@@ -1216,6 +1229,70 @@ func (fake *FakeSession) GetSnapshotReturnsOnCall(i int, result1 *provider.Snaps
 	}{result1, result2}
 }
 
+func (fake *FakeSession) GetSnapshotByName(arg1 string) (*provider.Snapshot, error) {
+	fake.getSnapshotByNameMutex.Lock()
+	ret, specificReturn := fake.getSnapshotByNameReturnsOnCall[len(fake.getSnapshotByNameArgsForCall)]
+	fake.getSnapshotByNameArgsForCall = append(fake.getSnapshotByNameArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.GetSnapshotByNameStub
+	fakeReturns := fake.getSnapshotByNameReturns
+	fake.recordInvocation("GetSnapshotByName", []interface{}{arg1})
+	fake.getSnapshotByNameMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeSession) GetSnapshotByNameCallCount() int {
+	fake.getSnapshotByNameMutex.RLock()
+	defer fake.getSnapshotByNameMutex.RUnlock()
+	return len(fake.getSnapshotByNameArgsForCall)
+}
+
+func (fake *FakeSession) GetSnapshotByNameCalls(stub func(string) (*provider.Snapshot, error)) {
+	fake.getSnapshotByNameMutex.Lock()
+	defer fake.getSnapshotByNameMutex.Unlock()
+	fake.GetSnapshotByNameStub = stub
+}
+
+func (fake *FakeSession) GetSnapshotByNameArgsForCall(i int) string {
+	fake.getSnapshotByNameMutex.RLock()
+	defer fake.getSnapshotByNameMutex.RUnlock()
+	argsForCall := fake.getSnapshotByNameArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeSession) GetSnapshotByNameReturns(result1 *provider.Snapshot, result2 error) {
+	fake.getSnapshotByNameMutex.Lock()
+	defer fake.getSnapshotByNameMutex.Unlock()
+	fake.GetSnapshotByNameStub = nil
+	fake.getSnapshotByNameReturns = struct {
+		result1 *provider.Snapshot
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) GetSnapshotByNameReturnsOnCall(i int, result1 *provider.Snapshot, result2 error) {
+	fake.getSnapshotByNameMutex.Lock()
+	defer fake.getSnapshotByNameMutex.Unlock()
+	fake.GetSnapshotByNameStub = nil
+	if fake.getSnapshotByNameReturnsOnCall == nil {
+		fake.getSnapshotByNameReturnsOnCall = make(map[int]struct {
+			result1 *provider.Snapshot
+			result2 error
+		})
+	}
+	fake.getSnapshotByNameReturnsOnCall[i] = struct {
+		result1 *provider.Snapshot
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeSession) GetSnapshotWithVolumeID(arg1 string, arg2 string) (*provider.Snapshot, error) {
 	fake.getSnapshotWithVolumeIDMutex.Lock()
 	ret, specificReturn := fake.getSnapshotWithVolumeIDReturnsOnCall[len(fake.getSnapshotWithVolumeIDArgsForCall)]
@@ -2245,6 +2322,8 @@ func (fake *FakeSession) Invocations() map[string][][]interface{} {
 	defer fake.getProviderDisplayNameMutex.RUnlock()
 	fake.getSnapshotMutex.RLock()
 	defer fake.getSnapshotMutex.RUnlock()
+	fake.getSnapshotByNameMutex.RLock()
+	defer fake.getSnapshotByNameMutex.RUnlock()
 	fake.getSnapshotWithVolumeIDMutex.RLock()
 	defer fake.getSnapshotWithVolumeIDMutex.RUnlock()
 	fake.getVolumeMutex.RLock()
