@@ -132,6 +132,11 @@ func (volprov *DefaultVolumeProvider) GetSnapshot(snapshotID string) (*Snapshot,
 	return nil, nil
 }
 
+//GetSnapshotByName gets the snapshot
+func (volprov *DefaultVolumeProvider) GetSnapshotByName(snapshotName string) (*Snapshot, error) {
+	return nil, nil
+}
+
 //GetSnapshotWithVolumeID gets the snapshot with volumeID
 func (volprov *DefaultVolumeProvider) GetSnapshotWithVolumeID(volumeID string, snapshotID string) (*Snapshot, error) {
 	return nil, nil

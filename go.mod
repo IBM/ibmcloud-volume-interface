@@ -9,7 +9,6 @@ require (
 	github.com/IBM/secret-utils-lib v1.0.2
 	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/pierrre/gotestcover v0.0.0-20160517101806-924dca7d15f0 // indirect
 	github.com/prometheus/client_golang v1.7.1
 	github.com/stretchr/testify v1.7.0
 	go.uber.org/zap v1.20.0
