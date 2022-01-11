@@ -108,16 +108,16 @@ type Snapshot struct {
 	SnapshotID string `json:"snapshotID,omitempty"`
 
 	// The size of the snapshot, in GiB
-	SnapshotSize *int `json:"snapshotSize,omitempty"`
-
-	// Source volume details
-	//SnapshotedVolume *Volume `json:"SnapshotedVolume"`
+	SnapshotSize int64 `json:"snapshotSize,omitempty"`
 
 	// Time stamp when snapshot creation was initiated
 	SnapshotCreationTime time.Time `json:"snapCreationTime,omitempty"`
 
 	// tags for the snapshot
 	SnapshotTags SnapshotTags `json:"tags,omitempty"`
+
+	// status of snapshot
+	ReadyToUse bool `json:"readyToUse,omitempty"`
 }
 
 // SnapshotList ...
