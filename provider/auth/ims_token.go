@@ -69,7 +69,7 @@ func (ccf *ContextCredentialsFactory) ForIAMAPIKey(iamAccountID, apiKey string, 
 
 // ForIAMAccessToken ...
 func (ccf *ContextCredentialsFactory) ForIAMAccessToken(apiKey string, logger *zap.Logger) (provider.ContextCredentials, error) {
-	var iamAccessToken *iam.AccessToken
+	iamAccessToken := new(iam.AccessToken)
 	var err error
 	if ccf.AuthType == ComputeIdentity {
 		iamToken, _, err := ccf.ComputeIdentityProvider.GetDefaultIAMToken(true)

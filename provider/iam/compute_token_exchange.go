@@ -38,7 +38,7 @@ import (
 )
 
 var (
-	endpoint = flag.String("sidecarEndpoint", "/csi/provider.sock", "Storage secret sidecar endpoint")
+	endpoint = flag.String("sidecarendpoint", "/csi/provider.sock", "Storage secret sidecar endpoint")
 )
 
 const (
