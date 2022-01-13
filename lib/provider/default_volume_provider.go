@@ -137,18 +137,8 @@ func (volprov *DefaultVolumeProvider) GetSnapshotByName(snapshotName string) (*S
 	return nil, nil
 }
 
-//GetSnapshotWithVolumeID gets the snapshot with volumeID
-func (volprov *DefaultVolumeProvider) GetSnapshotWithVolumeID(volumeID string, snapshotID string) (*Snapshot, error) {
-	return nil, nil
-}
-
 //ListSnapshots list the snapshots
 func (volprov *DefaultVolumeProvider) ListSnapshots(limit int, start string, tags map[string]string) (*SnapshotList, error) {
-	return nil, nil
-}
-
-//ListAllSnapshots list all the snapshots
-func (volprov *DefaultVolumeProvider) ListAllSnapshots(volumeID string) ([]*Snapshot, error) {
 	return nil, nil
 }
 

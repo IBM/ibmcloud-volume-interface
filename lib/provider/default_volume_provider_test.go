@@ -128,25 +128,11 @@ func TestGetSnapshot(t *testing.T) {
 	assert.Nil(t, getSnap)
 }
 
-func TestGetSnapshotWithVolumeID(t *testing.T) {
-	ccf := &DefaultVolumeProvider{sess: nil}
-
-	getSnapWithID, _ := ccf.GetSnapshotWithVolumeID("VolumeID", "SnapshotID")
-	assert.Nil(t, getSnapWithID)
-}
-
 func TestListSnapshots(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
 	listSnapWithID, _ := ccf.ListSnapshots(50, "1", nil)
 	assert.Nil(t, listSnapWithID)
-}
-
-func TestListAllSnapshots(t *testing.T) {
-	ccf := &DefaultVolumeProvider{sess: nil}
-
-	listAllSnapWithID, _ := ccf.ListAllSnapshots("VolumeID")
-	assert.Nil(t, listAllSnapWithID)
 }
 
 func TestUpdateVolume(t *testing.T) {
