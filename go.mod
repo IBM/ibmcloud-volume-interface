@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/IBM-Cloud/ibm-cloud-cli-sdk v0.6.7
 	github.com/IBM/go-sdk-core/v5 v5.9.1 // indirect
-	github.com/IBM/secret-common-lib v0.0.0-20220130151629-4ed972306b26
+	github.com/IBM/secret-common-lib v0.0.0-20220131061639-74a32d2e51d8
 	github.com/IBM/secret-utils-lib v0.0.0-20220130151432-e2add97db4ec
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
