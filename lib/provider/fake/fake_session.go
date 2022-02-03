@@ -37,10 +37,11 @@ type FakeSession struct {
 	closeMutex       sync.RWMutex
 	closeArgsForCall []struct {
 	}
-	CreateSnapshotStub        func(provider.SnapshotRequest) (*provider.Snapshot, error)
+	CreateSnapshotStub        func(string, provider.SnapshotParameters) (*provider.Snapshot, error)
 	createSnapshotMutex       sync.RWMutex
 	createSnapshotArgsForCall []struct {
-		arg1 provider.SnapshotRequest
+		arg1 string
+		arg2 provider.SnapshotParameters
 	}
 	createSnapshotReturns struct {
 		result1 *provider.Snapshot
@@ -514,18 +515,19 @@ func (fake *FakeSession) CloseCalls(stub func()) {
 	fake.CloseStub = stub
 }
 
-func (fake *FakeSession) CreateSnapshot(arg1 provider.SnapshotRequest) (*provider.Snapshot, error) {
+func (fake *FakeSession) CreateSnapshot(arg1 string, arg2 provider.SnapshotParameters) (*provider.Snapshot, error) {
 	fake.createSnapshotMutex.Lock()
 	ret, specificReturn := fake.createSnapshotReturnsOnCall[len(fake.createSnapshotArgsForCall)]
 	fake.createSnapshotArgsForCall = append(fake.createSnapshotArgsForCall, struct {
-		arg1 provider.SnapshotRequest
-	}{arg1})
+		arg1 string
+		arg2 provider.SnapshotParameters
+	}{arg1, arg2})
 	stub := fake.CreateSnapshotStub
 	fakeReturns := fake.createSnapshotReturns
-	fake.recordInvocation("CreateSnapshot", []interface{}{arg1})
+	fake.recordInvocation("CreateSnapshot", []interface{}{arg1, arg2})
 	fake.createSnapshotMutex.Unlock()
 	if stub != nil {
-		return stub(arg1)
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -539,17 +541,17 @@ func (fake *FakeSession) CreateSnapshotCallCount() int {
 	return len(fake.createSnapshotArgsForCall)
 }
 
-func (fake *FakeSession) CreateSnapshotCalls(stub func(provider.SnapshotRequest) (*provider.Snapshot, error)) {
+func (fake *FakeSession) CreateSnapshotCalls(stub func(string, provider.SnapshotParameters) (*provider.Snapshot, error)) {
 	fake.createSnapshotMutex.Lock()
 	defer fake.createSnapshotMutex.Unlock()
 	fake.CreateSnapshotStub = stub
 }
 
-func (fake *FakeSession) CreateSnapshotArgsForCall(i int) provider.SnapshotRequest {
+func (fake *FakeSession) CreateSnapshotArgsForCall(i int) (string, provider.SnapshotParameters) {
 	fake.createSnapshotMutex.RLock()
 	defer fake.createSnapshotMutex.RUnlock()
 	argsForCall := fake.createSnapshotArgsForCall[i]
-	return argsForCall.arg1
+	return argsForCall.arg1, argsForCall.arg2
 }
 
 func (fake *FakeSession) CreateSnapshotReturns(result1 *provider.Snapshot, result2 error) {

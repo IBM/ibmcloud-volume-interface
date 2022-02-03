@@ -102,22 +102,25 @@ type Volume struct {
 
 // Snapshot ...
 type Snapshot struct {
-	VolumeID string `json:"volumeID,omitempty"`
+	VolumeID string `json:"volumeID"`
 
 	// a unique Snapshot ID which created by the provider
-	SnapshotID string `json:"snapshotID,omitempty"`
+	SnapshotID string `json:"snapshotID"`
 
-	// The size of the snapshot, in GiB
-	SnapshotSize int64 `json:"snapshotSize,omitempty"`
+	// The size of the snapshot, in bytes
+	SnapshotSize int64 `json:"snapshotSize"`
 
 	// Time stamp when snapshot creation was initiated
-	SnapshotCreationTime time.Time `json:"snapCreationTime,omitempty"`
+	SnapshotCreationTime time.Time `json:"snapCreationTime"`
 
 	// tags for the snapshot
 	SnapshotTags SnapshotTags `json:"tags,omitempty"`
 
 	// status of snapshot
-	ReadyToUse bool `json:"readyToUse,omitempty"`
+	ReadyToUse bool `json:"readyToUse"`
+
+	// VPC contains vpc fields
+	VPC *VPC `json:"vpc"`
 }
 
 // SnapshotList ...
@@ -156,9 +159,7 @@ type ExpandVolumeRequest struct {
 }
 
 // SnapshotRequest ...
-type SnapshotRequest struct {
-	// VolumeID id for the volume
-	SourceVolumeID string `json:"volumeID"`
+type SnapshotParameters struct {
 
 	// Name of snapshot
 	Name *string `json:"name,omitempty"`
