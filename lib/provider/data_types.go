@@ -158,7 +158,7 @@ type ExpandVolumeRequest struct {
 	Capacity int64 `json:"capacity"`
 }
 
-// SnapshotRequest ...
+// SnapshotParameters ...
 type SnapshotParameters struct {
 	// Name of snapshot
 	Name *string `json:"name,omitempty"`
