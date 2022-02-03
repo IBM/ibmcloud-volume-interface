@@ -160,7 +160,6 @@ type ExpandVolumeRequest struct {
 
 // SnapshotRequest ...
 type SnapshotParameters struct {
-
 	// Name of snapshot
 	Name *string `json:"name,omitempty"`
 
