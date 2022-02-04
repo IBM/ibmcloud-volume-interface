@@ -125,20 +125,14 @@ func (tes *tokenExchangeService) ExchangeIAMAPIKeyForIMSToken(iamAPIKey string, 
 }
 
 // ExchangeIAMAPIKeyForAccessToken ...
-func (tes *tokenExchangeService) ExchangeIAMAPIKeyForAccessToken(iamAPIKey string, logger *zap.Logger) (*AccessToken, error) {
-	/*r := tes.newTokenExchangeRequest(logger)
-
-	r.request.Field("grant_type", "urn:ibm:params:oauth:grant-type:apikey")
-	r.request.Field("apikey", iamAPIKey)
-
-	return r.exchangeForAccessToken()*/
+func (tes *tokenExchangeService) ExchangeIAMAPIKeyForAccessToken(logger *zap.Logger) (*AccessToken, error) {
 	logger.Info("Fetching using secret provider")
 	token, _, err := tes.secretprovider.GetDefaultIAMToken(false)
 	if err != nil {
 		logger.Error("Error fetching iam token", zap.Error(err))
 		return nil, err
 	}
-	logger.Info(token)
+	logger.Info("Successfully fetched iam token")
 	return &AccessToken{Token: token}, nil
 }
 
