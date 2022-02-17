@@ -120,7 +120,7 @@ type Snapshot struct {
 	ReadyToUse bool `json:"readyToUse"`
 
 	// VPC contains vpc fields
-	VPC 
+	VPC
 }
 
 // SnapshotList ...
