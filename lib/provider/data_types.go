@@ -120,7 +120,7 @@ type Snapshot struct {
 	ReadyToUse bool `json:"readyToUse"`
 
 	// VPC contains vpc fields
-	VPC *VPC `json:"vpc"`
+	VPC 
 }
 
 // SnapshotList ...
@@ -161,7 +161,7 @@ type ExpandVolumeRequest struct {
 // SnapshotParameters ...
 type SnapshotParameters struct {
 	// Name of snapshot
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
 	// tags for the snapshot
 	SnapshotTags SnapshotTags `json:"tags,omitempty"`
