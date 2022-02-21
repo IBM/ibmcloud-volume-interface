@@ -13,5 +13,5 @@ require (
 	github.com/stretchr/testify v1.7.0
 	go.uber.org/zap v1.20.0
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
-	google.golang.org/grpc v1.43.0 // indirect
+	google.golang.org/grpc v1.27.0 // indirect
 )
