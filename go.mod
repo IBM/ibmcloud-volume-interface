@@ -5,13 +5,15 @@ go 1.15
 require (
 	github.com/BurntSushi/toml v1.0.0
 	github.com/IBM-Cloud/ibm-cloud-cli-sdk v0.6.7
-	github.com/IBM/secret-common-lib v0.0.0-20220222031547-939ad5dfc3a9
-	github.com/IBM/secret-utils-lib v0.0.0-20220222031021-e3e6d5002fff
+	github.com/IBM/secret-common-lib v0.0.0-20220222035641-74dd653e399a
+	github.com/IBM/secret-utils-lib v0.0.0-20220222034757-d8f67c92ba87
 	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.7.1
 	github.com/stretchr/testify v1.7.0
 	go.uber.org/zap v1.20.0
+	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f // indirect
+	google.golang.org/genproto v0.0.0-20210402141018-6c239bbf2bb1 // indirect
 )
 
 replace (
