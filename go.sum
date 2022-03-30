@@ -48,8 +48,9 @@ github.com/IBM/go-sdk-core/v5 v5.9.1 h1:06pXbD9Rgmqqe2HA5YAeQbB4eYRRFgIoOT+Kh3cp
 github.com/IBM/go-sdk-core/v5 v5.9.1/go.mod h1:axE2JrRq79gIJTjKPBwV6gWHswvVptBjbcvvCPIxARM=
 github.com/IBM/secret-common-lib v0.0.0-20220225043617-1be640dd2c6a h1:4UlSVDauZLP4064bCj3fXH056vbiYJU24fwHYY+Iwhc=
 github.com/IBM/secret-common-lib v0.0.0-20220225043617-1be640dd2c6a/go.mod h1:JWvzNMBPFYZfaR0jx+mUGKaLDCs90Wc8kCd6JNd5aNg=
-github.com/IBM/secret-utils-lib v0.0.0-20220223110022-899e9e8c74e0 h1:ykPctjkhyS4zFfO1p3FT7ZsUuBDOEoTK+OQPG6PgeUM=
 github.com/IBM/secret-utils-lib v0.0.0-20220223110022-899e9e8c74e0/go.mod h1:kAUqVoy1qjG75BIgPbqOLYwZyOu+V7KHtTltkha7Los=
+github.com/IBM/secret-utils-lib v0.0.0-20220330211435-320f3baaa36a h1:hgWK1xdMDwHjZKus6M24wsFJVSBPz8z6CM5UqhBO+Bg=
+github.com/IBM/secret-utils-lib v0.0.0-20220330211435-320f3baaa36a/go.mod h1:lUu7f/w2Ylu9vJTEGcr3Hj81Niyn++hC0LZWiFdogKg=
 github.com/NYTimes/gziphandler v0.0.0-20170623195520-56545f4a5d46/go.mod h1:3wb06e3pkSAbeQ52E9H9iFoQsEEwGN64994WTCIhntQ=
 github.com/PuerkitoBio/purell v1.1.1/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbtSwDGJws/X0=
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
