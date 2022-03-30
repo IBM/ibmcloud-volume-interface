@@ -46,7 +46,7 @@ type TokenExchangeService interface {
 	ExchangeIAMAPIKeyForIMSToken(iamAPIKey string, logger *zap.Logger) (*IMSToken, error)
 
 	// ExchangeIAMAPIKeyForAccessToken ...
-	ExchangeIAMAPIKeyForAccessToken(logger *zap.Logger) (*AccessToken, error)
+	ExchangeIAMAPIKeyForAccessToken(iamAPIKey string, logger *zap.Logger) (*AccessToken, error)
 
 	// GetIAMAccountIDFromAccessToken ...
 	GetIAMAccountIDFromAccessToken(accessToken AccessToken, logger *zap.Logger) (string, error)
