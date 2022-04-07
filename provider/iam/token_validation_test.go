@@ -51,7 +51,7 @@ func Test_GetIAMAccountIDFromAccessToken(t *testing.T) {
 		{
 			name:          "invalid token",
 			token:         "invalid",
-			expectedError: errors.New("Not nil"),
+			expectedError: errors.New("not nil"),
 		},
 	}
 

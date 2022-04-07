@@ -503,7 +503,7 @@ func Test_ExchangeIAMAPIKeyForAccessToken(t *testing.T) {
 	}{
 		{
 			name:          "Successfully fetched token",
-			expectedError: errors.New("Not nil"),
+			expectedError: errors.New("not nil"),
 		},
 	}
 	for _, testCase := range testCases {
