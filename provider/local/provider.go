@@ -25,7 +25,7 @@ import (
 )
 
 // Provider describes the contract that is implemented by an internal provider implementation
-//go:generate counterfeiter -o fakes/provider.go --fake-name Provider . Provider
+//go:generate counterfeiter -o fakes/provider.go  --fake-name Provider . Provider
 type Provider interface {
 	// OpenSession begins and initialises a new provider session.
 	// The implementation can choose to verify the credentials and return an error if they are invalid.
