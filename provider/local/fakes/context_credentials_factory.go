@@ -55,18 +55,6 @@ type ContextCredentialsFactory struct {
 		result1 provider.ContextCredentials
 		result2 error
 	}
-	UpdateAPIKeyStub        func(string, *zap.Logger) error
-	updateAPIKeyMutex       sync.RWMutex
-	updateAPIKeyArgsForCall []struct {
-		arg1 string
-		arg2 *zap.Logger
-	}
-	updateAPIKeyReturns struct {
-		result1 error
-	}
-	updateAPIKeyReturnsOnCall map[int]struct {
-		result1 error
-	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -269,68 +257,6 @@ func (fake *ContextCredentialsFactory) ForIaaSAPIKeyReturnsOnCall(i int, result1
 	}{result1, result2}
 }
 
-func (fake *ContextCredentialsFactory) UpdateAPIKey(arg1 string, arg2 *zap.Logger) error {
-	fake.updateAPIKeyMutex.Lock()
-	ret, specificReturn := fake.updateAPIKeyReturnsOnCall[len(fake.updateAPIKeyArgsForCall)]
-	fake.updateAPIKeyArgsForCall = append(fake.updateAPIKeyArgsForCall, struct {
-		arg1 string
-		arg2 *zap.Logger
-	}{arg1, arg2})
-	stub := fake.UpdateAPIKeyStub
-	fakeReturns := fake.updateAPIKeyReturns
-	fake.recordInvocation("UpdateAPIKey", []interface{}{arg1, arg2})
-	fake.updateAPIKeyMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2)
-	}
-	if specificReturn {
-		return ret.result1
-	}
-	return fakeReturns.result1
-}
-
-func (fake *ContextCredentialsFactory) UpdateAPIKeyCallCount() int {
-	fake.updateAPIKeyMutex.RLock()
-	defer fake.updateAPIKeyMutex.RUnlock()
-	return len(fake.updateAPIKeyArgsForCall)
-}
-
-func (fake *ContextCredentialsFactory) UpdateAPIKeyCalls(stub func(string, *zap.Logger) error) {
-	fake.updateAPIKeyMutex.Lock()
-	defer fake.updateAPIKeyMutex.Unlock()
-	fake.UpdateAPIKeyStub = stub
-}
-
-func (fake *ContextCredentialsFactory) UpdateAPIKeyArgsForCall(i int) (string, *zap.Logger) {
-	fake.updateAPIKeyMutex.RLock()
-	defer fake.updateAPIKeyMutex.RUnlock()
-	argsForCall := fake.updateAPIKeyArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *ContextCredentialsFactory) UpdateAPIKeyReturns(result1 error) {
-	fake.updateAPIKeyMutex.Lock()
-	defer fake.updateAPIKeyMutex.Unlock()
-	fake.UpdateAPIKeyStub = nil
-	fake.updateAPIKeyReturns = struct {
-		result1 error
-	}{result1}
-}
-
-func (fake *ContextCredentialsFactory) UpdateAPIKeyReturnsOnCall(i int, result1 error) {
-	fake.updateAPIKeyMutex.Lock()
-	defer fake.updateAPIKeyMutex.Unlock()
-	fake.UpdateAPIKeyStub = nil
-	if fake.updateAPIKeyReturnsOnCall == nil {
-		fake.updateAPIKeyReturnsOnCall = make(map[int]struct {
-			result1 error
-		})
-	}
-	fake.updateAPIKeyReturnsOnCall[i] = struct {
-		result1 error
-	}{result1}
-}
-
 func (fake *ContextCredentialsFactory) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -340,8 +266,6 @@ func (fake *ContextCredentialsFactory) Invocations() map[string][][]interface{} 
 	defer fake.forIAMAccessTokenMutex.RUnlock()
 	fake.forIaaSAPIKeyMutex.RLock()
 	defer fake.forIaaSAPIKeyMutex.RUnlock()
-	fake.updateAPIKeyMutex.RLock()
-	defer fake.updateAPIKeyMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

@@ -39,18 +39,6 @@ type Provider struct {
 		result1 provider.Session
 		result2 error
 	}
-	UpdateAPIKeyStub        func(interface{}, *zap.Logger) error
-	updateAPIKeyMutex       sync.RWMutex
-	updateAPIKeyArgsForCall []struct {
-		arg1 interface{}
-		arg2 *zap.Logger
-	}
-	updateAPIKeyReturns struct {
-		result1 error
-	}
-	updateAPIKeyReturnsOnCall map[int]struct {
-		result1 error
-	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -185,68 +173,6 @@ func (fake *Provider) OpenSessionReturnsOnCall(i int, result1 provider.Session, 
 	}{result1, result2}
 }
 
-func (fake *Provider) UpdateAPIKey(arg1 interface{}, arg2 *zap.Logger) error {
-	fake.updateAPIKeyMutex.Lock()
-	ret, specificReturn := fake.updateAPIKeyReturnsOnCall[len(fake.updateAPIKeyArgsForCall)]
-	fake.updateAPIKeyArgsForCall = append(fake.updateAPIKeyArgsForCall, struct {
-		arg1 interface{}
-		arg2 *zap.Logger
-	}{arg1, arg2})
-	stub := fake.UpdateAPIKeyStub
-	fakeReturns := fake.updateAPIKeyReturns
-	fake.recordInvocation("UpdateAPIKey", []interface{}{arg1, arg2})
-	fake.updateAPIKeyMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2)
-	}
-	if specificReturn {
-		return ret.result1
-	}
-	return fakeReturns.result1
-}
-
-func (fake *Provider) UpdateAPIKeyCallCount() int {
-	fake.updateAPIKeyMutex.RLock()
-	defer fake.updateAPIKeyMutex.RUnlock()
-	return len(fake.updateAPIKeyArgsForCall)
-}
-
-func (fake *Provider) UpdateAPIKeyCalls(stub func(interface{}, *zap.Logger) error) {
-	fake.updateAPIKeyMutex.Lock()
-	defer fake.updateAPIKeyMutex.Unlock()
-	fake.UpdateAPIKeyStub = stub
-}
-
-func (fake *Provider) UpdateAPIKeyArgsForCall(i int) (interface{}, *zap.Logger) {
-	fake.updateAPIKeyMutex.RLock()
-	defer fake.updateAPIKeyMutex.RUnlock()
-	argsForCall := fake.updateAPIKeyArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *Provider) UpdateAPIKeyReturns(result1 error) {
-	fake.updateAPIKeyMutex.Lock()
-	defer fake.updateAPIKeyMutex.Unlock()
-	fake.UpdateAPIKeyStub = nil
-	fake.updateAPIKeyReturns = struct {
-		result1 error
-	}{result1}
-}
-
-func (fake *Provider) UpdateAPIKeyReturnsOnCall(i int, result1 error) {
-	fake.updateAPIKeyMutex.Lock()
-	defer fake.updateAPIKeyMutex.Unlock()
-	fake.UpdateAPIKeyStub = nil
-	if fake.updateAPIKeyReturnsOnCall == nil {
-		fake.updateAPIKeyReturnsOnCall = make(map[int]struct {
-			result1 error
-		})
-	}
-	fake.updateAPIKeyReturnsOnCall[i] = struct {
-		result1 error
-	}{result1}
-}
-
 func (fake *Provider) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -254,8 +180,6 @@ func (fake *Provider) Invocations() map[string][][]interface{} {
 	defer fake.contextCredentialsFactoryMutex.RUnlock()
 	fake.openSessionMutex.RLock()
 	defer fake.openSessionMutex.RUnlock()
-	fake.updateAPIKeyMutex.RLock()
-	defer fake.updateAPIKeyMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value
