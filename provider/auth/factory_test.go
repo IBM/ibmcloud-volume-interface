@@ -22,20 +22,15 @@ import (
 
 	"github.com/IBM/ibmcloud-volume-interface/provider/iam"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/zap"
 )
-
-func init() {
-	logger, _ = zap.NewDevelopment()
-}
 
 func TestNewContextCredentialsFactory(t *testing.T) {
 	authConfig := &iam.AuthConfiguration{
-		IamClientID:     "test-client-id",
-		IamClientSecret: "test-client-secret",
+		IamURL:          "url",
+		IamClientID:     "test",
+		IamClientSecret: "secret",
 	}
 
-	contextCredentials, err := NewContextCredentialsFactory(authConfig)
-	assert.NoError(t, err)
-	assert.NotNil(t, contextCredentials)
+	_, err := NewContextCredentialsFactory(authConfig)
+	assert.NotNil(t, err)
 }

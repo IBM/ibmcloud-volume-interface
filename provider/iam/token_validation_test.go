@@ -18,10 +18,13 @@
 package iam
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/golang-jwt/jwt/v4"
 
+	"github.com/IBM/ibmcloud-volume-interface/config"
+	sp "github.com/IBM/secret-utils-lib/pkg/secret_provider"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 )
@@ -38,11 +41,19 @@ func Test_GetIAMAccountIDFromAccessToken(t *testing.T) {
 		name              string
 		token             string
 		expectedAccountID string
-	}{{
-		name:              "fake_token",
-		token:             fakeToken,
-		expectedAccountID: fakeAccountID,
-	}}
+		expectedError     error
+	}{
+		{
+			name:              "fake_token",
+			token:             fakeToken,
+			expectedAccountID: fakeAccountID,
+		},
+		{
+			name:          "invalid token",
+			token:         "invalid",
+			expectedError: errors.New("not nil"),
+		},
+	}
 
 	for _, testcase := range testcases {
 		t.Run(testcase.name, func(t *testing.T) {
@@ -54,12 +65,16 @@ func Test_GetIAMAccountIDFromAccessToken(t *testing.T) {
 				IamClientSecret: "secret",
 			}
 
-			tes, err := NewTokenExchangeService(authConfig)
-			assert.NoError(t, err)
-
+			tes := new(tokenExchangeService)
+			tes.httpClient, _ = config.GeneralCAHttpClient()
+			tes.secretprovider = new(sp.FakeSecretProvider)
+			tes.authConfig = authConfig
 			accountID, err := tes.GetIAMAccountIDFromAccessToken(AccessToken{Token: testcase.token}, logger)
-			assert.Equal(t, testcase.expectedAccountID, accountID)
-			assert.NoError(t, err)
+			if testcase.expectedError != nil {
+				assert.NotNil(t, err)
+			} else {
+				assert.Equal(t, testcase.expectedAccountID, accountID)
+			}
 		})
 	}
 }
