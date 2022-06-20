@@ -41,13 +41,12 @@ func GetGoPath() string {
 
 // Config is the parent struct for all the configuration information for -cluster
 type Config struct {
-	Server             *ServerConfig  `required:"true"`
-	Bluemix            *BluemixConfig //`required:"true"`
-	Softlayer          *SoftlayerConfig
-	VPC                *VPCProviderConfig
-	IKS                *IKSConfig
-	API                *APIConfig
-	ClusterVolumeLabel string
+	Server    *ServerConfig  `required:"true"`
+	Bluemix   *BluemixConfig //`required:"true"`
+	Softlayer *SoftlayerConfig
+	VPC       *VPCProviderConfig
+	IKS       *IKSConfig
+	API       *APIConfig
 }
 
 //ReadConfig loads the config from file
@@ -183,7 +182,8 @@ type VPCProviderConfig struct {
 	// IKSTokenExchangePrivateURL, for private cluster support hence using for all cluster types
 	IKSTokenExchangePrivateURL string `toml:"iks_token_exchange_endpoint_private_url"`
 
-	IsIKS bool `toml:"is_iks,omitempty"`
+	IsIKS              bool `toml:"is_iks,omitempty"`
+	ClusterVolumeLabel string
 }
 
 //IKSConfig config
