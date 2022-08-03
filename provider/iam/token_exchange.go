@@ -65,7 +65,7 @@ func NewTokenExchangeService(authConfig *AuthConfiguration) (TokenExchangeServic
 	if err != nil {
 		return nil, err
 	}
-	spObject, err := secret_provider.NewSecretProvider()
+	spObject, err := secret_provider.NewSecretProvider(secret_provider.VPC)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func (tes *tokenExchangeService) ExchangeIAMAPIKeyForIMSToken(iamAPIKey string, 
 // ExchangeIAMAPIKeyForAccessToken ...
 func (tes *tokenExchangeService) ExchangeIAMAPIKeyForAccessToken(iamAPIKey string, logger *zap.Logger) (*AccessToken, error) {
 	logger.Info("Fetching using secret provider")
-	token, _, err := tes.secretprovider.GetDefaultIAMToken(false)
+	token, _, err := tes.secretprovider.GetDefaultIAMToken("reason", false)
 	if err != nil {
 		logger.Error("Error fetching iam token", zap.Error(err))
 		return nil, err
