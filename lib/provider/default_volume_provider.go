@@ -123,7 +123,7 @@ func (volprov *DefaultVolumeProvider) CreateSnapshot(sourceVolumeID string, snap
 }
 
 //DeleteSnapshot deletes the snapshot
-func (volprov *DefaultVolumeProvider) DeleteSnapshot(*Snapshot) error {
+func (volprov *DefaultVolumeProvider) DeleteSnapshot(snapshotID string) error {
 	return nil
 }
 
