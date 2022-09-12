@@ -125,7 +125,7 @@ type Snapshot struct {
 
 // SnapshotList ...
 type SnapshotList struct {
-	Next      string      `json:"next,omitempty"`
+	Next      string      `json:"next"`
 	Snapshots []*Snapshot `json:"snapshots"`
 }
 
