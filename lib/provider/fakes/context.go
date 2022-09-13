@@ -87,10 +87,10 @@ type Context struct {
 		result1 *provider.Volume
 		result2 error
 	}
-	DeleteSnapshotStub        func(string) error
+	DeleteSnapshotStub        func(*provider.Snapshot) error
 	deleteSnapshotMutex       sync.RWMutex
 	deleteSnapshotArgsForCall []struct {
-		arg1 string
+		arg1 *provider.Snapshot
 	}
 	deleteSnapshotReturns struct {
 		result1 error
@@ -735,11 +735,11 @@ func (fake *Context) CreateVolumeFromSnapshotReturnsOnCall(i int, result1 *provi
 	}{result1, result2}
 }
 
-func (fake *Context) DeleteSnapshot(arg1 string) error {
+func (fake *Context) DeleteSnapshot(arg1 *provider.Snapshot) error {
 	fake.deleteSnapshotMutex.Lock()
 	ret, specificReturn := fake.deleteSnapshotReturnsOnCall[len(fake.deleteSnapshotArgsForCall)]
 	fake.deleteSnapshotArgsForCall = append(fake.deleteSnapshotArgsForCall, struct {
-		arg1 string
+		arg1 *provider.Snapshot
 	}{arg1})
 	stub := fake.DeleteSnapshotStub
 	fakeReturns := fake.deleteSnapshotReturns
@@ -760,13 +760,13 @@ func (fake *Context) DeleteSnapshotCallCount() int {
 	return len(fake.deleteSnapshotArgsForCall)
 }
 
-func (fake *Context) DeleteSnapshotCalls(stub func(string) error) {
+func (fake *Context) DeleteSnapshotCalls(stub func(*provider.Snapshot) error) {
 	fake.deleteSnapshotMutex.Lock()
 	defer fake.deleteSnapshotMutex.Unlock()
 	fake.DeleteSnapshotStub = stub
 }
 
-func (fake *Context) DeleteSnapshotArgsForCall(i int) string {
+func (fake *Context) DeleteSnapshotArgsForCall(i int) *provider.Snapshot {
 	fake.deleteSnapshotMutex.RLock()
 	defer fake.deleteSnapshotMutex.RUnlock()
 	argsForCall := fake.deleteSnapshotArgsForCall[i]

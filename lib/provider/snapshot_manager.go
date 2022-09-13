@@ -23,7 +23,7 @@ type SnapshotManager interface {
 	CreateSnapshot(sourceVolumeID string, snapshotParameters SnapshotParameters) (*Snapshot, error)
 
 	// Delete the snapshot
-	DeleteSnapshot(snapshotID string) error
+	DeleteSnapshot(*Snapshot) error
 
 	// Get the snapshot
 	GetSnapshot(snapshotID string) (*Snapshot, error)
