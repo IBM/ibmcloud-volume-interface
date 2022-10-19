@@ -127,7 +127,7 @@ func (tes *tokenExchangeService) ExchangeIAMAPIKeyForIMSToken(iamAPIKey string, 
 // ExchangeIAMAPIKeyForAccessToken ...
 func (tes *tokenExchangeService) ExchangeIAMAPIKeyForAccessToken(iamAPIKey string, logger *zap.Logger) (*AccessToken, error) {
 	logger.Info("Fetching using secret provider")
-	token, _, err := tes.secretprovider.GetDefaultIAMToken("reason", false)
+	token, _, err := tes.secretprovider.GetDefaultIAMToken(false)
 	if err != nil {
 		logger.Error("Error fetching iam token", zap.Error(err))
 		return nil, err

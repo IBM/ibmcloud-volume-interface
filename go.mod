@@ -5,8 +5,8 @@ go 1.15
 require (
 	github.com/BurntSushi/toml v1.0.0
 	github.com/IBM-Cloud/ibm-cloud-cli-sdk v0.6.7
-	github.com/IBM/secret-common-lib v1.0.4
-	github.com/IBM/secret-utils-lib v1.0.3
+	github.com/IBM/secret-common-lib v1.0.5-0.20221019084743-b7fe6c885a5a
+	github.com/IBM/secret-utils-lib v1.0.4-0.20221019084326-0a031b3c721c
 	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.7.1
