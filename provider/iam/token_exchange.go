@@ -74,8 +74,8 @@ func NewTokenExchangeService(authConfig *AuthConfiguration, providerType ...stri
 	if err != nil {
 		return nil, err
 	}
-	var providerTypeArg map[string]string
 
+	providerTypeArg := make(map[string]string)
 	if len(providerType) != 0 {
 		providerTypeArg[secret_provider.ProviderType] = providerType[0]
 	} else {
