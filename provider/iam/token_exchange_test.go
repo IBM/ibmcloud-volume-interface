@@ -510,4 +510,7 @@ func Test_NewTokenExchangeService(t *testing.T) {
 
 	_, err := NewTokenExchangeService(authConfig)
 	assert.NotNil(t, err)
+
+	_, err = NewTokenExchangeService(authConfig, VPC)
+	assert.NotNil(t, err)
 }
