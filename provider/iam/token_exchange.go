@@ -65,7 +65,10 @@ func NewTokenExchangeService(authConfig *AuthConfiguration) (TokenExchangeServic
 	if err != nil {
 		return nil, err
 	}
-	spObject, err := secret_provider.NewSecretProvider()
+	providerTypeArg := map[string]string{
+		secret_provider.ProviderType: secret_provider.VPC,
+	}
+	spObject, err := secret_provider.NewSecretProvider(providerTypeArg)
 	if err != nil {
 		return nil, err
 	}
