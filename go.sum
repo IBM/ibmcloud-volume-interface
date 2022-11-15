@@ -39,10 +39,10 @@ github.com/IBM-Cloud/ibm-cloud-cli-sdk v0.6.7 h1:eHgfQl6IeSmzWUyiSi13CvoFYsovoyq
 github.com/IBM-Cloud/ibm-cloud-cli-sdk v0.6.7/go.mod h1:RiUvKuHKTBmBApDMUQzBL14pQUGKcx/IioKQPIcRQjs=
 github.com/IBM/go-sdk-core/v5 v5.9.1 h1:06pXbD9Rgmqqe2HA5YAeQbB4eYRRFgIoOT+Kh3cp1zo=
 github.com/IBM/go-sdk-core/v5 v5.9.1/go.mod h1:axE2JrRq79gIJTjKPBwV6gWHswvVptBjbcvvCPIxARM=
-github.com/IBM/secret-common-lib v1.0.5 h1:mbOZRFcGY+3FtKMmj36kleHmDyARkbURxcexdM5EJLA=
-github.com/IBM/secret-common-lib v1.0.5/go.mod h1:n6UmAAPIrCwGBf+DmUWoWeiLAfBoivYssoiH/f+f1Do=
-github.com/IBM/secret-utils-lib v1.0.4 h1:l5ohKdW3ciRkccdyMz3dWZS68+7VgK2OH72BYQScCZw=
-github.com/IBM/secret-utils-lib v1.0.4/go.mod h1:oKUQwPI3sRpoGBaybmSA1Q0uqFYS7q7VHaRKQzZFheA=
+github.com/IBM/secret-common-lib v1.0.7-0.20221115103559-e621610785dd h1:8L2xmLRjB6VU3jsa6cclDyvrBHZ+EQ+LgsVVhf61Whg=
+github.com/IBM/secret-common-lib v1.0.7-0.20221115103559-e621610785dd/go.mod h1:Qqt5s+2DexdRqOlIB30TZhC7l+9/pUy0Tgawhu0+FJ0=
+github.com/IBM/secret-utils-lib v1.0.7-0.20221115103149-c739070df7de h1:SjnW/zAeiYpendNvb+coSMezi6cBJK6y0PSJXBjTzOs=
+github.com/IBM/secret-utils-lib v1.0.7-0.20221115103149-c739070df7de/go.mod h1:b64pDTJEtcSUvDd1/jYddx9RIWBEIgR5I5LGodE9KJA=
 github.com/PuerkitoBio/purell v1.1.1 h1:WEQqlqaGbrPkxLJWfBwQmfEAE1Z7ONdDLqrN38tNFfI=
 github.com/PuerkitoBio/purell v1.1.1/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbtSwDGJws/X0=
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 h1:d+Bc7a5rLufV/sSk/8dngufqelfh6jnri85riMAaF/M=
