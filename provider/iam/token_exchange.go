@@ -54,7 +54,7 @@ type AuthConfiguration struct {
 	IamURL          string
 	IamClientID     string
 	IamClientSecret string
-	secretprovider  sp.SecretProviderInterface
+	Secretprovider  sp.SecretProviderInterface
 }
 
 // TokenExchangeService ...
