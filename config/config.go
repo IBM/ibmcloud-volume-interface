@@ -22,10 +22,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kelseyhightower/envconfig"
-	"github.com/IBM/secret-utils-lib/pkg/utils"
-	"github.com/IBM/secret-utils-lib/pkg/config"
+	"github.com/BurntSushi/toml"
 	"github.com/IBM/secret-utils-lib/pkg/k8s_utils"
+	"github.com/IBM/secret-utils-lib/pkg/utils"
+	"github.com/kelseyhightower/envconfig"
 	"go.uber.org/zap"
 )
 
@@ -52,22 +52,19 @@ type Config struct {
 }
 
 //ReadConfig loads the config from k8s secret ...
-func ReadConfig(k8sClient k8s_utils.KubernetesClient, logger *zap.Logger) (*config.Config, error) {
+func ReadConfig(k8sClient k8s_utils.KubernetesClient, logger *zap.Logger) (*Config, error) {
 	data, err := k8s_utils.GetSecretData(k8sClient, utils.STORAGE_SECRET_STORE_SECRET, utils.SECRET_STORE_FILE)
 	if err != nil {
 		logger.Error("Error reading config", zap.Error(err))
 		return nil, err
 	}
-	conf, err := config.ParseConfig(logger, data)
+	conf, err := ParseConfig(logger, data)
 	if err != nil {
 		logger.Error("Error parsing config", zap.Error(err))
 		return nil, err
 	}
-	err = envconfig.Process("", conf)
-	if err != nil {
-                logger.Error("Failed to gather environment config variable", zap.Error(err))
-        }
-        return conf, nil
+
+	return conf, nil
 }
 
 // ServerConfig configuration options for the provider server itself
@@ -174,4 +171,22 @@ func GetEtcPath() string {
 	srcPath := filepath.Join("src", "github.com", "IBM",
 		"ibmcloud-volume-interface")
 	return filepath.Join(goPath, srcPath, "etc")
+}
+
+// ParseConfig loads the config from file
+func ParseConfig(logger *zap.Logger, data string) (*Config, error) {
+	configData := new(Config)
+	_, err := toml.Decode(data, configData)
+	if err != nil {
+		logger.Error("Failed to parse config", zap.Error(err))
+		return nil, err
+	}
+
+	err = envconfig.Process("", configData)
+	if err != nil {
+		logger.Error("Failed to gather environment config variable", zap.Error(err))
+		return nil, err
+	}
+
+	return configData, nil
 }
