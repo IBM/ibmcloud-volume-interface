@@ -29,28 +29,6 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-type testConfig struct {
-	Header sectionTestConfig
-}
-
-type sectionTestConfig struct {
-	ID      int
-	Name    string
-	YesOrNo bool
-	Pi      float64
-	List    string
-}
-
-var testConf = testConfig{
-	Header: sectionTestConfig{
-		ID:      1,
-		Name:    "test",
-		YesOrNo: true,
-		Pi:      3.14,
-		List:    "1, 2",
-	},
-}
-
 func getContextLogger() (*zap.Logger, zap.AtomicLevel) {
 	consoleDebugging := zapcore.Lock(os.Stdout)
 	consoleErrors := zapcore.Lock(os.Stderr)
@@ -89,18 +67,17 @@ func TestReadConfig(t *testing.T) {
 		{
 			testcasename: "Non existing secret",
 			configPath:   "etc/non-exist.toml",
-			expectedErr:  errors.New("Not nil"),
+			expectedErr:  errors.New("not nil"),
 		},
 		{
 			testcasename: "Invalid secret config",
 			configPath:   "etc/invalid-config.toml",
-			expectedErr:  errors.New("Not nil"),
+			expectedErr:  errors.New("not nil"),
 		},
 	}
 
 	for _, testcase := range testcases {
 		t.Run(testcase.testcasename, func(t *testing.T) {
-
 			kc, err := k8s_utils.FakeGetk8sClientSet(testLogger)
 			if err != nil {
 				t.Errorf("Error getting clientset. Error: %v", err)
