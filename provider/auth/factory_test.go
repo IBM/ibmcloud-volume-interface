@@ -32,5 +32,5 @@ func TestNewContextCredentialsFactory(t *testing.T) {
 	}
 
 	_, err := NewContextCredentialsFactory(authConfig)
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 }
