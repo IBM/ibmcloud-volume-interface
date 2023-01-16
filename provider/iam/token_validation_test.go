@@ -24,7 +24,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/IBM/ibmcloud-volume-interface/config"
-	sp "github.com/IBM/secret-utils-lib/pkg/secret_provider"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 )
@@ -67,7 +66,6 @@ func Test_GetIAMAccountIDFromAccessToken(t *testing.T) {
 
 			tes := new(tokenExchangeService)
 			tes.httpClient, _ = config.GeneralCAHttpClient()
-			tes.secretprovider = new(sp.FakeSecretProvider)
 			tes.authConfig = authConfig
 			accountID, err := tes.GetIAMAccountIDFromAccessToken(AccessToken{Token: testcase.token}, logger)
 			if testcase.expectedError != nil {

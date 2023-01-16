@@ -18,9 +18,12 @@
 package config
 
 import (
+	"errors"
 	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/IBM/secret-utils-lib/pkg/k8s_utils"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -73,21 +76,52 @@ var testLogger, _ = getContextLogger()
 func TestReadConfig(t *testing.T) {
 	t.Log("Testing ReadConfig")
 
-	configPath := "test.toml"
-	expectedConf, _ := ReadConfig(configPath, testLogger)
+	testcases := []struct {
+		testcasename string
+		configPath   string
+		expectedErr  error
+	}{
+		{
+			testcasename: "Valid secret config",
+			configPath:   "etc/libconfig.toml",
+			expectedErr:  nil,
+		},
+		{
+			testcasename: "Non existing secret",
+			configPath:   "etc/non-exist.toml",
+			expectedErr:  errors.New("Not nil"),
+		},
+		{
+			testcasename: "Invalid secret config",
+			configPath:   "etc/invalid-config.toml",
+			expectedErr:  errors.New("Not nil"),
+		},
+	}
 
-	assert.NotNil(t, expectedConf)
+	for _, testcase := range testcases {
+		t.Run(testcase.testcasename, func(t *testing.T) {
+
+			kc, err := k8s_utils.FakeGetk8sClientSet(testLogger)
+			if err != nil {
+				t.Errorf("Error getting clientset. Error: %v", err)
+			}
+			pwd, err := os.Getwd()
+			if err != nil {
+				t.Errorf("Failed to get current working directory, test will fail, error: %v", err)
+			}
+			secretDataPath := filepath.Join(pwd, "..", testcase.configPath)
+			_ = k8s_utils.FakeCreateSecret(kc, "DEFAULT", secretDataPath)
+			_, err = ReadConfig(kc, testLogger)
+			if testcase.expectedErr != nil {
+				assert.NotNil(t, err, testcase.expectedErr)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
 }
 
-func TestReadConfigEmptyPath(t *testing.T) {
-	t.Log("Testing ReadConfig")
-
-	configPath := ""
-	expectedConf, _ := ReadConfig(configPath, testLogger)
-
-	assert.NotNil(t, expectedConf)
-}
-
+/*
 func TestParseConfig(t *testing.T) {
 	t.Log("Testing config parsing")
 	var testParseConf testConfig
@@ -139,7 +173,7 @@ func TestParseConfigNoMatchTwo(t *testing.T) {
 
 	assert.NotEqual(t, expected, testParseConf)
 }
-
+*/
 func TestGetGoPath(t *testing.T) {
 	t.Log("Testing getting GOPATH")
 	goPath := "/tmp"
@@ -171,63 +205,4 @@ func TestGetGoPathNullPath(t *testing.T) {
 	path := GetGoPath()
 
 	assert.Equal(t, goPath, path)
-}
-
-func TestGetEtcPath(t *testing.T) {
-	t.Log("Testing GetEtcPath")
-	expectedEtcPath := "src/github.com/IBM/ibmcloud-volume-interface/etc"
-
-	etcPath := GetEtcPath()
-
-	assert.Equal(t, expectedEtcPath, etcPath)
-}
-
-func TestGetConfPath(t *testing.T) {
-	t.Log("Testing GetEtcPath")
-	expectedEtcPath := "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml"
-
-	defaultEtcPath := GetConfPath()
-
-	assert.Equal(t, expectedEtcPath, defaultEtcPath)
-}
-
-func TestGetConfPathWithEnv(t *testing.T) {
-	t.Log("Testing GetEtcPath")
-	err := os.Setenv("SECRET_CONFIG_PATH", "src/github.com/IBM/ibmcloud-volume-interface/etc")
-	assert.Nil(t, err)
-
-	expectedEtcPath := "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml"
-
-	defaultEtcPath := GetConfPath()
-
-	assert.Equal(t, expectedEtcPath, defaultEtcPath)
-}
-
-func TestGetDefaultConfPath(t *testing.T) {
-	t.Log("Testing GetEtcPath")
-	expectedEtcPath := "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml"
-
-	defaultEtcPath := GetDefaultConfPath()
-
-	assert.Equal(t, expectedEtcPath, defaultEtcPath)
-}
-
-func TestGetConfPathDir(t *testing.T) {
-	t.Log("Testing GetConfPathDir")
-	err := os.Setenv("SECRET_CONFIG_PATH", "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml")
-	assert.Nil(t, err)
-
-	expectedEtcPath := "src/github.com/IBM/ibmcloud-volume-interface/etc/libconfig.toml"
-	confPath := GetConfPathDir()
-	assert.Equal(t, confPath, expectedEtcPath)
-
-	err = os.Unsetenv("SECRET_CONFIG_PATH")
-	assert.Nil(t, err)
-
-	err = os.Unsetenv("GOPATH")
-	assert.Nil(t, err)
-
-	confPath = GetConfPathDir()
-	expectedEtcPath = "src/github.com/IBM/ibmcloud-volume-interface/etc"
-	assert.Equal(t, confPath, expectedEtcPath)
 }

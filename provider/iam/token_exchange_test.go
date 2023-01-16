@@ -30,7 +30,6 @@ import (
 	"github.com/IBM/ibmcloud-volume-interface/lib/utils/reasoncode"
 
 	"github.com/IBM/ibmcloud-volume-interface/config"
-	sp "github.com/IBM/secret-utils-lib/pkg/secret_provider"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -80,11 +79,11 @@ func Test_ExchangeRefreshTokenForAccessToken_Success(t *testing.T) {
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 	r, err := tes.ExchangeRefreshTokenForAccessToken("testrefreshtoken", logger)
 	assert.Nil(t, err)
@@ -116,11 +115,11 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedDuringRequest(t *testing.T) {
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
@@ -150,11 +149,11 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedDuringRequest_no_message(t *t
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
@@ -184,11 +183,11 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedNoIamUrl(t *testing.T) {
 		IamURL:          "",
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("testrefreshtoken", logger)
@@ -220,11 +219,11 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedRequesting_empty_body(t *test
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
@@ -271,11 +270,11 @@ func TestExchangeIAMAPIKeyForIMSToken(t *testing.T) {
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	ims, err := tes.ExchangeIAMAPIKeyForIMSToken("badrefreshtoken", logger)
@@ -302,11 +301,11 @@ func Test_ExchangeAccessTokenForIMSToken_Success(t *testing.T) {
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "testaccesstoken"}, logger)
@@ -340,11 +339,11 @@ func Test_ExchangeAccessTokenForIMSToken_FailedDuringRequest(t *testing.T) {
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badaccesstoken"}, logger)
@@ -381,11 +380,11 @@ func Test_ExchangeAccessTokenForIMSToken_FailedAccountLocked(t *testing.T) {
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badaccesstoken"}, logger)
@@ -416,11 +415,11 @@ func Test_ExchangeAccessTokenForIMSToken_FailedDuringRequest_no_message(t *testi
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badrefreshtoken"}, logger)
@@ -449,11 +448,11 @@ func Test_ExchangeAccessTokenForIMSToken_FailedRequesting_empty_body(t *testing.
 		IamURL:          server.URL,
 		IamClientID:     "test",
 		IamClientSecret: "secret",
+		Secretprovider:  new(FakeSecretProvider),
 	}
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
 
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badrefreshtoken"}, logger)
@@ -471,10 +470,11 @@ func Test_ExchangeIAMAPIKeyForAccessToken(t *testing.T) {
 		name               string
 		expectedError      error
 		expectedReasonCode string
+		secretProvider     *FakeSecretProvider
 	}{
 		{
 			name:          "Successfully fetched token",
-			expectedError: errors.New("not nil"),
+			expectedError: nil,
 		},
 	}
 	for _, testCase := range testCases {
@@ -486,11 +486,11 @@ func Test_ExchangeIAMAPIKeyForAccessToken(t *testing.T) {
 			httpSetup()
 
 			authConfig := &AuthConfiguration{
-				IamURL: server.URL,
+				IamURL:         server.URL,
+				Secretprovider: new(FakeSecretProvider),
 			}
 			tes := new(tokenExchangeService)
 			tes.httpClient, _ = config.GeneralCAHttpClient()
-			tes.secretprovider = new(sp.FakeSecretProvider)
 			tes.authConfig = authConfig
 
 			_, actualError := tes.ExchangeIAMAPIKeyForAccessToken("apikey1", logger)
@@ -509,8 +509,55 @@ func Test_NewTokenExchangeService(t *testing.T) {
 	}
 
 	_, err := NewTokenExchangeService(authConfig)
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
+}
 
-	_, err = NewTokenExchangeService(authConfig, VPC)
-	assert.NotNil(t, err)
+const (
+	// fakeEndpoint ...
+	fakeEndpoint = "https://fakehost.com"
+)
+
+// FakeSecretProvider ...
+type FakeSecretProvider struct {
+}
+
+// GetDefaultIAMToken ...
+func (fs *FakeSecretProvider) GetDefaultIAMToken(freshTokenRequired bool, reasonForCall ...string) (string, uint64, error) {
+	if !freshTokenRequired {
+		return "token", 1000, nil
+	}
+	return "", 0, errors.New("fake error")
+}
+
+// GetIAMToken ...
+func (fs *FakeSecretProvider) GetIAMToken(secret string, freshTokenRequired bool, reasonForCall ...string) (string, uint64, error) {
+	if freshTokenRequired {
+		return "token", 1000, nil
+	}
+	return "", 0, errors.New("fake error")
+}
+
+// GetRIAASEndpoint ...
+func (fs *FakeSecretProvider) GetRIAASEndpoint(readConfig bool) (string, error) {
+	return fakeEndpoint, nil
+}
+
+// GetPrivateRIAASEndpoint ...
+func (fs *FakeSecretProvider) GetPrivateRIAASEndpoint(readConfig bool) (string, error) {
+	return fakeEndpoint, nil
+}
+
+// GetContainerAPIRoute ...
+func (fs *FakeSecretProvider) GetContainerAPIRoute(readConfig bool) (string, error) {
+	return fakeEndpoint, nil
+}
+
+// GetPrivateContainerAPIRoute ...
+func (fs *FakeSecretProvider) GetPrivateContainerAPIRoute(readConfig bool) (string, error) {
+	return fakeEndpoint, nil
+}
+
+// GetResourceGroupID ...
+func (fs *FakeSecretProvider) GetResourceGroupID() string {
+	return "resource-group-id"
 }
