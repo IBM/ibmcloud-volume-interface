@@ -106,6 +106,7 @@ type SubnetRequest struct {
 	//VPCID to find out the subnet-id for ENI
 	VPCID string `json:"vpc_id,omitempty"`
 }
+<<<<<<< HEAD
 
 // SecurityGroupRequest used for fetching the securityGroup for volume access point
 type SecurityGroupRequest struct {
@@ -119,3 +120,5 @@ type SecurityGroupRequest struct {
 	//VPCID to find out the cluster SG for ENI
 	VPCID string `json:"vpc_id,omitempty"`
 }
+=======
+>>>>>>> 36139f3 (eit)
