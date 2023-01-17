@@ -99,57 +99,57 @@ func TestReadConfig(t *testing.T) {
 }
 
 /*
-func TestParseConfig(t *testing.T) {
-	t.Log("Testing config parsing")
-	var testParseConf testConfig
+	func TestParseConfig(t *testing.T) {
+		t.Log("Testing config parsing")
+		var testParseConf testConfig
 
-	configPath := "test.toml"
-	err := ParseConfig(configPath, &testParseConf, testLogger)
-	assert.Nil(t, err)
+		configPath := "test.toml"
+		err := ParseConfig(configPath, &testParseConf, testLogger)
+		assert.Nil(t, err)
 
-	expected := testConf
-	assert.Exactly(t, expected, testParseConf)
-}
+		expected := testConf
+		assert.Exactly(t, expected, testParseConf)
+	}
 
-func TestParseConfigNoMatch(t *testing.T) {
-	t.Log("Testing config parsing false positive")
-	var testParseConf testConfig
+	func TestParseConfigNoMatch(t *testing.T) {
+		t.Log("Testing config parsing false positive")
+		var testParseConf testConfig
 
-	configPath := "test.toml"
-	err := ParseConfig(configPath, &testParseConf, testLogger)
-	assert.Nil(t, err)
+		configPath := "test.toml"
+		err := ParseConfig(configPath, &testParseConf, testLogger)
+		assert.Nil(t, err)
 
-	expected := testConfig{
-		Header: sectionTestConfig{
-			ID:      1,
-			Name:    "testnomatch",
-			YesOrNo: true,
-			Pi:      3.14,
-			List:    "1, 2",
-		}}
+		expected := testConfig{
+			Header: sectionTestConfig{
+				ID:      1,
+				Name:    "testnomatch",
+				YesOrNo: true,
+				Pi:      3.14,
+				List:    "1, 2",
+			}}
 
-	assert.NotEqual(t, expected, testParseConf)
-}
+		assert.NotEqual(t, expected, testParseConf)
+	}
 
-func TestParseConfigNoMatchTwo(t *testing.T) {
-	t.Log("Testing config parsing false positive")
-	var testParseConf testConfig
+	func TestParseConfigNoMatchTwo(t *testing.T) {
+		t.Log("Testing config parsing false positive")
+		var testParseConf testConfig
 
-	configPath := "test1.toml"
-	err := ParseConfig(configPath, &testParseConf, testLogger)
-	assert.Nil(t, err)
+		configPath := "test1.toml"
+		err := ParseConfig(configPath, &testParseConf, testLogger)
+		assert.Nil(t, err)
 
-	expected := testConfig{
-		Header: sectionTestConfig{
-			ID:      1,
-			Name:    "testnomatch",
-			YesOrNo: true,
-			Pi:      3.14,
-			List:    "1, 2",
-		}}
+		expected := testConfig{
+			Header: sectionTestConfig{
+				ID:      1,
+				Name:    "testnomatch",
+				YesOrNo: true,
+				Pi:      3.14,
+				List:    "1, 2",
+			}}
 
-	assert.NotEqual(t, expected, testParseConf)
-}
+		assert.NotEqual(t, expected, testParseConf)
+	}
 */
 func TestGetGoPath(t *testing.T) {
 	t.Log("Testing getting GOPATH")
