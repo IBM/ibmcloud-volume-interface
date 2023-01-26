@@ -78,7 +78,7 @@ func TestReadConfig(t *testing.T) {
 
 	for _, testcase := range testcases {
 		t.Run(testcase.testcasename, func(t *testing.T) {
-			kc, err := k8s_utils.FakeGetk8sClientSet(testLogger)
+			kc, err := k8s_utils.FakeGetk8sClientSet()
 			if err != nil {
 				t.Errorf("Error getting clientset. Error: %v", err)
 			}
