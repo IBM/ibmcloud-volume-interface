@@ -18,19 +18,33 @@
 package auth
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/IBM/ibmcloud-volume-interface/provider/iam"
+	"github.com/IBM/secret-utils-lib/pkg/k8s_utils"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewContextCredentialsFactory(t *testing.T) {
+	// Pass without k8s client
 	authConfig := &iam.AuthConfiguration{
 		IamURL:          "url",
 		IamClientID:     "test",
 		IamClientSecret: "secret",
 	}
 
-	_, err := NewContextCredentialsFactory(authConfig)
+	_, err := NewContextCredentialsFactory(authConfig, nil)
+	assert.NotNil(t, err)
+
+	// Pass with k8s client
+	k8sClient, _ := k8s_utils.FakeGetk8sClientSet()
+	pwd, _ := os.Getwd()
+	file := filepath.Join(pwd, "..", "..", "etc", "libconfig.toml")
+	err = k8s_utils.FakeCreateSecret(k8sClient, "DEFAULT", file)
+	_, err = NewContextCredentialsFactory(authConfig, &k8sClient)
+	fmt.Println(err)
 	assert.Nil(t, err)
 }
