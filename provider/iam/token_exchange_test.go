@@ -23,6 +23,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -30,7 +31,7 @@ import (
 	"github.com/IBM/ibmcloud-volume-interface/lib/utils/reasoncode"
 
 	"github.com/IBM/ibmcloud-volume-interface/config"
-	sp "github.com/IBM/secret-utils-lib/pkg/secret_provider"
+	"github.com/IBM/secret-utils-lib/pkg/k8s_utils"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -84,8 +85,8 @@ func Test_ExchangeRefreshTokenForAccessToken_Success(t *testing.T) {
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeRefreshTokenForAccessToken("testrefreshtoken", logger)
 	assert.Nil(t, err)
 	if assert.NotNil(t, r) {
@@ -120,9 +121,8 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedDuringRequest(t *testing.T) {
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
 	assert.Nil(t, r)
 	if assert.NotNil(t, err) {
@@ -154,9 +154,8 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedDuringRequest_no_message(t *t
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
 	assert.Nil(t, r)
 	if assert.NotNil(t, err) {
@@ -188,9 +187,8 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedNoIamUrl(t *testing.T) {
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeRefreshTokenForAccessToken("testrefreshtoken", logger)
 	assert.Nil(t, r)
 
@@ -224,9 +222,8 @@ func Test_ExchangeRefreshTokenForAccessToken_FailedRequesting_empty_body(t *test
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeRefreshTokenForAccessToken("badrefreshtoken", logger)
 	assert.Nil(t, r)
 
@@ -275,9 +272,8 @@ func TestExchangeIAMAPIKeyForIMSToken(t *testing.T) {
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	ims, err := tes.ExchangeIAMAPIKeyForIMSToken("badrefreshtoken", logger)
 	assert.Nil(t, ims)
 	assert.Error(t, err)
@@ -306,9 +302,8 @@ func Test_ExchangeAccessTokenForIMSToken_Success(t *testing.T) {
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "testaccesstoken"}, logger)
 	assert.Nil(t, err)
 	if assert.NotNil(t, r) {
@@ -344,9 +339,8 @@ func Test_ExchangeAccessTokenForIMSToken_FailedDuringRequest(t *testing.T) {
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badaccesstoken"}, logger)
 	assert.Nil(t, r)
 	if assert.NotNil(t, err) {
@@ -385,9 +379,8 @@ func Test_ExchangeAccessTokenForIMSToken_FailedAccountLocked(t *testing.T) {
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badaccesstoken"}, logger)
 	assert.Nil(t, r)
 	if assert.NotNil(t, err) {
@@ -420,9 +413,8 @@ func Test_ExchangeAccessTokenForIMSToken_FailedDuringRequest_no_message(t *testi
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badrefreshtoken"}, logger)
 	assert.Nil(t, r)
 	if assert.NotNil(t, err) {
@@ -453,9 +445,8 @@ func Test_ExchangeAccessTokenForIMSToken_FailedRequesting_empty_body(t *testing.
 
 	tes := new(tokenExchangeService)
 	tes.httpClient, _ = config.GeneralCAHttpClient()
-	tes.secretprovider = new(sp.FakeSecretProvider)
 	tes.authConfig = authConfig
-
+	tes.secretprovider = new(FakeSecretProvider)
 	r, err := tes.ExchangeAccessTokenForIMSToken(AccessToken{Token: "badrefreshtoken"}, logger)
 	assert.Nil(t, r)
 
@@ -471,10 +462,11 @@ func Test_ExchangeIAMAPIKeyForAccessToken(t *testing.T) {
 		name               string
 		expectedError      error
 		expectedReasonCode string
+		secretProvider     *FakeSecretProvider
 	}{
 		{
 			name:          "Successfully fetched token",
-			expectedError: errors.New("not nil"),
+			expectedError: nil,
 		},
 	}
 	for _, testCase := range testCases {
@@ -490,9 +482,8 @@ func Test_ExchangeIAMAPIKeyForAccessToken(t *testing.T) {
 			}
 			tes := new(tokenExchangeService)
 			tes.httpClient, _ = config.GeneralCAHttpClient()
-			tes.secretprovider = new(sp.FakeSecretProvider)
 			tes.authConfig = authConfig
-
+			tes.secretprovider = new(FakeSecretProvider)
 			_, actualError := tes.ExchangeIAMAPIKeyForAccessToken("apikey1", logger)
 			if testCase.expectedError == nil {
 				assert.Nil(t, actualError)
@@ -508,9 +499,65 @@ func Test_NewTokenExchangeService(t *testing.T) {
 		IamURL: server.URL,
 	}
 
-	_, err := NewTokenExchangeService(authConfig)
+	// Test without any k8s client
+	_, err := NewTokenExchangeService(authConfig, nil)
 	assert.NotNil(t, err)
 
-	_, err = NewTokenExchangeService(authConfig, VPC)
-	assert.NotNil(t, err)
+	// Test with any k8s client
+	k8sClient, _ := k8s_utils.FakeGetk8sClientSet()
+	pwd, _ := os.Getwd()
+	file := filepath.Join(pwd, "..", "..", "etc", "libconfig.toml")
+	err = k8s_utils.FakeCreateSecret(k8sClient, "DEFAULT", file)
+	_, err = NewTokenExchangeService(authConfig, &k8sClient)
+	assert.Nil(t, err)
+}
+
+const (
+	// fakeEndpoint ...
+	fakeEndpoint = "https://fakehost.com"
+)
+
+// FakeSecretProvider ...
+type FakeSecretProvider struct {
+}
+
+// GetDefaultIAMToken ...
+func (fs *FakeSecretProvider) GetDefaultIAMToken(freshTokenRequired bool, reasonForCall ...string) (string, uint64, error) {
+	if !freshTokenRequired {
+		return "token", 1000, nil
+	}
+	return "", 0, errors.New("fake error")
+}
+
+// GetIAMToken ...
+func (fs *FakeSecretProvider) GetIAMToken(secret string, freshTokenRequired bool, reasonForCall ...string) (string, uint64, error) {
+	if freshTokenRequired {
+		return "token", 1000, nil
+	}
+	return "", 0, errors.New("fake error")
+}
+
+// GetRIAASEndpoint ...
+func (fs *FakeSecretProvider) GetRIAASEndpoint(readConfig bool) (string, error) {
+	return fakeEndpoint, nil
+}
+
+// GetPrivateRIAASEndpoint ...
+func (fs *FakeSecretProvider) GetPrivateRIAASEndpoint(readConfig bool) (string, error) {
+	return fakeEndpoint, nil
+}
+
+// GetContainerAPIRoute ...
+func (fs *FakeSecretProvider) GetContainerAPIRoute(readConfig bool) (string, error) {
+	return fakeEndpoint, nil
+}
+
+// GetPrivateContainerAPIRoute ...
+func (fs *FakeSecretProvider) GetPrivateContainerAPIRoute(readConfig bool) (string, error) {
+	return fakeEndpoint, nil
+}
+
+// GetResourceGroupID ...
+func (fs *FakeSecretProvider) GetResourceGroupID() string {
+	return "resource-group-id"
 }
