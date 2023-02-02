@@ -40,6 +40,9 @@ type VPCBlockVolume struct {
 type VPCFileVolume struct {
 	VolumeAccessPoints *[]VolumeAccessPoint `json:"volume_access_points,omitempty"`
 	InitialOwner       *InitialOwner        `json:"initial_owner,omitempty"`
+	AccessControlMode  string               `json:"access_control_mode,omitempty"`
+	SecurityGroups     *[]SecurityGroup     `json:"security_groups,omitempty"`
+	PrimaryIP          string               `json:"primary_ip,omitempty"`
 }
 
 // VPC ...
@@ -48,6 +51,13 @@ type VPC struct {
 	CRN  string `json:"crn,omitempty"`
 	Href string `json:"href,omitempty"`
 	Name string `json:"name,omitempty"`
+}
+
+// SecurityGroup ...
+type SecurityGroup struct {
+	ID   string `json:"id"`
+	CRN  string `json:"crn,omitempty"`
+	Href string `json:"href,omitempty"`
 }
 
 // VolumeAccessPoint ...

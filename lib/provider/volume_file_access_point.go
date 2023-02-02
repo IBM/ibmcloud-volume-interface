@@ -59,6 +59,24 @@ type VolumeAccessPointRequest struct {
 
 	//VPC to create AccessPoint for
 	VPCID string `json:"vpc_id,omitempty"`
+
+	//AccessControlMode to enable/disable Elastic Network Interface
+	AccessControlMode string `json:"access_control_mode,omitempty"`
+
+	//Zone to find out the subnet-id for ENI
+	Zone string `json:"zone,omitempty"`
+
+	//PrimaryIP
+	PrimaryIP string `json:"primary_ip,omitempty"`
+
+	//SecurityGroups to be used for ENI
+	SecurityGroups *[]SecurityGroup `json:"security_groups,omitempty"`
+
+	//ResourceGroup to find out the subnet-id for ENI
+	ResourceGroup *ResourceGroup `json:"resource_group,omitempty"`
+
+	//EncryptionInTransit
+	EncryptionInTransit string `json:"transit_encryption,omitempty"`
 }
 
 //VolumeAccessPointResponse used for both delete and create access point
