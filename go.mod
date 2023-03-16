@@ -5,8 +5,8 @@ go 1.18
 require (
 	github.com/BurntSushi/toml v1.0.0
 	github.com/IBM-Cloud/ibm-cloud-cli-sdk v0.6.7
-	github.com/IBM/secret-common-lib v1.1.3
-	github.com/IBM/secret-utils-lib v1.1.3
+	github.com/IBM/secret-common-lib v1.1.4-0.20230310001150-389956843c24
+	github.com/IBM/secret-utils-lib v1.1.4-0.20230309233256-23670efab941
 	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.7.1
@@ -17,6 +17,7 @@ require (
 require (
 	github.com/IBM/go-sdk-core/v5 v5.9.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
+	github.com/beevik/ntp v0.3.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
