@@ -214,3 +214,17 @@ func TestGetVolumeAccessPoint(t *testing.T) {
 	accessPointResponse, _ := ccf.GetVolumeAccessPoint(VolumeAccessPointRequest{})
 	assert.Nil(t, accessPointResponse)
 }
+
+func TestGetSubnetForVolumeAccessPoint(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	subnetID, _ := ccf.GetSubnetForVolumeAccessPoint(SubnetRequest{})
+	assert.Equal(t, subnetID, "")
+}
+
+func TestGetSecurityGroupForVolumeAccessPoint(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	securityGroupID, _ := ccf.GetSecurityGroupForVolumeAccessPoint(SecurityGroupRequest{})
+	assert.Equal(t, securityGroupID, "")
+}
