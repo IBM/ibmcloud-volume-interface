@@ -59,14 +59,14 @@ func TestCreateVolume(t *testing.T) {
 func TestDetachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	volume, _ := ccf.DetachVolume(VolumeAttachmentRequest{})
+	volume, _ := ccf.DetachVolume(VolumeAttachmentRequest{}) // #nosec
 	assert.Nil(t, volume)
 }
 
 func TestWaitForAttachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	volume, _ := ccf.WaitForAttachVolume(VolumeAttachmentRequest{})
+	volume, _ := ccf.WaitForAttachVolume(VolumeAttachmentRequest{}) // #nosec
 	assert.Nil(t, volume)
 }
 func TestAttachVolume(t *testing.T) {

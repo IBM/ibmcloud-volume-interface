@@ -43,7 +43,7 @@ func TestNewContextCredentialsFactory(t *testing.T) {
 	k8sClient, _ := k8s_utils.FakeGetk8sClientSet()
 	pwd, _ := os.Getwd()
 	file := filepath.Join(pwd, "..", "..", "etc", "libconfig.toml")
-	err = k8s_utils.FakeCreateSecret(k8sClient, "DEFAULT", file)
+	_ = k8s_utils.FakeCreateSecret(k8sClient, "DEFAULT", file)
 	_, err = NewContextCredentialsFactory(authConfig, &k8sClient)
 	fmt.Println(err)
 	assert.Nil(t, err)
