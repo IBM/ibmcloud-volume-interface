@@ -59,8 +59,9 @@ func TestCreateVolume(t *testing.T) {
 func TestDetachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	volume, _ := ccf.DetachVolume(VolumeAttachmentRequest{}) // #nosec
+	volume, _ := ccf.DetachVolume(VolumeAttachmentRequest{})
 	assert.Nil(t, volume)
+	volume.Body.Close()
 }
 
 func TestWaitForAttachVolume(t *testing.T) {
@@ -192,6 +193,7 @@ func TestDeleteVolumeAccessPoint(t *testing.T) {
 
 	accessPointResponse, _ := ccf.DeleteVolumeAccessPoint(VolumeAccessPointRequest{})
 	assert.Nil(t, accessPointResponse)
+	accessPointResponse.Body.Close()
 }
 
 func TestWaitForCreateVolumeAccessPoint(t *testing.T) {
