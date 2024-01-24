@@ -67,7 +67,7 @@ func TestDetachVolume(t *testing.T) {
 func TestWaitForAttachVolume(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	volume, _ := ccf.WaitForAttachVolume(VolumeAttachmentRequest{}) // #nosec
+	volume, _ := ccf.WaitForAttachVolume(VolumeAttachmentRequest{})
 	assert.Nil(t, volume)
 }
 func TestAttachVolume(t *testing.T) {
