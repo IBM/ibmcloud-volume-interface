@@ -169,16 +169,14 @@ type SnapshotParameters struct {
 
 // UpdatePVC ...
 type UpdatePVC struct {
-	Href          string         `json:"href,omitempty"`
-	ID            string         `json:"id,omitempty"`
-	CRN           string         `json:"crn,omitempty"`
-	Name          string         `json:"name,omitempty"`
-	Capacity      int64          `json:"capacity,omitempty"`
-	Iops          int64          `json:"iops,omitempty"`
-	ResourceGroup *ResourceGroup `json:"resource_group,omitempty"`
-	Tags          []string       `json:"tags,omitempty"`
-	Cluster       string         `json:"cluster,omitempty"`
-	Provider      string         `json:"provider,omitempty"`
-	Status        string         `json:"status,omitempty"`
-	VolumeType    string         `json:"volume_type,omitempty"`
+	ID         string   `json:"id,omitempty"`
+	CRN        string   `json:"crn,omitempty"`
+	Name       string   `json:"name,omitempty"`
+	Capacity   int64    `json:"capacity,omitempty"`
+	Iops       int64    `json:"iops,omitempty"`
+	Tags       []string `json:"tags,omitempty"`
+	Cluster    string   `json:"cluster,omitempty"`
+	Provider   string   `json:"provider,omitempty"`
+	Status     string   `json:"status,omitempty"`
+	VolumeType string   `json:"volume_type,omitempty"`
 }
