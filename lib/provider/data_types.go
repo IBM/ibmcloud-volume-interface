@@ -96,8 +96,8 @@ type Volume struct {
 	// Only for VPC volume provider
 	VPCVolume
 
-	// ID of snapshot to be restored
-	SnapshotID string `json:"snapshotID,omitempty"`
+	// volume to be restored from snapshot.
+	Snapshot
 }
 
 // Snapshot ...
@@ -105,7 +105,10 @@ type Snapshot struct {
 	VolumeID string `json:"volumeID"`
 
 	// a unique Snapshot ID which created by the provider
-	SnapshotID string `json:"snapshotID"`
+	SnapshotID string `json:"snapshotID,omitempty"`
+
+	// a unique Snapshot CRN assigned by cloud provider to snapshot
+	SnapshotCRN string `json:"snapshotCRN,omitempty"`
 
 	// The size of the snapshot, in bytes
 	SnapshotSize int64 `json:"snapshotSize"`
