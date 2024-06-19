@@ -96,7 +96,7 @@ type Volume struct {
 	// Only for VPC volume provider
 	VPCVolume
 
-	// snapshot to be restored
+	// volume to be restored from snapshot
 	Snapshot
 }
 
