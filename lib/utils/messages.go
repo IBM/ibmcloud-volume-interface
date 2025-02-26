@@ -19,6 +19,7 @@ package util
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Message Wrapper Message/Error Class
@@ -39,5 +40,9 @@ func (msg Message) Error() string {
 
 // Info ...
 func (msg Message) Info() string {
-	return fmt.Sprintf("{Code:%s, Type:%s, Description:%s, BackendError:%s, RC:%d}", msg.Code, msg.Type, msg.Description, msg.BackendError, msg.RC)
+	if strings.Contains(msg.BackendError, "RC:") {
+		return fmt.Sprintf("{Code:%s, Type:%s, Description:%s, BackendError:%s}", msg.Code, msg.Type, msg.Description, msg.BackendError)
+	} else {
+		return fmt.Sprintf("{Code:%s, Type:%s, Description:%s, BackendError:%s, RC:%d}", msg.Code, msg.Type, msg.Description, msg.BackendError, msg.RC)
+	}
 }
