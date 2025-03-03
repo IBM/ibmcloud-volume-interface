@@ -40,9 +40,9 @@ func (msg Message) Error() string {
 
 // Info ...
 func (msg Message) Info() string {
-	if strings.Contains(msg.BackendError, "RC:") {
-		return fmt.Sprintf("{Code:%s, Type:%s, Description:%s, BackendError:%s}", msg.Code, msg.Type, msg.Description, msg.BackendError)
+	if strings.Contains(msg.BackendError, "Code:") {
+		return fmt.Sprintf("{Type:%s, %s}", msg.Type, msg.BackendError)
 	} else {
-		return fmt.Sprintf("{Code:%s, Type:%s, Description:%s, BackendError:%s, RC:%d}", msg.Code, msg.Type, msg.Description, msg.BackendError, msg.RC)
+		return fmt.Sprintf("{Code:%s, Type:%s, Description:%s, RC:%d}", msg.Code, msg.Type, msg.Description, msg.RC)
 	}
 }
