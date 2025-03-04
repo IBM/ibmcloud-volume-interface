@@ -24,13 +24,14 @@ import (
 
 // Message Wrapper Message/Error Class
 type Message struct {
-	Code         string
-	Type         string
-	RequestID    string
-	Description  string
-	BackendError string
-	RC           int
-	Action       string
+	Code          string
+	Type          string
+	RequestID     string
+	Description   string
+	BackendError  string
+	InternalError string
+	RC            int
+	Action        string
 }
 
 // Error Implement the Error() interface method
@@ -40,9 +41,9 @@ func (msg Message) Error() string {
 
 // Info ...
 func (msg Message) Info() string {
-	if strings.Contains(msg.BackendError, "Code:") {
-		return fmt.Sprintf("{Type:%s, %s}", msg.Type, msg.BackendError)
+	if strings.Contains(msg.BackendError, "Trace Code:") {
+		return fmt.Sprintf("{%s}", msg.BackendError)
 	} else {
-		return fmt.Sprintf("{Code:%s, Type:%s, Description:%s.%s, RC:%d}", msg.Code, msg.Type, msg.Description, msg.BackendError, msg.RC)
+		return fmt.Sprintf("%s.%s", msg.Description, msg.BackendError)
 	}
 }
