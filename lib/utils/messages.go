@@ -43,7 +43,7 @@ func (msg Message) Error() string {
 // Info ...
 func (msg Message) Info() string {
 	if strings.Contains(msg.BackendError, vpcError) {
-		return fmt.Sprintf("{%s}", msg.BackendError)
+		return fmt.Sprintf("{%s.%s}", msg.BackendError, msg.Description)
 	} else {
 		return fmt.Sprintf("{Code:%s, Description:%s.%s, RC:%d}", msg.Code, msg.Description, msg.BackendError, msg.RC)
 	}
