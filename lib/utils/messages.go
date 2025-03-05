@@ -22,6 +22,8 @@ import (
 	"strings"
 )
 
+const vpcError = "Trace Code:"
+
 // Message Wrapper Message/Error Class
 type Message struct {
 	Code         string
@@ -40,7 +42,7 @@ func (msg Message) Error() string {
 
 // Info ...
 func (msg Message) Info() string {
-	if strings.Contains(msg.BackendError, "Trace Code:") {
+	if strings.Contains(msg.BackendError, vpcError) {
 		return fmt.Sprintf("{%s}", msg.BackendError)
 	} else {
 		return fmt.Sprintf("{Code:%s, Description:%s.%s, RC:%d}", msg.Code, msg.Description, msg.BackendError, msg.RC)
