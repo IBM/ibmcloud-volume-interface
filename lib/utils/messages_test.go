@@ -35,10 +35,10 @@ func TestMessageError(t *testing.T) {
 
 	message = Message{
 		Code:         "ProvisioningFailed",
-		Description:  "",
+		Description:  "Failed to create file share with the storage provider",
 		BackendError: "Trace Code:03ef81ec-e20b-4ebc-ae96-356631b7e8f1, Code:shares_profile_capacity_iops_invalid, Description:The capacity or IOPS specified in the request is not valid for the 'dp2' profile, RC:400 Bad Request",
 		RC:           400,
 	}
 	assert.NotNil(t, message.Error())
-	assert.Equal(t, "{Trace Code:03ef81ec-e20b-4ebc-ae96-356631b7e8f1, Code:shares_profile_capacity_iops_invalid, Description:The capacity or IOPS specified in the request is not valid for the 'dp2' profile, RC:400 Bad Request}", message.Error())
+	assert.Equal(t, "{Trace Code:03ef81ec-e20b-4ebc-ae96-356631b7e8f1, Code:shares_profile_capacity_iops_invalid, Description:The capacity or IOPS specified in the request is not valid for the 'dp2' profile, RC:400 Bad Request.Failed to create file share with the storage provider}", message.Error())
 }
