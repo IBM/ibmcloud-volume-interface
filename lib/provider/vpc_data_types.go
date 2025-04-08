@@ -34,6 +34,7 @@ type VPCVolume struct {
 
 // VPCBlockVolume specific parameters
 type VPCBlockVolume struct {
+	Bandwidth         int32               `json:"bandwidth,omitempty"`
 	VolumeAttachments *[]VolumeAttachment `json:"volume_attachments,omitempty"`
 }
 
