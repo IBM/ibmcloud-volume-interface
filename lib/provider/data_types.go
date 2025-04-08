@@ -53,9 +53,6 @@ type Volume struct {
 	// Volume IOPS for performance storage type only
 	Iops *string `json:"iops"`
 
-	//Volume throughput
-	Bandwidth int32 `json:"bandwidth"`
-
 	// for endurance storage type only
 	Tier *string `json:"tier"`
 
