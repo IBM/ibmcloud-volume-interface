@@ -93,6 +93,9 @@ type Volume struct {
 	// IscsiTargetIPAddresses list of target IP addresses for iscsi. Applicable for Iscsi block storage only
 	IscsiTargetIPAddresses []string `json:"iscsiTargetIpAddresses,omitempty"`
 
+	//Bandwidth (for rfs)
+	Bandwidth *string `json:"bandwidth,omitempty"`
+
 	// Only for VPC volume provider
 	VPCVolume
 
@@ -159,6 +162,12 @@ type ExpandVolumeRequest struct {
 
 	// The new Capacity of the volume, in GiB
 	Capacity int64 `json:"capacity"`
+
+	//IOPS update (dp2 profile)
+	Iops *string `json:"iops,omitempty"`
+
+	//Bandwidth update (rfs profile)
+	Bandwidth *string `json:"bandwidth,omitempty"`
 }
 
 // SnapshotParameters ...
