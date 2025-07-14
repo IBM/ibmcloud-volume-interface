@@ -162,12 +162,6 @@ type ExpandVolumeRequest struct {
 
 	// The new Capacity of the volume, in GiB
 	Capacity int64 `json:"capacity"`
-
-	//IOPS update (dp2 profile)
-	Iops *string `json:"iops,omitempty"`
-
-	//Bandwidth update (rfs profile)
-	Bandwidth *string `json:"bandwidth,omitempty"`
 }
 
 // SnapshotParameters ...
