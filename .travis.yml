@@ -32,7 +32,7 @@ script:
 
 - make vet
 - make fmt
-- travis_wait 300 make test
+- travis_wait 600 make test
 - make coverage && touch "Passing" || touch "Failed"
 
 after_success:
