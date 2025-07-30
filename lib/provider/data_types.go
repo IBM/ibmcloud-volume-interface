@@ -93,9 +93,6 @@ type Volume struct {
 	// IscsiTargetIPAddresses list of target IP addresses for iscsi. Applicable for Iscsi block storage only
 	IscsiTargetIPAddresses []string `json:"iscsiTargetIpAddresses,omitempty"`
 
-	//Bandwidth (for rfs)
-	//Bandwidth *string `json:"bandwidth,omitempty"`
-
 	// Only for VPC volume provider
 	VPCVolume
 
