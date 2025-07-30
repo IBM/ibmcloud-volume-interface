@@ -94,7 +94,7 @@ type Volume struct {
 	IscsiTargetIPAddresses []string `json:"iscsiTargetIpAddresses,omitempty"`
 
 	//Bandwidth (for rfs)
-	Bandwidth *string `json:"bandwidth,omitempty"`
+	//Bandwidth *string `json:"bandwidth,omitempty"`
 
 	// Only for VPC volume provider
 	VPCVolume
