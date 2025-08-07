@@ -152,6 +152,16 @@ type FakeSession struct {
 		result1 int64
 		result2 error
 	}
+	GetMaturityBetaStub        func() bool
+	getMaturityBetaMutex       sync.RWMutex
+	getMaturityBetaArgsForCall []struct {
+	}
+	getMaturityBetaReturns struct {
+		result1 bool
+	}
+	getMaturityBetaReturnsOnCall map[int]struct {
+		result1 bool
+	}
 	GetProviderDisplayNameStub        func() provider.VolumeProvider
 	getProviderDisplayNameMutex       sync.RWMutex
 	getProviderDisplayNameArgsForCall []struct {
@@ -318,6 +328,11 @@ type FakeSession struct {
 	}
 	providerNameReturnsOnCall map[int]struct {
 		result1 provider.VolumeProvider
+	}
+	SetMaturityBetaStub        func(bool)
+	setMaturityBetaMutex       sync.RWMutex
+	setMaturityBetaArgsForCall []struct {
+		arg1 bool
 	}
 	TypeStub        func() provider.VolumeType
 	typeMutex       sync.RWMutex
@@ -1111,6 +1126,59 @@ func (fake *FakeSession) ExpandVolumeReturnsOnCall(i int, result1 int64, result2
 		result1 int64
 		result2 error
 	}{result1, result2}
+}
+
+func (fake *FakeSession) GetMaturityBeta() bool {
+	fake.getMaturityBetaMutex.Lock()
+	ret, specificReturn := fake.getMaturityBetaReturnsOnCall[len(fake.getMaturityBetaArgsForCall)]
+	fake.getMaturityBetaArgsForCall = append(fake.getMaturityBetaArgsForCall, struct {
+	}{})
+	stub := fake.GetMaturityBetaStub
+	fakeReturns := fake.getMaturityBetaReturns
+	fake.recordInvocation("GetMaturityBeta", []interface{}{})
+	fake.getMaturityBetaMutex.Unlock()
+	if stub != nil {
+		return stub()
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fakeReturns.result1
+}
+
+func (fake *FakeSession) GetMaturityBetaCallCount() int {
+	fake.getMaturityBetaMutex.RLock()
+	defer fake.getMaturityBetaMutex.RUnlock()
+	return len(fake.getMaturityBetaArgsForCall)
+}
+
+func (fake *FakeSession) GetMaturityBetaCalls(stub func() bool) {
+	fake.getMaturityBetaMutex.Lock()
+	defer fake.getMaturityBetaMutex.Unlock()
+	fake.GetMaturityBetaStub = stub
+}
+
+func (fake *FakeSession) GetMaturityBetaReturns(result1 bool) {
+	fake.getMaturityBetaMutex.Lock()
+	defer fake.getMaturityBetaMutex.Unlock()
+	fake.GetMaturityBetaStub = nil
+	fake.getMaturityBetaReturns = struct {
+		result1 bool
+	}{result1}
+}
+
+func (fake *FakeSession) GetMaturityBetaReturnsOnCall(i int, result1 bool) {
+	fake.getMaturityBetaMutex.Lock()
+	defer fake.getMaturityBetaMutex.Unlock()
+	fake.GetMaturityBetaStub = nil
+	if fake.getMaturityBetaReturnsOnCall == nil {
+		fake.getMaturityBetaReturnsOnCall = make(map[int]struct {
+			result1 bool
+		})
+	}
+	fake.getMaturityBetaReturnsOnCall[i] = struct {
+		result1 bool
+	}{result1}
 }
 
 func (fake *FakeSession) GetProviderDisplayName() provider.VolumeProvider {
@@ -1927,6 +1995,38 @@ func (fake *FakeSession) ProviderNameReturnsOnCall(i int, result1 provider.Volum
 	}{result1}
 }
 
+func (fake *FakeSession) SetMaturityBeta(arg1 bool) {
+	fake.setMaturityBetaMutex.Lock()
+	fake.setMaturityBetaArgsForCall = append(fake.setMaturityBetaArgsForCall, struct {
+		arg1 bool
+	}{arg1})
+	stub := fake.SetMaturityBetaStub
+	fake.recordInvocation("SetMaturityBeta", []interface{}{arg1})
+	fake.setMaturityBetaMutex.Unlock()
+	if stub != nil {
+		fake.SetMaturityBetaStub(arg1)
+	}
+}
+
+func (fake *FakeSession) SetMaturityBetaCallCount() int {
+	fake.setMaturityBetaMutex.RLock()
+	defer fake.setMaturityBetaMutex.RUnlock()
+	return len(fake.setMaturityBetaArgsForCall)
+}
+
+func (fake *FakeSession) SetMaturityBetaCalls(stub func(bool)) {
+	fake.setMaturityBetaMutex.Lock()
+	defer fake.setMaturityBetaMutex.Unlock()
+	fake.SetMaturityBetaStub = stub
+}
+
+func (fake *FakeSession) SetMaturityBetaArgsForCall(i int) bool {
+	fake.setMaturityBetaMutex.RLock()
+	defer fake.setMaturityBetaMutex.RUnlock()
+	argsForCall := fake.setMaturityBetaArgsForCall[i]
+	return argsForCall.arg1
+}
+
 func (fake *FakeSession) Type() provider.VolumeType {
 	fake.typeMutex.Lock()
 	ret, specificReturn := fake.typeReturnsOnCall[len(fake.typeArgsForCall)]
@@ -2318,6 +2418,8 @@ func (fake *FakeSession) Invocations() map[string][][]interface{} {
 	defer fake.detachVolumeMutex.RUnlock()
 	fake.expandVolumeMutex.RLock()
 	defer fake.expandVolumeMutex.RUnlock()
+	fake.getMaturityBetaMutex.RLock()
+	defer fake.getMaturityBetaMutex.RUnlock()
 	fake.getProviderDisplayNameMutex.RLock()
 	defer fake.getProviderDisplayNameMutex.RUnlock()
 	fake.getSecurityGroupForVolumeAccessPointMutex.RLock()
@@ -2344,6 +2446,8 @@ func (fake *FakeSession) Invocations() map[string][][]interface{} {
 	defer fake.listVolumesMutex.RUnlock()
 	fake.providerNameMutex.RLock()
 	defer fake.providerNameMutex.RUnlock()
+	fake.setMaturityBetaMutex.RLock()
+	defer fake.setMaturityBetaMutex.RUnlock()
 	fake.typeMutex.RLock()
 	defer fake.typeMutex.RUnlock()
 	fake.updateVolumeMutex.RLock()
