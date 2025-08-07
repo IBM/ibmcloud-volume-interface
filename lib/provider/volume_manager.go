@@ -59,4 +59,10 @@ type VolumeManager interface {
 	// Volume operations
 	// Expand the volume with authorization by passing required information in the volume object
 	ExpandVolume(expandVolumeRequest ExpandVolumeRequest) (int64, error)
+
+	//SetMaturityBeta
+	SetMaturityBeta(maturityBeta bool)
+
+	//GetMaturityBeta
+	GetMaturityBeta() bool
 }

@@ -21,10 +21,11 @@ import "net/http"
 
 // DefaultVolumeProvider Implementation
 type DefaultVolumeProvider struct {
-	sess *Session
+	sess         *Session
+	maturityBeta bool
 }
 
-var _ Session = &DefaultVolumeProvider{sess: nil}
+var _ Session = &DefaultVolumeProvider{sess: nil, maturityBeta: false}
 
 // ProviderName returns provider
 func (volprov *DefaultVolumeProvider) ProviderName() VolumeProvider {
@@ -191,4 +192,14 @@ func (volprov *DefaultVolumeProvider) GetSubnetForVolumeAccessPoint(subnetReques
 // GetSecurityGroupForVolumeAccessPoint retrieves the securityGroup matching with available cluster SG in the VPC
 func (volprov *DefaultVolumeProvider) GetSecurityGroupForVolumeAccessPoint(securityGroupRequest SecurityGroupRequest) (string, error) {
 	return "", nil
+}
+
+// GetSecurityGroupForVolumeAccessPoint retrieves the securityGroup matching with available cluster SG in the VPC
+func (volprov *DefaultVolumeProvider) SetMaturityBeta(maturityBeta bool) {
+	volprov.maturityBeta = maturityBeta
+}
+
+// GetSecurityGroupForVolumeAccessPoint retrieves the securityGroup matching with available cluster SG in the VPC
+func (volprov *DefaultVolumeProvider) GetMaturityBeta() bool {
+	return volprov.maturityBeta
 }
