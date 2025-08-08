@@ -16,7 +16,7 @@ deps:
 
 .PHONY: fmt
 fmt:
-	golangci-lint run --disable-all --enable=gofmt
+	golangci-lint run --disable-all --enable=gofmt --timeout=5m
 
 .PHONY: dofmt
 dofmt:
@@ -34,14 +34,16 @@ makefmt:
 test:
 ifeq ($(ARCH), ppc64le)
 	# POWER
-	$(GOPATH)/bin/gotestcover -v -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
+	# $(GOPATH)/bin/gotestcover -v -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
+	go test -v -coverprofile=cover.out ${GOPACKAGES} -timeout 90
 else
 	# x86_64
-	$(GOPATH)/bin/gotestcover -v -race -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
+	# $(GOPATH)/bin/gotestcover -v -race -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
+	go test -v -race -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
 endif
 
 .PHONY: coverage
-coverage:
+coverage: test
 	go tool cover -html=cover.out -o=cover.html
 
 .PHONY: vet
