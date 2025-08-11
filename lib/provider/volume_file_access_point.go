@@ -57,6 +57,9 @@ type VolumeAccessPointRequest struct {
 	//Volume to create the AccessPoint for
 	VolumeID string `json:"volumeID"`
 
+	//AccessProtocol
+	AccessProtocol string `json:"access_protocol,omitempty"`
+
 	//AccessPointID to search or delete access point
 	AccessPointID string `json:"accessPointID,omitempty"`
 
