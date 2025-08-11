@@ -88,6 +88,7 @@ type PrimaryIP struct {
 type VolumeAccessPoint struct {
 	ID   string `json:"id,omitempty"`
 	Href string `json:"href,omitempty"`
+	CRN  string `json:"crn,omitempty"`
 	Name string `json:"name,omitempty"`
 	// Status of volume target named - deleted, deleting, failed, pending_deletion, stable, updating, waiting, suspended
 	Status    string     `json:"status,omitempty"`
