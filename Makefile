@@ -16,7 +16,7 @@ deps:
 
 .PHONY: fmt
 fmt:
-	golangci-lint run --disable-all --enable=gofmt --timeout 300
+	golangci-lint run --disable-all --enable=gofmt --timeout 30m
 
 .PHONY: dofmt
 dofmt:
