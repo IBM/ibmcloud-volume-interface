@@ -265,16 +265,18 @@ type Context struct {
 		result1 *provider.Volume
 		result2 error
 	}
-	GetVolumeProfileByNameStub        func(string) error
+	GetVolumeProfileByNameStub        func(string) (*provider.Profile, error)
 	getVolumeProfileByNameMutex       sync.RWMutex
 	getVolumeProfileByNameArgsForCall []struct {
 		arg1 string
 	}
 	getVolumeProfileByNameReturns struct {
-		result1 error
+		result1 *provider.Profile
+		result2 error
 	}
 	getVolumeProfileByNameReturnsOnCall map[int]struct {
-		result1 error
+		result1 *provider.Profile
+		result2 error
 	}
 	ListSnapshotsStub        func(int, string, map[string]string) (*provider.SnapshotList, error)
 	listSnapshotsMutex       sync.RWMutex
@@ -1662,7 +1664,7 @@ func (fake *Context) GetVolumeByRequestIDReturnsOnCall(i int, result1 *provider.
 	}{result1, result2}
 }
 
-func (fake *Context) GetVolumeProfileByName(arg1 string) error {
+func (fake *Context) GetVolumeProfileByName(arg1 string) (*provider.Profile, error) {
 	fake.getVolumeProfileByNameMutex.Lock()
 	ret, specificReturn := fake.getVolumeProfileByNameReturnsOnCall[len(fake.getVolumeProfileByNameArgsForCall)]
 	fake.getVolumeProfileByNameArgsForCall = append(fake.getVolumeProfileByNameArgsForCall, struct {
@@ -1676,9 +1678,9 @@ func (fake *Context) GetVolumeProfileByName(arg1 string) error {
 		return stub(arg1)
 	}
 	if specificReturn {
-		return ret.result1
+		return ret.result1, ret.result2
 	}
-	return fakeReturns.result1
+	return fakeReturns.result1, fakeReturns.result2
 }
 
 func (fake *Context) GetVolumeProfileByNameCallCount() int {
@@ -1687,7 +1689,7 @@ func (fake *Context) GetVolumeProfileByNameCallCount() int {
 	return len(fake.getVolumeProfileByNameArgsForCall)
 }
 
-func (fake *Context) GetVolumeProfileByNameCalls(stub func(string) error) {
+func (fake *Context) GetVolumeProfileByNameCalls(stub func(string) (*provider.Profile, error)) {
 	fake.getVolumeProfileByNameMutex.Lock()
 	defer fake.getVolumeProfileByNameMutex.Unlock()
 	fake.GetVolumeProfileByNameStub = stub
@@ -1700,27 +1702,30 @@ func (fake *Context) GetVolumeProfileByNameArgsForCall(i int) string {
 	return argsForCall.arg1
 }
 
-func (fake *Context) GetVolumeProfileByNameReturns(result1 error) {
+func (fake *Context) GetVolumeProfileByNameReturns(result1 *provider.Profile, result2 error) {
 	fake.getVolumeProfileByNameMutex.Lock()
 	defer fake.getVolumeProfileByNameMutex.Unlock()
 	fake.GetVolumeProfileByNameStub = nil
 	fake.getVolumeProfileByNameReturns = struct {
-		result1 error
-	}{result1}
+		result1 *provider.Profile
+		result2 error
+	}{result1, result2}
 }
 
-func (fake *Context) GetVolumeProfileByNameReturnsOnCall(i int, result1 error) {
+func (fake *Context) GetVolumeProfileByNameReturnsOnCall(i int, result1 *provider.Profile, result2 error) {
 	fake.getVolumeProfileByNameMutex.Lock()
 	defer fake.getVolumeProfileByNameMutex.Unlock()
 	fake.GetVolumeProfileByNameStub = nil
 	if fake.getVolumeProfileByNameReturnsOnCall == nil {
 		fake.getVolumeProfileByNameReturnsOnCall = make(map[int]struct {
-			result1 error
+			result1 *provider.Profile
+			result2 error
 		})
 	}
 	fake.getVolumeProfileByNameReturnsOnCall[i] = struct {
-		result1 error
-	}{result1}
+		result1 *provider.Profile
+		result2 error
+	}{result1, result2}
 }
 
 func (fake *Context) ListSnapshots(arg1 int, arg2 string, arg3 map[string]string) (*provider.SnapshotList, error) {

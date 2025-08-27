@@ -37,8 +37,8 @@ func (volprov *DefaultVolumeProvider) Type() VolumeType {
 }
 
 // GetVolumeProfileByName gets volume profile by name,
-func (volprov *DefaultVolumeProvider) GetVolumeProfileByName(profileName string) error {
-	return nil
+func (volprov *DefaultVolumeProvider) GetVolumeProfileByName(profileName string) (*Profile, error) {
+	return nil, nil
 }
 
 // CreateVolume creates a volume

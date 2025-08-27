@@ -167,8 +167,9 @@ func TestGetVolumeByName(t *testing.T) {
 func TestGetVolumeProfileByName(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	err := ccf.GetVolumeProfileByName("VolumeProfileName")
+	getProfile, err := ccf.GetVolumeProfileByName("VolumeProfileName")
 	assert.Nil(t, err)
+	assert.Nil(t, getProfile)
 }
 
 func TestGetVolumeByRequestID(t *testing.T) {
