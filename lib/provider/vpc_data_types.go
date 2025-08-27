@@ -129,7 +129,7 @@ type Profile struct {
 	Name                          string            `json:"name,omitempty"`
 	AllowedAccessProtocols        DefaultTypeValues `json:"allowed_access_protocols,omitempty"`
 	AllowedTransitEncryptionModes DefaultTypeValues `json:"allowed_transit_encryption_modes,omitempty"`
-	AvailabilityModes             DefaultTypeValues `json:"availability_modes,omitempty"`
+	AvailabilityModes             AvailabilityModes `json:"availability_modes,omitempty"`
 	Bandwidth                     BandCapIops       `json:"bandwidth,omitempty"`
 	Capacity                      BandCapIops       `json:"capacity,omitempty"`
 	Family                        string            `json:"family,omitempty"`
