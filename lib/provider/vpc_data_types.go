@@ -124,36 +124,16 @@ type ResourceGroup struct {
 
 // Profile ...
 type Profile struct {
-	CRN                           string            `json:"crn,omitempty"`
-	Href                          string            `json:"href,omitempty"`
-	Name                          string            `json:"name,omitempty"`
-	AllowedAccessProtocols        DefaultTypeValues `json:"allowed_access_protocols,omitempty"`
-	AllowedTransitEncryptionModes DefaultTypeValues `json:"allowed_transit_encryption_modes,omitempty"`
-	AvailabilityModes             AvailabilityModes `json:"availability_modes,omitempty"`
-	Bandwidth                     BandCapIops       `json:"bandwidth,omitempty"`
-	Capacity                      BandCapIops       `json:"capacity,omitempty"`
-	Family                        string            `json:"family,omitempty"`
-	Iops                          BandCapIops       `json:"iops,omitempty"`
-	ResourceType                  string            `json:"resource_type,omitempty"`
+	CRN          string      `json:"crn,omitempty"`
+	Href         string      `json:"href,omitempty"`
+	Name         string      `json:"name,omitempty"`
+	Capacity     BandCapIops `json:"capacity,omitempty"`
+	Family       string      `json:"family,omitempty"`
+	Iops         BandCapIops `json:"iops,omitempty"`
+	ResourceType string      `json:"resource_type,omitempty"`
 }
 
-// DefaultTypeValues
-type DefaultTypeValues struct {
-	Default []string `json:"default,omitempty"`
-	Type    string   `json:"type,omitempty"`
-	Values  []string `json:"values,omitempty"`
-	Value   string   `json:"value,omitempty"`
-}
-
-// AvailabilityModes
-type AvailabilityModes struct {
-	Default string   `json:"default,omitempty"`
-	Type    string   `json:"type,omitempty"`
-	Values  []string `json:"values,omitempty"`
-	Value   string   `json:"value,omitempty"`
-}
-
-// BandCapIops
+// BandwithCapacityIops
 type BandCapIops struct {
 	Default int32   `json:"default,omitempty"`
 	Max     int32   `json:"max,omitempty"`
