@@ -5,8 +5,8 @@ go 1.23.10
 require (
 	github.com/BurntSushi/toml v1.0.0
 	github.com/IBM-Cloud/ibm-cloud-cli-sdk v0.6.7
-	github.com/IBM/secret-common-lib v1.1.13
-	github.com/IBM/secret-utils-lib v1.1.14
+	github.com/IBM/secret-common-lib v1.1.14
+	github.com/IBM/secret-utils-lib v1.1.15
 	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.7.1
@@ -73,9 +73,9 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.32.6 // indirect
-	k8s.io/apimachinery v0.32.6 // indirect
-	k8s.io/client-go v0.32.6 // indirect
+	k8s.io/api v0.32.8 // indirect
+	k8s.io/apimachinery v0.32.8 // indirect
+	k8s.io/client-go v0.32.8 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20241105132330-32ad38e42d3f // indirect
 	k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738 // indirect
