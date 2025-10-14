@@ -31,6 +31,12 @@ type SnapshotManager interface {
 	// Get the snapshot By name
 	GetSnapshotByName(snapshotName string) (*Snapshot, error)
 
+	// Get the sharesnapshot
+	GetShareSnapshot(sourceShareID string, snapshotID string) (*Snapshot, error)
+
+	// Get the sharesnapshot By name
+	GetShareSnapshotByName(sourceShareID string, snapshotName string) (*Snapshot, error)
+
 	// Snapshot list by using tags
 	ListSnapshots(limit int, start string, tags map[string]string) (*SnapshotList, error)
 }
