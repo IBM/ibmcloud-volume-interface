@@ -159,6 +159,12 @@ type ExpandVolumeRequest struct {
 
 	// The new Capacity of the volume, in GiB
 	Capacity int64 `json:"capacity"`
+
+	// The new Iops of the volume, in GiB
+	Iops int64 `json:"capacity"`
+
+	// The new Bandwidth of the volume, in GiB
+	Bandwidth int64 `json:"capacity"`
 }
 
 // SnapshotParameters ...
