@@ -161,6 +161,20 @@ type ExpandVolumeRequest struct {
 	Capacity int64 `json:"capacity"`
 }
 
+type ModifyVolumeRequest struct {
+	// VolumeID id for the volume
+	VolumeID string `json:"volumeID"`
+
+	// changed Volume name
+	Name *string `json:"name,omitempty"`
+
+	// The new IOPS of the volume
+	Iops int64 `json:"iops,omitempty"`
+
+	// The new Bandwidth (throughput) of the volume
+	Bandwidth int32 `json:"bandwidth,omitempty"`
+}
+
 // SnapshotParameters ...
 type SnapshotParameters struct {
 	// Name of snapshot
