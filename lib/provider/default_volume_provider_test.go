@@ -97,7 +97,15 @@ func TestExpandVolume(t *testing.T) {
 	res, _ := ccf.ExpandVolume(ExpandVolumeRequest{})
 	assert.Equal(t, int64(0), res)
 }
+func TestModifyVolume(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
 
+	iops, bandwidth, err := ccf.ModifyVolume(ModifyVolumeRequest{})
+
+	assert.NoError(t, err)
+	assert.Equal(t, int64(0), iops)
+	assert.Equal(t, int32(0), bandwidth)
+}
 func TestCreateVolumeFromSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
