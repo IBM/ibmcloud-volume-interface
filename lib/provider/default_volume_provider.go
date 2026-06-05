@@ -152,6 +152,11 @@ func (volprov *DefaultVolumeProvider) ExpandVolume(expandVolumeRequest ExpandVol
 	return 0, nil
 }
 
+// ModifyVolume modify the volume with authorization by passing required information in the volume object
+func (volprov *DefaultVolumeProvider) ModifyVolume(modifyVolumeRequest ModifyVolumeRequest) (int64, int32, error) {
+	return 0, 0, nil
+}
+
 // GetProviderDisplayName gets provider by displayname
 func (volprov *DefaultVolumeProvider) GetProviderDisplayName() VolumeProvider {
 	return ""

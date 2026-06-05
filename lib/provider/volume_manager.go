@@ -62,4 +62,6 @@ type VolumeManager interface {
 	// Volume operations
 	// Expand the volume with authorization by passing required information in the volume object
 	ExpandVolume(expandVolumeRequest ExpandVolumeRequest) (int64, error)
+
+	ModifyVolume(modifyVolumeRequest ModifyVolumeRequest) (int64, int32, error)
 }
