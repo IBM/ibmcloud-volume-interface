@@ -139,16 +139,14 @@ type Context struct {
 	modifyVolumeArgsForCall []struct {
 		arg1 provider.ModifyVolumeRequest
 	}
-	ModifyVolumeStub    func(provider.ModifyVolumeRequest) (int64, int32, error)
+	ModifyVolumeStub    func(provider.ModifyVolumeRequest) (*provider.ModifyVolumeResponse, error)
 	modifyVolumeReturns struct {
-		result1 int64
-		result2 int32
-		result3 error
+		result1 *provider.ModifyVolumeResponse
+		result2 error
 	}
 	modifyVolumeReturnsOnCall map[int]struct {
-		result1 int64
-		result2 int32
-		result3 error
+		result1 *provider.ModifyVolumeResponse
+		result2 error
 	}
 	ExpandVolumeStub        func(provider.ExpandVolumeRequest) (int64, error)
 	expandVolumeMutex       sync.RWMutex
@@ -1088,7 +1086,7 @@ func (fake *Context) ExpandVolumeReturns(result1 int64, result2 error) {
 		result2 error
 	}{result1, result2}
 }
-func (fake *Context) ModifyVolume(arg1 provider.ModifyVolumeRequest) (int64, int32, error) {
+func (fake *Context) ModifyVolume(arg1 provider.ModifyVolumeRequest) (*provider.ModifyVolumeResponse, error) {
 	fake.modifyVolumeMutex.Lock()
 	ret, specificReturn := fake.modifyVolumeReturnsOnCall[len(fake.modifyVolumeArgsForCall)]
 	fake.modifyVolumeArgsForCall = append(fake.modifyVolumeArgsForCall, struct {
@@ -1103,9 +1101,9 @@ func (fake *Context) ModifyVolume(arg1 provider.ModifyVolumeRequest) (int64, int
 		return stub(arg1)
 	}
 	if specificReturn {
-		return ret.result1, ret.result2, ret.result3
+		return ret.result1, ret.result2
 	}
-	return fakeReturns.result1, fakeReturns.result2, fakeReturns.result3
+	return fakeReturns.result1, fakeReturns.result2
 }
 
 func (fake *Context) ModifyVolumeCallCount() int {
@@ -1114,7 +1112,7 @@ func (fake *Context) ModifyVolumeCallCount() int {
 	return len(fake.modifyVolumeArgsForCall)
 }
 
-func (fake *Context) ModifyVolumeCalls(stub func(provider.ModifyVolumeRequest) (int64, int32, error)) {
+func (fake *Context) ModifyVolumeCalls(stub func(provider.ModifyVolumeRequest) (*provider.ModifyVolumeResponse, error)) {
 	fake.modifyVolumeMutex.Lock()
 	defer fake.modifyVolumeMutex.Unlock()
 	fake.ModifyVolumeStub = stub
@@ -1127,33 +1125,30 @@ func (fake *Context) ModifyVolumeArgsForCall(i int) provider.ModifyVolumeRequest
 	return argsForCall.arg1
 }
 
-func (fake *Context) ModifyVolumeReturns(result1 int64, result2 int32, result3 error) {
+func (fake *Context) ModifyVolumeReturns(result1 *provider.ModifyVolumeResponse, result2 error) {
 	fake.modifyVolumeMutex.Lock()
 	defer fake.modifyVolumeMutex.Unlock()
 	fake.ModifyVolumeStub = nil
 	fake.modifyVolumeReturns = struct {
-		result1 int64
-		result2 int32
-		result3 error
-	}{result1, result2, result3}
+		result1 *provider.ModifyVolumeResponse
+		result2 error
+	}{result1, result2}
 }
 
-func (fake *Context) ModifyVolumeReturnsOnCall(i int, result1 int64, result2 int32, result3 error) {
+func (fake *Context) ModifyVolumeReturnsOnCall(i int, result1 *provider.ModifyVolumeResponse, result2 error) {
 	fake.modifyVolumeMutex.Lock()
 	defer fake.modifyVolumeMutex.Unlock()
 	fake.ModifyVolumeStub = nil
 	if fake.modifyVolumeReturnsOnCall == nil {
 		fake.modifyVolumeReturnsOnCall = make(map[int]struct {
-			result1 int64
-			result2 int32
-			result3 error
+			result1 *provider.ModifyVolumeResponse
+			result2 error
 		})
 	}
 	fake.modifyVolumeReturnsOnCall[i] = struct {
-		result1 int64
-		result2 int32
-		result3 error
-	}{result1, result2, result3}
+		result1 *provider.ModifyVolumeResponse
+		result2 error
+	}{result1, result2}
 }
 
 func (fake *Context) ExpandVolumeReturnsOnCall(i int, result1 int64, result2 error) {

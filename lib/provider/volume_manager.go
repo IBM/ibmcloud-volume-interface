@@ -63,5 +63,8 @@ type VolumeManager interface {
 	// Expand the volume with authorization by passing required information in the volume object
 	ExpandVolume(expandVolumeRequest ExpandVolumeRequest) (int64, error)
 
-	ModifyVolume(modifyVolumeRequest ModifyVolumeRequest) (int64, int32, error)
+	// ModifyVolume modifies the volume. Returns a ModifyVolumeResponse containing
+	// the updated attributes, and any error. Using a response struct keeps this
+	// interface stable when new modifiable attributes are added in the future.
+	ModifyVolume(modifyVolumeRequest ModifyVolumeRequest) (*ModifyVolumeResponse, error)
 }

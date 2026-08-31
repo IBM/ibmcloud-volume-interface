@@ -52,8 +52,8 @@ func (volprov *DefaultVolumeProvider) AttachVolume(attachRequest VolumeAttachmen
 }
 
 // ModifyVolume modify the volume with authorization by passing required information in the volume object
-func (volprov *DefaultVolumeProvider) ModifyVolume(modifyVolumeRequest ModifyVolumeRequest) (int64, int32, error) {
-	return 0, 0, nil
+func (volprov *DefaultVolumeProvider) ModifyVolume(modifyVolumeRequest ModifyVolumeRequest) (*ModifyVolumeResponse, error) {
+	return nil, nil
 }
 
 // CreateVolumeFromSnapshot creates a volume from snapshot
