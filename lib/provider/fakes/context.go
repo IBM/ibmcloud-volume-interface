@@ -254,17 +254,17 @@ type Context struct {
 		result1 *provider.Volume
 		result2 error
 	}
-	GetVolumeProfileBandsStub        func(string) ([]provider.VolumeProfileBand, error)
-	getVolumeProfileBandsMutex       sync.RWMutex
-	getVolumeProfileBandsArgsForCall []struct {
+	GetShareProfileBandsStub        func(string) ([]provider.ShareProfileBand, error)
+	getShareProfileBandsMutex       sync.RWMutex
+	getShareProfileBandsArgsForCall []struct {
 		arg1 string
 	}
 	getVolumeProfileBandsReturns struct {
-		result1 []provider.VolumeProfileBand
+		result1 []provider.ShareProfileBand
 		result2 error
 	}
-	getVolumeProfileBandsReturnsOnCall map[int]struct {
-		result1 []provider.VolumeProfileBand
+	getShareProfileBandsReturnsOnCall map[int]struct {
+		result1 []provider.ShareProfileBand
 		result2 error
 	}
 	GetVolumeByRequestIDStub        func(string) (*provider.Volume, error)
@@ -2347,8 +2347,8 @@ func (fake *Context) Invocations() map[string][][]interface{} {
 	defer fake.providerNameMutex.RUnlock()
 	fake.typeMutex.RLock()
 	defer fake.typeMutex.RUnlock()
-	fake.getVolumeProfileBandsMutex.RLock()
-	defer fake.getVolumeProfileBandsMutex.RUnlock()
+	fake.getShareProfileBandsMutex.RLock()
+	defer fake.getShareProfileBandsMutex.RUnlock()
 	fake.updateVolumeMutex.RLock()
 	defer fake.updateVolumeMutex.RUnlock()
 	fake.waitForAttachVolumeMutex.RLock()
@@ -2378,16 +2378,16 @@ func (fake *Context) recordInvocation(key string, args []interface{}) {
 	fake.invocations[key] = append(fake.invocations[key], args)
 }
 
-func (fake *Context) GetVolumeProfileBands(arg1 string) ([]provider.VolumeProfileBand, error) {
-	fake.getVolumeProfileBandsMutex.Lock()
-	ret, specificReturn := fake.getVolumeProfileBandsReturnsOnCall[len(fake.getVolumeProfileBandsArgsForCall)]
-	fake.getVolumeProfileBandsArgsForCall = append(fake.getVolumeProfileBandsArgsForCall, struct {
+func (fake *Context) GetShareProfileBands(arg1 string) ([]provider.ShareProfileBand, error) {
+	fake.getShareProfileBandsMutex.Lock()
+	ret, specificReturn := fake.getShareProfileBandsReturnsOnCall[len(fake.getShareProfileBandsArgsForCall)]
+	fake.getShareProfileBandsArgsForCall = append(fake.getShareProfileBandsArgsForCall, struct {
 		arg1 string
 	}{arg1})
-	stub := fake.GetVolumeProfileBandsStub
+	stub := fake.GetShareProfileBandsStub
 	fakeReturns := fake.getVolumeProfileBandsReturns
-	fake.recordInvocation("GetVolumeProfileBands", []interface{}{arg1})
-	fake.getVolumeProfileBandsMutex.Unlock()
+	fake.recordInvocation("GetShareProfileBands", []interface{}{arg1})
+	fake.getShareProfileBandsMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -2397,47 +2397,47 @@ func (fake *Context) GetVolumeProfileBands(arg1 string) ([]provider.VolumeProfil
 	return fakeReturns.result1, fakeReturns.result2
 }
 
-func (fake *Context) GetVolumeProfileBandsCallCount() int {
-	fake.getVolumeProfileBandsMutex.RLock()
-	defer fake.getVolumeProfileBandsMutex.RUnlock()
-	return len(fake.getVolumeProfileBandsArgsForCall)
+func (fake *Context) GetShareProfileBandsCallCount() int {
+	fake.getShareProfileBandsMutex.RLock()
+	defer fake.getShareProfileBandsMutex.RUnlock()
+	return len(fake.getShareProfileBandsArgsForCall)
 }
 
-func (fake *Context) GetVolumeProfileBandsCalls(stub func(string) ([]provider.VolumeProfileBand, error)) {
-	fake.getVolumeProfileBandsMutex.Lock()
-	defer fake.getVolumeProfileBandsMutex.Unlock()
-	fake.GetVolumeProfileBandsStub = stub
+func (fake *Context) GetShareProfileBandsCalls(stub func(string) ([]provider.ShareProfileBand, error)) {
+	fake.getShareProfileBandsMutex.Lock()
+	defer fake.getShareProfileBandsMutex.Unlock()
+	fake.GetShareProfileBandsStub = stub
 }
 
-func (fake *Context) GetVolumeProfileBandsArgsForCall(i int) string {
-	fake.getVolumeProfileBandsMutex.RLock()
-	defer fake.getVolumeProfileBandsMutex.RUnlock()
-	argsForCall := fake.getVolumeProfileBandsArgsForCall[i]
+func (fake *Context) GetShareProfileBandsArgsForCall(i int) string {
+	fake.getShareProfileBandsMutex.RLock()
+	defer fake.getShareProfileBandsMutex.RUnlock()
+	argsForCall := fake.getShareProfileBandsArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *Context) GetVolumeProfileBandsReturns(result1 []provider.VolumeProfileBand, result2 error) {
-	fake.getVolumeProfileBandsMutex.Lock()
-	defer fake.getVolumeProfileBandsMutex.Unlock()
-	fake.GetVolumeProfileBandsStub = nil
+func (fake *Context) GetShareProfileBandsReturns(result1 []provider.ShareProfileBand, result2 error) {
+	fake.getShareProfileBandsMutex.Lock()
+	defer fake.getShareProfileBandsMutex.Unlock()
+	fake.GetShareProfileBandsStub = nil
 	fake.getVolumeProfileBandsReturns = struct {
-		result1 []provider.VolumeProfileBand
+		result1 []provider.ShareProfileBand
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *Context) GetVolumeProfileBandsReturnsOnCall(i int, result1 []provider.VolumeProfileBand, result2 error) {
-	fake.getVolumeProfileBandsMutex.Lock()
-	defer fake.getVolumeProfileBandsMutex.Unlock()
-	fake.GetVolumeProfileBandsStub = nil
-	if fake.getVolumeProfileBandsReturnsOnCall == nil {
-		fake.getVolumeProfileBandsReturnsOnCall = make(map[int]struct {
-			result1 []provider.VolumeProfileBand
+func (fake *Context) GetShareProfileBandsReturnsOnCall(i int, result1 []provider.ShareProfileBand, result2 error) {
+	fake.getShareProfileBandsMutex.Lock()
+	defer fake.getShareProfileBandsMutex.Unlock()
+	fake.GetShareProfileBandsStub = nil
+	if fake.getShareProfileBandsReturnsOnCall == nil {
+		fake.getShareProfileBandsReturnsOnCall = make(map[int]struct {
+			result1 []provider.ShareProfileBand
 			result2 error
 		})
 	}
-	fake.getVolumeProfileBandsReturnsOnCall[i] = struct {
-		result1 []provider.VolumeProfileBand
+	fake.getShareProfileBandsReturnsOnCall[i] = struct {
+		result1 []provider.ShareProfileBand
 		result2 error
 	}{result1, result2}
 }
