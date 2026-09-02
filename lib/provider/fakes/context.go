@@ -254,17 +254,17 @@ type Context struct {
 		result1 *provider.Volume
 		result2 error
 	}
-	GetShareProfileBandsStub        func(string) ([]provider.ShareProfileBand, error)
+	GetVolumeProfileBandsStub        func(string) ([]provider.VolumeProfileBand, error)
 	getShareProfileBandsMutex       sync.RWMutex
 	getShareProfileBandsArgsForCall []struct {
 		arg1 string
 	}
 	getVolumeProfileBandsReturns struct {
-		result1 []provider.ShareProfileBand
+		result1 []provider.VolumeProfileBand
 		result2 error
 	}
 	getShareProfileBandsReturnsOnCall map[int]struct {
-		result1 []provider.ShareProfileBand
+		result1 []provider.VolumeProfileBand
 		result2 error
 	}
 	GetVolumeByRequestIDStub        func(string) (*provider.Volume, error)
@@ -2378,15 +2378,15 @@ func (fake *Context) recordInvocation(key string, args []interface{}) {
 	fake.invocations[key] = append(fake.invocations[key], args)
 }
 
-func (fake *Context) GetShareProfileBands(arg1 string) ([]provider.ShareProfileBand, error) {
+func (fake *Context) GetVolumeProfileBands(arg1 string) ([]provider.VolumeProfileBand, error) {
 	fake.getShareProfileBandsMutex.Lock()
 	ret, specificReturn := fake.getShareProfileBandsReturnsOnCall[len(fake.getShareProfileBandsArgsForCall)]
 	fake.getShareProfileBandsArgsForCall = append(fake.getShareProfileBandsArgsForCall, struct {
 		arg1 string
 	}{arg1})
-	stub := fake.GetShareProfileBandsStub
+	stub := fake.GetVolumeProfileBandsStub
 	fakeReturns := fake.getVolumeProfileBandsReturns
-	fake.recordInvocation("GetShareProfileBands", []interface{}{arg1})
+	fake.recordInvocation("GetVolumeProfileBands", []interface{}{arg1})
 	fake.getShareProfileBandsMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
@@ -2397,47 +2397,47 @@ func (fake *Context) GetShareProfileBands(arg1 string) ([]provider.ShareProfileB
 	return fakeReturns.result1, fakeReturns.result2
 }
 
-func (fake *Context) GetShareProfileBandsCallCount() int {
+func (fake *Context) GetVolumeProfileBandsCallCount() int {
 	fake.getShareProfileBandsMutex.RLock()
 	defer fake.getShareProfileBandsMutex.RUnlock()
 	return len(fake.getShareProfileBandsArgsForCall)
 }
 
-func (fake *Context) GetShareProfileBandsCalls(stub func(string) ([]provider.ShareProfileBand, error)) {
+func (fake *Context) GetVolumeProfileBandsCalls(stub func(string) ([]provider.VolumeProfileBand, error)) {
 	fake.getShareProfileBandsMutex.Lock()
 	defer fake.getShareProfileBandsMutex.Unlock()
-	fake.GetShareProfileBandsStub = stub
+	fake.GetVolumeProfileBandsStub = stub
 }
 
-func (fake *Context) GetShareProfileBandsArgsForCall(i int) string {
+func (fake *Context) GetVolumeProfileBandsArgsForCall(i int) string {
 	fake.getShareProfileBandsMutex.RLock()
 	defer fake.getShareProfileBandsMutex.RUnlock()
 	argsForCall := fake.getShareProfileBandsArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *Context) GetShareProfileBandsReturns(result1 []provider.ShareProfileBand, result2 error) {
+func (fake *Context) GetVolumeProfileBandsReturns(result1 []provider.VolumeProfileBand, result2 error) {
 	fake.getShareProfileBandsMutex.Lock()
 	defer fake.getShareProfileBandsMutex.Unlock()
-	fake.GetShareProfileBandsStub = nil
+	fake.GetVolumeProfileBandsStub = nil
 	fake.getVolumeProfileBandsReturns = struct {
-		result1 []provider.ShareProfileBand
+		result1 []provider.VolumeProfileBand
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *Context) GetShareProfileBandsReturnsOnCall(i int, result1 []provider.ShareProfileBand, result2 error) {
+func (fake *Context) GetVolumeProfileBandsReturnsOnCall(i int, result1 []provider.VolumeProfileBand, result2 error) {
 	fake.getShareProfileBandsMutex.Lock()
 	defer fake.getShareProfileBandsMutex.Unlock()
-	fake.GetShareProfileBandsStub = nil
+	fake.GetVolumeProfileBandsStub = nil
 	if fake.getShareProfileBandsReturnsOnCall == nil {
 		fake.getShareProfileBandsReturnsOnCall = make(map[int]struct {
-			result1 []provider.ShareProfileBand
+			result1 []provider.VolumeProfileBand
 			result2 error
 		})
 	}
 	fake.getShareProfileBandsReturnsOnCall[i] = struct {
-		result1 []provider.ShareProfileBand
+		result1 []provider.VolumeProfileBand
 		result2 error
 	}{result1, result2}
 }

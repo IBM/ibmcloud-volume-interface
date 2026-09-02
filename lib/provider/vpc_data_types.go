@@ -168,11 +168,11 @@ type IKSVolumeAttachment struct {
 	ClusterID *string `json:"clusterID,omitempty"`
 }
 
-// ShareProfileBand represents one capacity/IOPS band for a VPC file share
+// VolumeProfileBand represents one capacity/IOPS band for a VPC file share
 // profile. Each band defines the inclusive GiB capacity range and the
 // inclusive IOPS range that are valid together.
-// Returned by Session.GetShareProfileBands.
-type ShareProfileBand struct {
+// Returned by Session.GetVolumeProfileBands.
+type VolumeProfileBand struct {
 	CapacityMin int64 `json:"capacityMin"`
 	CapacityMax int64 `json:"capacityMax"`
 	IOPSMin     int64 `json:"iopsMin"`

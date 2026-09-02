@@ -198,9 +198,9 @@ func (volprov *DefaultVolumeProvider) GetSecurityGroupForVolumeAccessPoint(secur
 	return "", nil
 }
 
-// GetShareProfileBands returns a no-op nil result.
+// GetVolumeProfileBands returns a no-op nil result.
 // Concrete session implementations that support this operation
 // (e.g. IksVpcSession via armada-storage-api) override this method.
-func (volprov *DefaultVolumeProvider) GetShareProfileBands(profile string) ([]ShareProfileBand, error) {
+func (volprov *DefaultVolumeProvider) GetVolumeProfileBands(profile string) ([]VolumeProfileBand, error) {
 	return nil, nil
 }

@@ -63,8 +63,8 @@ type VolumeManager interface {
 	// Expand the volume with authorization by passing required information in the volume object
 	ExpandVolume(expandVolumeRequest ExpandVolumeRequest) (int64, error)
 
-	// GetShareProfileBands retrieves the ordered capacity-to-IOPS bands for the
+	// GetVolumeProfileBands retrieves the ordered capacity-to-IOPS bands for the
 	// named VPC file volume profile (e.g. "dp2"). On sessions that do not support
 	// this operation (e.g. direct RIAAS) implementations should return an error.
-	GetShareProfileBands(profile string) ([]ShareProfileBand, error)
+	GetVolumeProfileBands(profile string) ([]VolumeProfileBand, error)
 }
