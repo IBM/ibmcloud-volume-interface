@@ -105,6 +105,15 @@ func TestCreateVolumeFromSnapshot(t *testing.T) {
 	assert.Nil(t, volume)
 }
 
+func TestModifyVolume(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	resp, err := ccf.ModifyVolume(ModifyVolumeRequest{})
+
+	assert.NoError(t, err)
+	assert.Nil(t, resp)
+}
+
 func TestOrderSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
