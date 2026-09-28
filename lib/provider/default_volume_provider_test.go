@@ -131,6 +131,33 @@ func TestGetSnapshot(t *testing.T) {
 	assert.Nil(t, getSnap)
 }
 
+func TestCreateGroupSnapshot(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	groupSnapshot, _ := ccf.CreateGroupSnapshot([]string{"vol-id"}, GroupSnapshotParameters{})
+	assert.Nil(t, groupSnapshot)
+}
+
+func TestDeleteGroupSnapshot(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	assert.Nil(t, ccf.DeleteGroupSnapshot("group-snapshot-id", []string{"snapshot-id"}))
+}
+
+func TestGetGroupSnapshot(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	groupSnapshot, _ := ccf.GetGroupSnapshot("group-snapshot-id")
+	assert.Nil(t, groupSnapshot)
+}
+
+func TestGetGroupSnapshotByName(t *testing.T) {
+	ccf := &DefaultVolumeProvider{sess: nil}
+
+	groupSnapshot, _ := ccf.GetGroupSnapshotByName("group-snapshot-name", "resource-group-id")
+	assert.Nil(t, groupSnapshot)
+}
+
 func TestListSnapshots(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
