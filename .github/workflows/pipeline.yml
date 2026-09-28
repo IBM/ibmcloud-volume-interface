@@ -30,11 +30,22 @@ jobs:
       - name: Install golangci-lint
         run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.2
 
+      - name: Install counterfeiter
+        run: go install github.com/maxbrunsfeld/counterfeiter/v6@v6.12.2
+
       - name: Run vet
         run: go vet $(go list ./... | grep -v /vendor/)
 
       - name: Run lint
         run: $GOPATH/bin/golangci-lint run
+
+      - name: Validate generated fakes
+        run: |
+          go generate ./lib/provider/...
+          if ! git diff --exit-code; then
+            echo "Generated fakes are out of sync with interfaces. Run 'go generate ./lib/provider/...' and commit the result."
+            exit 1
+          fi
 
       - name: Run tests
         run: go test $(go list ./... | grep -v /vendor/) -race -timeout 90m

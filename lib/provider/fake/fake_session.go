@@ -321,19 +321,6 @@ type FakeSession struct {
 		result1 *provider.Volume
 		result2 error
 	}
-	GetVolumeProfileBandsStub        func(string) ([]provider.VolumeProfileBand, error)
-	getShareProfileBandsMutex       sync.RWMutex
-	getShareProfileBandsArgsForCall []struct {
-		arg1 string
-	}
-	getVolumeProfileBandsReturns struct {
-		result1 []provider.VolumeProfileBand
-		result2 error
-	}
-	getShareProfileBandsReturnsOnCall map[int]struct {
-		result1 []provider.VolumeProfileBand
-		result2 error
-	}
 	GetVolumeByRequestIDStub        func(string) (*provider.Volume, error)
 	getVolumeByRequestIDMutex       sync.RWMutex
 	getVolumeByRequestIDArgsForCall []struct {
@@ -345,6 +332,19 @@ type FakeSession struct {
 	}
 	getVolumeByRequestIDReturnsOnCall map[int]struct {
 		result1 *provider.Volume
+		result2 error
+	}
+	GetVolumeProfileBandsStub        func(string) ([]provider.VolumeProfileBand, error)
+	getVolumeProfileBandsMutex       sync.RWMutex
+	getVolumeProfileBandsArgsForCall []struct {
+		arg1 string
+	}
+	getVolumeProfileBandsReturns struct {
+		result1 []provider.VolumeProfileBand
+		result2 error
+	}
+	getVolumeProfileBandsReturnsOnCall map[int]struct {
+		result1 []provider.VolumeProfileBand
 		result2 error
 	}
 	GetVolumeProfileByNameStub        func(string) (*provider.Profile, error)
@@ -2091,6 +2091,70 @@ func (fake *FakeSession) GetVolumeByRequestIDReturnsOnCall(i int, result1 *provi
 	}{result1, result2}
 }
 
+func (fake *FakeSession) GetVolumeProfileBands(arg1 string) ([]provider.VolumeProfileBand, error) {
+	fake.getVolumeProfileBandsMutex.Lock()
+	ret, specificReturn := fake.getVolumeProfileBandsReturnsOnCall[len(fake.getVolumeProfileBandsArgsForCall)]
+	fake.getVolumeProfileBandsArgsForCall = append(fake.getVolumeProfileBandsArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.GetVolumeProfileBandsStub
+	fakeReturns := fake.getVolumeProfileBandsReturns
+	fake.recordInvocation("GetVolumeProfileBands", []interface{}{arg1})
+	fake.getVolumeProfileBandsMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeSession) GetVolumeProfileBandsCallCount() int {
+	fake.getVolumeProfileBandsMutex.RLock()
+	defer fake.getVolumeProfileBandsMutex.RUnlock()
+	return len(fake.getVolumeProfileBandsArgsForCall)
+}
+
+func (fake *FakeSession) GetVolumeProfileBandsCalls(stub func(string) ([]provider.VolumeProfileBand, error)) {
+	fake.getVolumeProfileBandsMutex.Lock()
+	defer fake.getVolumeProfileBandsMutex.Unlock()
+	fake.GetVolumeProfileBandsStub = stub
+}
+
+func (fake *FakeSession) GetVolumeProfileBandsArgsForCall(i int) string {
+	fake.getVolumeProfileBandsMutex.RLock()
+	defer fake.getVolumeProfileBandsMutex.RUnlock()
+	argsForCall := fake.getVolumeProfileBandsArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeSession) GetVolumeProfileBandsReturns(result1 []provider.VolumeProfileBand, result2 error) {
+	fake.getVolumeProfileBandsMutex.Lock()
+	defer fake.getVolumeProfileBandsMutex.Unlock()
+	fake.GetVolumeProfileBandsStub = nil
+	fake.getVolumeProfileBandsReturns = struct {
+		result1 []provider.VolumeProfileBand
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) GetVolumeProfileBandsReturnsOnCall(i int, result1 []provider.VolumeProfileBand, result2 error) {
+	fake.getVolumeProfileBandsMutex.Lock()
+	defer fake.getVolumeProfileBandsMutex.Unlock()
+	fake.GetVolumeProfileBandsStub = nil
+	if fake.getVolumeProfileBandsReturnsOnCall == nil {
+		fake.getVolumeProfileBandsReturnsOnCall = make(map[int]struct {
+			result1 []provider.VolumeProfileBand
+			result2 error
+		})
+	}
+	fake.getVolumeProfileBandsReturnsOnCall[i] = struct {
+		result1 []provider.VolumeProfileBand
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeSession) GetVolumeProfileByName(arg1 string) (*provider.Profile, error) {
 	fake.getVolumeProfileByNameMutex.Lock()
 	ret, specificReturn := fake.getVolumeProfileByNameReturnsOnCall[len(fake.getVolumeProfileByNameArgsForCall)]
@@ -2707,72 +2771,6 @@ func (fake *FakeSession) WaitForDetachVolumeReturnsOnCall(i int, result1 error) 
 func (fake *FakeSession) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.attachVolumeMutex.RLock()
-	defer fake.attachVolumeMutex.RUnlock()
-	fake.authorizeVolumeMutex.RLock()
-	defer fake.authorizeVolumeMutex.RUnlock()
-	fake.closeMutex.RLock()
-	defer fake.closeMutex.RUnlock()
-	fake.createSnapshotMutex.RLock()
-	defer fake.createSnapshotMutex.RUnlock()
-	fake.createVolumeMutex.RLock()
-	defer fake.createVolumeMutex.RUnlock()
-	fake.createVolumeAccessPointMutex.RLock()
-	defer fake.createVolumeAccessPointMutex.RUnlock()
-	fake.createVolumeFromSnapshotMutex.RLock()
-	defer fake.createVolumeFromSnapshotMutex.RUnlock()
-	fake.deleteSnapshotMutex.RLock()
-	defer fake.deleteSnapshotMutex.RUnlock()
-	fake.deleteVolumeMutex.RLock()
-	defer fake.deleteVolumeMutex.RUnlock()
-	fake.deleteVolumeAccessPointMutex.RLock()
-	defer fake.deleteVolumeAccessPointMutex.RUnlock()
-	fake.detachVolumeMutex.RLock()
-	defer fake.detachVolumeMutex.RUnlock()
-	fake.expandVolumeMutex.RLock()
-	defer fake.expandVolumeMutex.RUnlock()
-	fake.getProviderDisplayNameMutex.RLock()
-	defer fake.getProviderDisplayNameMutex.RUnlock()
-	fake.getSecurityGroupForVolumeAccessPointMutex.RLock()
-	defer fake.getSecurityGroupForVolumeAccessPointMutex.RUnlock()
-	fake.getSnapshotMutex.RLock()
-	defer fake.getSnapshotMutex.RUnlock()
-	fake.getSnapshotByNameMutex.RLock()
-	defer fake.getSnapshotByNameMutex.RUnlock()
-	fake.getSubnetForVolumeAccessPointMutex.RLock()
-	defer fake.getSubnetForVolumeAccessPointMutex.RUnlock()
-	fake.getVolumeMutex.RLock()
-	defer fake.getVolumeMutex.RUnlock()
-	fake.getVolumeAccessPointMutex.RLock()
-	defer fake.getVolumeAccessPointMutex.RUnlock()
-	fake.getVolumeAttachmentMutex.RLock()
-	defer fake.getVolumeAttachmentMutex.RUnlock()
-	fake.getVolumeByNameMutex.RLock()
-	defer fake.getVolumeByNameMutex.RUnlock()
-	fake.getVolumeByRequestIDMutex.RLock()
-	defer fake.getVolumeByRequestIDMutex.RUnlock()
-	fake.getVolumeProfileByNameMutex.RLock()
-	defer fake.getVolumeProfileByNameMutex.RUnlock()
-	fake.listSnapshotsMutex.RLock()
-	defer fake.listSnapshotsMutex.RUnlock()
-	fake.listVolumesMutex.RLock()
-	defer fake.listVolumesMutex.RUnlock()
-	fake.providerNameMutex.RLock()
-	defer fake.providerNameMutex.RUnlock()
-	fake.typeMutex.RLock()
-	defer fake.typeMutex.RUnlock()
-	fake.getShareProfileBandsMutex.RLock()
-	defer fake.getShareProfileBandsMutex.RUnlock()
-	fake.updateVolumeMutex.RLock()
-	defer fake.updateVolumeMutex.RUnlock()
-	fake.waitForAttachVolumeMutex.RLock()
-	defer fake.waitForAttachVolumeMutex.RUnlock()
-	fake.waitForCreateVolumeAccessPointMutex.RLock()
-	defer fake.waitForCreateVolumeAccessPointMutex.RUnlock()
-	fake.waitForDeleteVolumeAccessPointMutex.RLock()
-	defer fake.waitForDeleteVolumeAccessPointMutex.RUnlock()
-	fake.waitForDetachVolumeMutex.RLock()
-	defer fake.waitForDetachVolumeMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value
@@ -2790,70 +2788,6 @@ func (fake *FakeSession) recordInvocation(key string, args []interface{}) {
 		fake.invocations[key] = [][]interface{}{}
 	}
 	fake.invocations[key] = append(fake.invocations[key], args)
-}
-
-func (fake *FakeSession) GetVolumeProfileBands(arg1 string) ([]provider.VolumeProfileBand, error) {
-	fake.getShareProfileBandsMutex.Lock()
-	ret, specificReturn := fake.getShareProfileBandsReturnsOnCall[len(fake.getShareProfileBandsArgsForCall)]
-	fake.getShareProfileBandsArgsForCall = append(fake.getShareProfileBandsArgsForCall, struct {
-		arg1 string
-	}{arg1})
-	stub := fake.GetVolumeProfileBandsStub
-	fakeReturns := fake.getVolumeProfileBandsReturns
-	fake.recordInvocation("GetVolumeProfileBands", []interface{}{arg1})
-	fake.getShareProfileBandsMutex.Unlock()
-	if stub != nil {
-		return stub(arg1)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeSession) GetVolumeProfileBandsCallCount() int {
-	fake.getShareProfileBandsMutex.RLock()
-	defer fake.getShareProfileBandsMutex.RUnlock()
-	return len(fake.getShareProfileBandsArgsForCall)
-}
-
-func (fake *FakeSession) GetVolumeProfileBandsCalls(stub func(string) ([]provider.VolumeProfileBand, error)) {
-	fake.getShareProfileBandsMutex.Lock()
-	defer fake.getShareProfileBandsMutex.Unlock()
-	fake.GetVolumeProfileBandsStub = stub
-}
-
-func (fake *FakeSession) GetVolumeProfileBandsArgsForCall(i int) string {
-	fake.getShareProfileBandsMutex.RLock()
-	defer fake.getShareProfileBandsMutex.RUnlock()
-	argsForCall := fake.getShareProfileBandsArgsForCall[i]
-	return argsForCall.arg1
-}
-
-func (fake *FakeSession) GetVolumeProfileBandsReturns(result1 []provider.VolumeProfileBand, result2 error) {
-	fake.getShareProfileBandsMutex.Lock()
-	defer fake.getShareProfileBandsMutex.Unlock()
-	fake.GetVolumeProfileBandsStub = nil
-	fake.getVolumeProfileBandsReturns = struct {
-		result1 []provider.VolumeProfileBand
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeSession) GetVolumeProfileBandsReturnsOnCall(i int, result1 []provider.VolumeProfileBand, result2 error) {
-	fake.getShareProfileBandsMutex.Lock()
-	defer fake.getShareProfileBandsMutex.Unlock()
-	fake.GetVolumeProfileBandsStub = nil
-	if fake.getShareProfileBandsReturnsOnCall == nil {
-		fake.getShareProfileBandsReturnsOnCall = make(map[int]struct {
-			result1 []provider.VolumeProfileBand
-			result2 error
-		})
-	}
-	fake.getShareProfileBandsReturnsOnCall[i] = struct {
-		result1 []provider.VolumeProfileBand
-		result2 error
-	}{result1, result2}
 }
 
 var _ provider.Session = new(FakeSession)
