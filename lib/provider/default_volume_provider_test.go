@@ -141,7 +141,7 @@ func TestCreateGroupSnapshot(t *testing.T) {
 func TestDeleteGroupSnapshot(t *testing.T) {
 	ccf := &DefaultVolumeProvider{sess: nil}
 
-	assert.Nil(t, ccf.DeleteGroupSnapshot("group-snapshot-id", []string{"snapshot-id"}))
+	assert.Nil(t, ccf.DeleteGroupSnapshot("group-snapshot-id"))
 }
 
 func TestGetGroupSnapshot(t *testing.T) {
