@@ -30,24 +30,20 @@ func TestGroupSnapshotFakesImplementManager(t *testing.T) {
 	var _ provider.GroupSnapshotManager = &providerfakes.Context{}
 }
 
-func TestFakeSessionDeleteGroupSnapshotCapturesSnapshotIDs(t *testing.T) {
+func TestFakeSessionDeleteGroupSnapshotCapturesGroupID(t *testing.T) {
 	fakeSession := &providerfake.FakeSession{}
-	snapshotIDs := []string{"snapshot-id-1", "snapshot-id-2"}
 
-	assert.Nil(t, fakeSession.DeleteGroupSnapshot("group-snapshot-id", snapshotIDs))
-	snapshotIDs[0] = "mutated-snapshot-id"
+	assert.Nil(t, fakeSession.DeleteGroupSnapshot("group-snapshot-id"))
 
-	groupSnapshotID, snapshotIDs := fakeSession.DeleteGroupSnapshotArgsForCall(0)
-	assert.Equal(t, "group-snapshot-id", groupSnapshotID)
-	assert.Equal(t, []string{"snapshot-id-1", "snapshot-id-2"}, snapshotIDs)
+	assert.Equal(t, 1, fakeSession.DeleteGroupSnapshotCallCount())
+	assert.Equal(t, "group-snapshot-id", fakeSession.DeleteGroupSnapshotArgsForCall(0))
 }
 
-func TestFakeContextDeleteGroupSnapshotCapturesSnapshotIDs(t *testing.T) {
+func TestFakeContextDeleteGroupSnapshotCapturesGroupID(t *testing.T) {
 	fakeContext := &providerfakes.Context{}
 
-	assert.Nil(t, fakeContext.DeleteGroupSnapshot("group-snapshot-id", []string{"snapshot-id-1", "snapshot-id-2"}))
+	assert.Nil(t, fakeContext.DeleteGroupSnapshot("group-snapshot-id"))
 
-	groupSnapshotID, snapshotIDs := fakeContext.DeleteGroupSnapshotArgsForCall(0)
-	assert.Equal(t, "group-snapshot-id", groupSnapshotID)
-	assert.Equal(t, []string{"snapshot-id-1", "snapshot-id-2"}, snapshotIDs)
+	assert.Equal(t, 1, fakeContext.DeleteGroupSnapshotCallCount())
+	assert.Equal(t, "group-snapshot-id", fakeContext.DeleteGroupSnapshotArgsForCall(0))
 }
