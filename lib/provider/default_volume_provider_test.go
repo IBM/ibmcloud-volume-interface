@@ -122,15 +122,15 @@ func TestModifyVolume(t *testing.T) {
 		},
 		{
 			name:    "with IOPS set returns nil, nil",
-			request: ModifyVolumeRequest{VolumeID: "vol-id", Iops: 3000},
+			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Iops: 3000}},
 		},
 		{
 			name:    "with Bandwidth set returns nil, nil",
-			request: ModifyVolumeRequest{VolumeID: "vol-id", Bandwidth: 5000},
+			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Bandwidth: 5000}},
 		},
 		{
 			name:    "with both IOPS and Bandwidth set returns nil, nil",
-			request: ModifyVolumeRequest{VolumeID: "vol-id", Iops: 3000, Bandwidth: 5000},
+			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Iops: 3000, Bandwidth: 5000}},
 		},
 	}
 
@@ -286,7 +286,6 @@ func TestGetSecurityGroupForVolumeAccessPoint(t *testing.T) {
 // TestModifyVolumeRequest_VACFields verifies that ModifyVolumeRequest carries the
 // VAC-relevant fields (VolumeID, Iops, Bandwidth) and round-trips through JSON.
 func TestModifyVolumeRequest_VACFields(t *testing.T) {
-	newName := "new-name"
 	testCases := []struct {
 		name     string
 		req      ModifyVolumeRequest
@@ -294,10 +293,10 @@ func TestModifyVolumeRequest_VACFields(t *testing.T) {
 		wantBW   int32
 	}{
 		{name: "zero-value request has no iops or bandwidth", req: ModifyVolumeRequest{}},
-		{name: "dp2 VAC: IOPS only", req: ModifyVolumeRequest{VolumeID: "vol-dp2", Iops: 5000}, wantIops: 5000},
-		{name: "rfs VAC: bandwidth only", req: ModifyVolumeRequest{VolumeID: "vol-rfs", Bandwidth: 3000}, wantBW: 3000},
-		{name: "common VAC: both iops and bandwidth", req: ModifyVolumeRequest{VolumeID: "vol", Iops: 4000, Bandwidth: 2000}, wantIops: 4000, wantBW: 2000},
-		{name: "name pointer is preserved", req: ModifyVolumeRequest{VolumeID: "vol", Name: &newName, Iops: 1000}, wantIops: 1000},
+		{name: "dp2 VAC: IOPS only", req: ModifyVolumeRequest{VolumeID: "vol-dp2", VolumePerformance: VolumePerformance{Iops: 5000}}, wantIops: 5000},
+		{name: "rfs VAC: bandwidth only", req: ModifyVolumeRequest{VolumeID: "vol-rfs", VolumePerformance: VolumePerformance{Bandwidth: 3000}}, wantBW: 3000},
+		{name: "common VAC: both iops and bandwidth", req: ModifyVolumeRequest{VolumeID: "vol", VolumePerformance: VolumePerformance{Iops: 4000, Bandwidth: 2000}}, wantIops: 4000, wantBW: 2000},
+		{name: "name is preserved", req: ModifyVolumeRequest{VolumeID: "vol", Name: "new-name", VolumePerformance: VolumePerformance{Iops: 1000}}, wantIops: 1000},
 	}
 
 	for _, tc := range testCases {
@@ -326,8 +325,9 @@ func TestModifyVolumeResponse_VACFields(t *testing.T) {
 		wantIops int64
 		wantBW   int32
 	}{
-		{name: "dp2 response: IOPS updated", resp: ModifyVolumeResponse{Iops: 6000}, wantIops: 6000},
-		{name: "rfs response: bandwidth updated", resp: ModifyVolumeResponse{Bandwidth: 4000}, wantBW: 4000},
+		{name: "response carries volume ID, href and CRN", resp: ModifyVolumeResponse{VolumeID: "vol-id", Href: "https://example/vol-id", CRN: "crn:v1:vol-id", VolumePerformance: VolumePerformance{Iops: 6000}}, wantIops: 6000},
+		{name: "dp2 response: IOPS updated", resp: ModifyVolumeResponse{VolumePerformance: VolumePerformance{Iops: 6000}}, wantIops: 6000},
+		{name: "rfs response: bandwidth updated", resp: ModifyVolumeResponse{VolumePerformance: VolumePerformance{Bandwidth: 4000}}, wantBW: 4000},
 		{name: "empty response has zero values", resp: ModifyVolumeResponse{}},
 	}
 
