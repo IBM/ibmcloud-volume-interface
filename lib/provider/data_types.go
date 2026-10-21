@@ -190,13 +190,13 @@ type ModifyVolumeRequest struct {
 // added here in the future without changing the method signature.
 type ModifyVolumeResponse struct {
 	// VolumeID id of the modified volume
-	VolumeID string `json:"volumeID,omitempty"`
+	VolumeID string `json:"volumeID"`
 
 	// Href of the modified volume
-	Href string `json:"href,omitempty"`
+	Href string `json:"href"`
 
 	// CRN of the modified volume
-	CRN string `json:"crn,omitempty"`
+	CRN string `json:"crn"`
 
 	// The updated performance attributes (IOPS, Bandwidth) of the volume
 	VolumePerformance
