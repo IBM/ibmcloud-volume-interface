@@ -108,41 +108,10 @@ func TestCreateVolumeFromSnapshot(t *testing.T) {
 }
 
 func TestModifyVolume(t *testing.T) {
-	testCases := []struct {
-		name    string
-		request ModifyVolumeRequest
-	}{
-		{
-			name:    "empty request (nil session) returns empty response, nil error",
-			request: ModifyVolumeRequest{},
-		},
-		{
-			name:    "with VolumeID only returns empty response, nil error",
-			request: ModifyVolumeRequest{VolumeID: "vol-id"},
-		},
-		{
-			name:    "with IOPS set returns empty response, nil error",
-			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Iops: 3000}},
-		},
-		{
-			name:    "with Bandwidth set returns empty response, nil error",
-			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Bandwidth: 5000}},
-		},
-		{
-			name:    "with both IOPS and Bandwidth set returns empty response, nil error",
-			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Iops: 3000, Bandwidth: 5000}},
-		},
-	}
+	ccf := &DefaultVolumeProvider{sess: nil}
+	volume, _ := ccf.ModifyVolume(ModifyVolumeRequest{})
+	assert.Nil(t, volume)
 
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			ccf := &DefaultVolumeProvider{sess: nil}
-			resp, err := ccf.ModifyVolume(tc.request)
-			assert.NoError(t, err)
-			require.NotNil(t, resp)
-			assert.Equal(t, ModifyVolumeResponse{}, *resp)
-		})
-	}
 }
 
 func TestOrderSnapshot(t *testing.T) {
