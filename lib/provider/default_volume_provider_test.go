@@ -113,23 +113,23 @@ func TestModifyVolume(t *testing.T) {
 		request ModifyVolumeRequest
 	}{
 		{
-			name:    "empty request (nil session) returns nil, nil",
+			name:    "empty request (nil session) returns empty response, nil error",
 			request: ModifyVolumeRequest{},
 		},
 		{
-			name:    "with VolumeID only returns nil, nil",
+			name:    "with VolumeID only returns empty response, nil error",
 			request: ModifyVolumeRequest{VolumeID: "vol-id"},
 		},
 		{
-			name:    "with IOPS set returns nil, nil",
+			name:    "with IOPS set returns empty response, nil error",
 			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Iops: 3000}},
 		},
 		{
-			name:    "with Bandwidth set returns nil, nil",
+			name:    "with Bandwidth set returns empty response, nil error",
 			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Bandwidth: 5000}},
 		},
 		{
-			name:    "with both IOPS and Bandwidth set returns nil, nil",
+			name:    "with both IOPS and Bandwidth set returns empty response, nil error",
 			request: ModifyVolumeRequest{VolumeID: "vol-id", VolumePerformance: VolumePerformance{Iops: 3000, Bandwidth: 5000}},
 		},
 	}
@@ -139,7 +139,8 @@ func TestModifyVolume(t *testing.T) {
 			ccf := &DefaultVolumeProvider{sess: nil}
 			resp, err := ccf.ModifyVolume(tc.request)
 			assert.NoError(t, err)
-			assert.Nil(t, resp)
+			require.NotNil(t, resp)
+			assert.Equal(t, ModifyVolumeResponse{}, *resp)
 		})
 	}
 }
