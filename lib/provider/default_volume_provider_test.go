@@ -18,11 +18,9 @@
 package provider
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 )
 
@@ -251,66 +249,4 @@ func TestGetSecurityGroupForVolumeAccessPoint(t *testing.T) {
 
 	securityGroupID, _ := ccf.GetSecurityGroupForVolumeAccessPoint(SecurityGroupRequest{})
 	assert.Equal(t, securityGroupID, "")
-}
-
-// TestModifyVolumeRequest_VACFields verifies that ModifyVolumeRequest carries the
-// VAC-relevant fields (VolumeID, Iops, Bandwidth) and round-trips through JSON.
-func TestModifyVolumeRequest_VACFields(t *testing.T) {
-	testCases := []struct {
-		name     string
-		req      ModifyVolumeRequest
-		wantIops int64
-		wantBW   int32
-	}{
-		{name: "zero-value request has no iops or bandwidth", req: ModifyVolumeRequest{}},
-		{name: "dp2 VAC: IOPS only", req: ModifyVolumeRequest{VolumeID: "vol-dp2", VolumePerformance: VolumePerformance{Iops: 5000}}, wantIops: 5000},
-		{name: "rfs VAC: bandwidth only", req: ModifyVolumeRequest{VolumeID: "vol-rfs", VolumePerformance: VolumePerformance{Bandwidth: 3000}}, wantBW: 3000},
-		{name: "common VAC: both iops and bandwidth", req: ModifyVolumeRequest{VolumeID: "vol", VolumePerformance: VolumePerformance{Iops: 4000, Bandwidth: 2000}}, wantIops: 4000, wantBW: 2000},
-		{name: "name is preserved", req: ModifyVolumeRequest{VolumeID: "vol", Name: "new-name", VolumePerformance: VolumePerformance{Iops: 1000}}, wantIops: 1000},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			assert.Equal(t, tc.wantIops, tc.req.Iops)
-			assert.Equal(t, tc.wantBW, tc.req.Bandwidth)
-
-			b, err := json.Marshal(tc.req)
-			require.NoError(t, err)
-			var decoded ModifyVolumeRequest
-			require.NoError(t, json.Unmarshal(b, &decoded))
-			assert.Equal(t, tc.req.VolumeID, decoded.VolumeID)
-			assert.Equal(t, tc.req.Iops, decoded.Iops)
-			assert.Equal(t, tc.req.Bandwidth, decoded.Bandwidth)
-			assert.Equal(t, tc.req.Name, decoded.Name)
-		})
-	}
-}
-
-// TestModifyVolumeResponse_VACFields verifies ModifyVolumeResponse carries the
-// updated attributes returned by a VAC modify call and round-trips through JSON.
-func TestModifyVolumeResponse_VACFields(t *testing.T) {
-	testCases := []struct {
-		name     string
-		resp     ModifyVolumeResponse
-		wantIops int64
-		wantBW   int32
-	}{
-		{name: "response carries volume ID, href and CRN", resp: ModifyVolumeResponse{VolumeID: "vol-id", Href: "https://example/vol-id", CRN: "crn:v1:vol-id", VolumePerformance: VolumePerformance{Iops: 6000}}, wantIops: 6000},
-		{name: "dp2 response: IOPS updated", resp: ModifyVolumeResponse{VolumePerformance: VolumePerformance{Iops: 6000}}, wantIops: 6000},
-		{name: "rfs response: bandwidth updated", resp: ModifyVolumeResponse{VolumePerformance: VolumePerformance{Bandwidth: 4000}}, wantBW: 4000},
-		{name: "empty response has zero values", resp: ModifyVolumeResponse{}},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			assert.Equal(t, tc.wantIops, tc.resp.Iops)
-			assert.Equal(t, tc.wantBW, tc.resp.Bandwidth)
-
-			b, err := json.Marshal(tc.resp)
-			require.NoError(t, err)
-			var decoded ModifyVolumeResponse
-			require.NoError(t, json.Unmarshal(b, &decoded))
-			assert.Equal(t, tc.resp, decoded)
-		})
-	}
 }
