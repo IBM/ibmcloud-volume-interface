@@ -2,7 +2,10 @@
 GOPACKAGES=$(shell go list ./... | grep -v /vendor/ | grep -v /samples)
 GOFILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 ARCH = $(shell uname -m)
-LINT_VERSION="1.60.1"
+LINT_VERSION="2.12.2"
+
+GOPATH := $(shell go env GOPATH)
+LINT_BIN := $(GOPATH)/bin/golangci-lint
 
 .PHONY: all
 all: deps dofmt vet test
@@ -10,21 +13,21 @@ all: deps dofmt vet test
 .PHONY: deps
 deps:
 	go get github.com/pierrre/gotestcover
-	@if ! which golangci-lint >/dev/null || [[ "$$(golangci-lint --version)" != *${LINT_VERSION}* ]]; then \
-		curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin v${LINT_VERSION}; \
+	@if [ ! -x "$(LINT_BIN)" ] || ! "$(LINT_BIN)" version 2>/dev/null | grep -q "version $(LINT_VERSION)"; then \
+		go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(LINT_VERSION); \
 	fi
 
 .PHONY: fmt
 fmt:
-	golangci-lint run --disable-all --enable=gofmt --timeout 30m
+	$(LINT_BIN) fmt --no-config --enable=gofmt --diff
 
 .PHONY: dofmt
 dofmt:
-	golangci-lint run --disable-all --enable=gofmt --fix
+	$(LINT_BIN) fmt --no-config --enable=gofmt
 
 .PHONY: lint
 lint:
-	golangci-lint run
+	$(LINT_BIN) run
 
 .PHONY: makefmt
 makefmt:
