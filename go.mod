@@ -1,6 +1,6 @@
 module github.com/IBM/ibmcloud-volume-interface
 
-go 1.25.10
+go 1.26.9
 
 require (
 	github.com/BurntSushi/toml v1.0.0
