@@ -110,6 +110,9 @@ type Snapshot struct {
 	// a unique Snapshot CRN assigned by cloud provider to snapshot
 	SnapshotCRN string `json:"snapshotCRN,omitempty"`
 
+	// The group this snapshot belongs to; empty for standalone snapshots.
+	GroupSnapshotID string `json:"groupSnapshotID,omitempty"`
+
 	// The size of the snapshot, in bytes
 	SnapshotSize int64 `json:"snapshotSize"`
 
@@ -122,8 +125,8 @@ type Snapshot struct {
 	// status of snapshot
 	ReadyToUse bool `json:"readyToUse"`
 
-	// VPC contains vpc fields
-	VPC
+	// Common cloud resource details.
+	ResourceReference
 }
 
 // SnapshotList ...
@@ -149,8 +152,8 @@ type GroupSnapshot struct {
 	// status of the group snapshot
 	ReadyToUse bool `json:"readyToUse"`
 
-	// VPC contains vpc fields
-	VPC
+	// Common cloud resource details.
+	ResourceReference
 }
 
 // GroupSnapshotParameters contains the parameters for creating a group snapshot
