@@ -53,7 +53,7 @@ func (volprov *DefaultVolumeProvider) AttachVolume(attachRequest VolumeAttachmen
 
 // ModifyVolume modify the volume with authorization by passing required information in the volume object
 func (volprov *DefaultVolumeProvider) ModifyVolume(modifyVolumeRequest ModifyVolumeRequest) (*ModifyVolumeResponse, error) {
-	return &ModifyVolumeResponse{}, nil
+	return nil, nil
 }
 
 // CreateVolumeFromSnapshot creates a volume from snapshot
@@ -149,6 +149,26 @@ func (volprov *DefaultVolumeProvider) GetSnapshotByName(snapshotName string, sco
 
 // ListSnapshots list the snapshots
 func (volprov *DefaultVolumeProvider) ListSnapshots(limit int, start string, tags map[string]string) (*SnapshotList, error) {
+	return nil, nil
+}
+
+// CreateGroupSnapshot creates a group snapshot
+func (volprov *DefaultVolumeProvider) CreateGroupSnapshot(sourceVolumeIDs []string, groupSnapshotParameters GroupSnapshotParameters) (*GroupSnapshot, error) {
+	return nil, nil
+}
+
+// DeleteGroupSnapshot deletes the group snapshot
+func (volprov *DefaultVolumeProvider) DeleteGroupSnapshot(groupSnapshotID string) error {
+	return nil
+}
+
+// GetGroupSnapshot gets the group snapshot by ID
+func (volprov *DefaultVolumeProvider) GetGroupSnapshot(groupSnapshotID string) (*GroupSnapshot, error) {
+	return nil, nil
+}
+
+// GetGroupSnapshotByName gets the group snapshot by name
+func (volprov *DefaultVolumeProvider) GetGroupSnapshotByName(groupSnapshotName string, resourceGroupID string) (*GroupSnapshot, error) {
 	return nil, nil
 }
 
