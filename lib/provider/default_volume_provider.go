@@ -209,3 +209,15 @@ func (volprov *DefaultVolumeProvider) GetSecurityGroupForVolumeAccessPoint(secur
 func (volprov *DefaultVolumeProvider) GetVolumeProfileBands(profile string) ([]VolumeProfileBand, error) {
 	return nil, nil
 }
+
+// RotateBMSEncryptedSecret is a no-op default. Concrete BMS-capable session
+// implementations override this method.
+func (volprov *DefaultVolumeProvider) RotateBMSEncryptedSecret(serverID, keyID string) error {
+	return nil
+}
+
+// GetBMSServer is a no-op default. Concrete BMS-capable session
+// implementations override this method.
+func (volprov *DefaultVolumeProvider) GetBMSServer(serverID string) (*BMSServerInfo, error) {
+	return nil, nil
+}
