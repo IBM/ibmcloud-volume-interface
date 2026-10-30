@@ -429,6 +429,31 @@ type FakeSession struct {
 	waitForDetachVolumeReturnsOnCall map[int]struct {
 		result1 error
 	}
+	RotateBMSEncryptedSecretStub        func(string, string) error
+	rotateBMSEncryptedSecretMutex       sync.RWMutex
+	rotateBMSEncryptedSecretArgsForCall []struct {
+		arg1 string
+		arg2 string
+	}
+	rotateBMSEncryptedSecretReturns struct {
+		result1 error
+	}
+	rotateBMSEncryptedSecretReturnsOnCall map[int]struct {
+		result1 error
+	}
+	GetBMSServerStub        func(string) (*provider.BMSServerInfo, error)
+	getBMSServerMutex       sync.RWMutex
+	getBMSServerArgsForCall []struct {
+		arg1 string
+	}
+	getBMSServerReturns struct {
+		result1 *provider.BMSServerInfo
+		result2 error
+	}
+	getBMSServerReturnsOnCall map[int]struct {
+		result1 *provider.BMSServerInfo
+		result2 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -2610,6 +2635,132 @@ func (fake *FakeSession) GetVolumeProfileBandsReturnsOnCall(i int, result1 []pro
 	}
 	fake.getVolumeProfileBandsReturnsOnCall[i] = struct {
 		result1 []provider.VolumeProfileBand
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) RotateBMSEncryptedSecret(arg1 string, arg2 string) error {
+	fake.rotateBMSEncryptedSecretMutex.Lock()
+	ret, specificReturn := fake.rotateBMSEncryptedSecretReturnsOnCall[len(fake.rotateBMSEncryptedSecretArgsForCall)]
+	fake.rotateBMSEncryptedSecretArgsForCall = append(fake.rotateBMSEncryptedSecretArgsForCall, struct {
+		arg1 string
+		arg2 string
+	}{arg1, arg2})
+	stub := fake.RotateBMSEncryptedSecretStub
+	fakeReturns := fake.rotateBMSEncryptedSecretReturns
+	fake.recordInvocation("RotateBMSEncryptedSecret", []interface{}{arg1, arg2})
+	fake.rotateBMSEncryptedSecretMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fakeReturns.result1
+}
+
+func (fake *FakeSession) RotateBMSEncryptedSecretCallCount() int {
+	fake.rotateBMSEncryptedSecretMutex.RLock()
+	defer fake.rotateBMSEncryptedSecretMutex.RUnlock()
+	return len(fake.rotateBMSEncryptedSecretArgsForCall)
+}
+
+func (fake *FakeSession) RotateBMSEncryptedSecretCalls(stub func(string, string) error) {
+	fake.rotateBMSEncryptedSecretMutex.Lock()
+	defer fake.rotateBMSEncryptedSecretMutex.Unlock()
+	fake.RotateBMSEncryptedSecretStub = stub
+}
+
+func (fake *FakeSession) RotateBMSEncryptedSecretArgsForCall(i int) (string, string) {
+	fake.rotateBMSEncryptedSecretMutex.RLock()
+	defer fake.rotateBMSEncryptedSecretMutex.RUnlock()
+	argsForCall := fake.rotateBMSEncryptedSecretArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
+func (fake *FakeSession) RotateBMSEncryptedSecretReturns(result1 error) {
+	fake.rotateBMSEncryptedSecretMutex.Lock()
+	defer fake.rotateBMSEncryptedSecretMutex.Unlock()
+	fake.RotateBMSEncryptedSecretStub = nil
+	fake.rotateBMSEncryptedSecretReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeSession) RotateBMSEncryptedSecretReturnsOnCall(i int, result1 error) {
+	fake.rotateBMSEncryptedSecretMutex.Lock()
+	defer fake.rotateBMSEncryptedSecretMutex.Unlock()
+	fake.RotateBMSEncryptedSecretStub = nil
+	if fake.rotateBMSEncryptedSecretReturnsOnCall == nil {
+		fake.rotateBMSEncryptedSecretReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.rotateBMSEncryptedSecretReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeSession) GetBMSServer(arg1 string) (*provider.BMSServerInfo, error) {
+	fake.getBMSServerMutex.Lock()
+	ret, specificReturn := fake.getBMSServerReturnsOnCall[len(fake.getBMSServerArgsForCall)]
+	fake.getBMSServerArgsForCall = append(fake.getBMSServerArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.GetBMSServerStub
+	fakeReturns := fake.getBMSServerReturns
+	fake.recordInvocation("GetBMSServer", []interface{}{arg1})
+	fake.getBMSServerMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeSession) GetBMSServerCallCount() int {
+	fake.getBMSServerMutex.RLock()
+	defer fake.getBMSServerMutex.RUnlock()
+	return len(fake.getBMSServerArgsForCall)
+}
+
+func (fake *FakeSession) GetBMSServerCalls(stub func(string) (*provider.BMSServerInfo, error)) {
+	fake.getBMSServerMutex.Lock()
+	defer fake.getBMSServerMutex.Unlock()
+	fake.GetBMSServerStub = stub
+}
+
+func (fake *FakeSession) GetBMSServerArgsForCall(i int) string {
+	fake.getBMSServerMutex.RLock()
+	defer fake.getBMSServerMutex.RUnlock()
+	argsForCall := fake.getBMSServerArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeSession) GetBMSServerReturns(result1 *provider.BMSServerInfo, result2 error) {
+	fake.getBMSServerMutex.Lock()
+	defer fake.getBMSServerMutex.Unlock()
+	fake.GetBMSServerStub = nil
+	fake.getBMSServerReturns = struct {
+		result1 *provider.BMSServerInfo
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeSession) GetBMSServerReturnsOnCall(i int, result1 *provider.BMSServerInfo, result2 error) {
+	fake.getBMSServerMutex.Lock()
+	defer fake.getBMSServerMutex.Unlock()
+	fake.GetBMSServerStub = nil
+	if fake.getBMSServerReturnsOnCall == nil {
+		fake.getBMSServerReturnsOnCall = make(map[int]struct {
+			result1 *provider.BMSServerInfo
+			result2 error
+		})
+	}
+	fake.getBMSServerReturnsOnCall[i] = struct {
+		result1 *provider.BMSServerInfo
 		result2 error
 	}{result1, result2}
 }
