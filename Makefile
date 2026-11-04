@@ -12,7 +12,7 @@ all: deps dofmt vet test
 
 .PHONY: deps
 deps:
-	go get github.com/pierrre/gotestcover
+	go install github.com/pierrre/gotestcover@v0.0.0-20160517101806-924dca7d15f0
 	@if [ ! -x "$(LINT_BIN)" ] || ! "$(LINT_BIN)" version 2>/dev/null | grep -q "version $(LINT_VERSION)"; then \
 		go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(LINT_VERSION); \
 	fi
