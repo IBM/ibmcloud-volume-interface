@@ -110,8 +110,11 @@ type Snapshot struct {
 	// a unique Snapshot CRN assigned by cloud provider to snapshot
 	SnapshotCRN string `json:"snapshotCRN,omitempty"`
 
-	// The group this snapshot belongs to; empty for standalone snapshots.
+	// The group this snapshot belongs to
 	GroupSnapshotID string `json:"groupSnapshotID,omitempty"`
+
+	// The CRN of the group this snapshot belongs to
+	GroupSnapshotCRN string `json:"groupSnapshotCRN,omitempty"`
 
 	// The size of the snapshot, in bytes
 	SnapshotSize int64 `json:"snapshotSize"`
