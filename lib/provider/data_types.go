@@ -128,8 +128,8 @@ type Snapshot struct {
 	// status of snapshot
 	ReadyToUse bool `json:"readyToUse"`
 
-	// Common cloud resource details.
-	ResourceReference
+	// VPC contains vpc fields
+	VPC
 }
 
 // SnapshotList ...
@@ -137,6 +137,9 @@ type SnapshotList struct {
 	Next      string      `json:"next"`
 	Snapshots []*Snapshot `json:"snapshots"`
 }
+
+// GroupSnapshotMetadata holds the group's ID, CRN, URL, and name.
+type GroupSnapshotMetadata = VPC
 
 // GroupSnapshot represents a group of snapshots taken consistently
 type GroupSnapshot struct {
@@ -155,8 +158,8 @@ type GroupSnapshot struct {
 	// status of the group snapshot
 	ReadyToUse bool `json:"readyToUse"`
 
-	// Common cloud resource details.
-	ResourceReference
+	// Common identifiers for this group snapshot.
+	GroupSnapshotMetadata
 }
 
 // GroupSnapshotParameters contains the parameters for creating a group snapshot
