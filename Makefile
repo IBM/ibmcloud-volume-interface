@@ -12,7 +12,6 @@ all: deps dofmt vet test
 
 .PHONY: deps
 deps:
-	go install github.com/pierrre/gotestcover@v0.0.0-20160517101806-924dca7d15f0
 	@if [ ! -x "$(LINT_BIN)" ] || ! "$(LINT_BIN)" version 2>/dev/null | grep -q "version $(LINT_VERSION)"; then \
 		go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(LINT_VERSION); \
 	fi
@@ -37,10 +36,10 @@ makefmt:
 test:
 ifeq ($(ARCH), ppc64le)
 	# POWER
-	$(GOPATH)/bin/gotestcover -v -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
+	go test -v -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
 else
 	# x86_64
-	$(GOPATH)/bin/gotestcover -v -race -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
+	go test -v -race -coverprofile=cover.out ${GOPACKAGES} -timeout 90m
 endif
 
 .PHONY: coverage
