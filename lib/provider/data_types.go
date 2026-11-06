@@ -138,8 +138,8 @@ type SnapshotList struct {
 	Snapshots []*Snapshot `json:"snapshots"`
 }
 
-// GroupSnapshotMetadata holds the group's ID, CRN, URL, and name.
-type GroupSnapshotMetadata = VPC
+// GroupSnapshotMetadata is the alias of the VPC struct
+type GroupSnapshotMetadata VPC
 
 // GroupSnapshot represents a group of snapshots taken consistently
 type GroupSnapshot struct {
