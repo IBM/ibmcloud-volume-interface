@@ -176,10 +176,6 @@ func (fake *Provider) OpenSessionReturnsOnCall(i int, result1 provider.Session, 
 func (fake *Provider) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.contextCredentialsFactoryMutex.RLock()
-	defer fake.contextCredentialsFactoryMutex.RUnlock()
-	fake.openSessionMutex.RLock()
-	defer fake.openSessionMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value
