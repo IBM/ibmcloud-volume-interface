@@ -260,12 +260,6 @@ func (fake *ContextCredentialsFactory) ForIaaSAPIKeyReturnsOnCall(i int, result1
 func (fake *ContextCredentialsFactory) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.forIAMAPIKeyMutex.RLock()
-	defer fake.forIAMAPIKeyMutex.RUnlock()
-	fake.forIAMAccessTokenMutex.RLock()
-	defer fake.forIAMAccessTokenMutex.RUnlock()
-	fake.forIaaSAPIKeyMutex.RLock()
-	defer fake.forIaaSAPIKeyMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value
